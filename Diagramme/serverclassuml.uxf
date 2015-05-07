@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>370</x>
-      <y>150</y>
+      <x>390</x>
+      <y>160</y>
       <w>280</w>
       <h>170</h>
     </coordinates>
@@ -24,10 +24,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>790</x>
-      <y>300</y>
-      <w>270</w>
-      <h>310</h>
+      <x>810</x>
+      <y>310</y>
+      <w>370</w>
+      <h>340</h>
     </coordinates>
     <panel_attributes>Packet
 --
@@ -37,6 +37,7 @@
 -frage:String
 -type:Type
 -login:Login
+-id:int
 --
 +Packet(username:String, password:String,t:Type)
 +Packet(username:String, password:String,t:Type, l:Login)
@@ -48,14 +49,15 @@
 +setPassword(s:String)
 +getLoginStatus():Logic
 +getFrage():String
-+setFrage(s:String)</panel_attributes>
++setFrage(s:String)
++setID(id:int)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>380</x>
-      <y>440</y>
+      <x>440</x>
+      <y>450</y>
       <w>280</w>
       <h>110</h>
     </coordinates>
@@ -65,14 +67,16 @@
 --
 +TCPServer(tsl:TCPServerListener)
 +setTCPCallback(tsl:TCPServerListener)
-+listen()</panel_attributes>
++listen()
++tcpsend(Packet)
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>620</y>
+      <x>480</x>
+      <y>660</y>
       <w>200</w>
       <h>90</h>
     </coordinates>
@@ -87,7 +91,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>50</x>
-      <y>530</y>
+      <y>590</y>
       <w>200</w>
       <h>100</h>
     </coordinates>
@@ -103,8 +107,8 @@ DBConnector(l:BDConnector)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>260</y>
+      <x>660</x>
+      <y>270</y>
       <w>200</w>
       <h>60</h>
     </coordinates>
@@ -114,19 +118,19 @@ DBConnector(l:BDConnector)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
-      <y>310</y>
-      <w>210</w>
+      <x>560</x>
+      <y>320</y>
+      <w>30</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;190.0;10.0</additional_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>40</x>
-      <y>220</y>
+      <x>730</x>
+      <y>50</y>
       <w>130</w>
       <h>70</h>
     </coordinates>
@@ -140,41 +144,41 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
-      <y>600</y>
-      <w>100</w>
+      <x>670</x>
+      <y>640</y>
+      <w>190</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>80.0;10.0;80.0;50.0;10.0;60.0</additional_attributes>
+    <additional_attributes>170.0;10.0;170.0;60.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
-      <y>240</y>
+      <x>520</x>
+      <y>80</y>
       <w>230</w>
-      <h>30</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+    <additional_attributes>210.0;10.0;10.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>310</y>
-      <w>210</w>
-      <h>240</h>
+      <x>240</x>
+      <y>270</y>
+      <w>170</w>
+      <h>370</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;220.0;190.0;10.0</additional_attributes>
+    <additional_attributes>10.0;350.0;120.0;350.0;120.0;10.0;150.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>340</y>
+      <x>80</x>
+      <y>180</y>
       <w>180</w>
       <h>110</h>
     </coordinates>
@@ -189,45 +193,45 @@ DBConnectorListener
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>170</x>
-      <y>280</y>
-      <w>220</w>
-      <h>90</h>
+      <x>250</x>
+      <y>220</y>
+      <w>160</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;200.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
+      <x>710</x>
+      <y>110</y>
+      <w>100</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;80.0;400.0;10.0;400.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>150</x>
       <y>280</y>
-      <w>240</w>
-      <h>180</h>
+      <w>30</w>
+      <h>330</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;220.0;160.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>120</x>
-      <y>440</y>
-      <w>60</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;40.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;310.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>240</x>
-      <y>560</y>
-      <w>330</w>
-      <h>80</h>
+      <y>650</y>
+      <w>260</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>310.0;60.0;250.0;20.0;10.0;10.0</additional_attributes>
+    <additional_attributes>240.0;50.0;170.0;50.0;170.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
