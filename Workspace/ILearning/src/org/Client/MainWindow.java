@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import org.Server.Packet;
 
-public class MainWindow extends JFrame implements ClientListener{
+public class MainWindow extends JFrame implements ClientListener, LoginPanelListener {
 	
 	private Client client;
 	private JButton but;
@@ -61,6 +61,12 @@ public class MainWindow extends JFrame implements ClientListener{
 	
 	private void done(){
 		but.setEnabled(true);
+	}
+
+	@Override
+	public void login(String username, String password) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

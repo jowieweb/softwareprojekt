@@ -2,8 +2,6 @@ package org.Client;
 
 import javax.swing.SwingUtilities;
 
-import clientProjekt.MainWindow;
-
 public class Main {
 
 	public static void main(String[] args) {
