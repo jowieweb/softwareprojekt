@@ -12,9 +12,11 @@ import javax.swing.JPanel;
 import org.Client.GUI.AdministrationPanelListener;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.CategoryPanelListener;
+import org.Client.GUI.QuestionPanelListener;
 import org.Server.Packet;
 
-public class MainWindow extends JFrame implements ClientListener, LoginPanelListener, CategoryPanelListener, AdministrationPanelListener {
+public class MainWindow extends JFrame implements ClientListener, LoginPanelListener,
+	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
 	private Client client;
 	private JButton but;
@@ -30,7 +32,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				but.setEnabled(false);
-				Packet p = new Packet("steven", "1" , Packet.Type.CLIENT);
+				Packet p = new Packet("klaus", "1" , Packet.Type.CLIENT);
 				try {
 					client.sendPacket(p);
 				} catch (TCPClientException e) {
@@ -97,6 +99,19 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 	@Override
 	public void addUser(String username, String password) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void answerSelected(int answer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void questionAdded(String questionText, String[] answers,
+			String mediaURL) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -43,7 +43,7 @@ public class DBConnector {
 
 	private boolean checkLogin(Packet p) {
 		try {
-			ResultSet resultSet = connect.createStatement().executeQuery("select name, admin from user where name = '" + p.getUsername() + "' and password = '" + p.getPassword() + "'");
+			ResultSet resultSet = connect.createStatement().executeQuery("select name, admin from User where name = '" + p.getUsername() + "' and password = '" + p.getPassword() + "'");
 			
 			while (resultSet.next()) {
 				String user = resultSet.getString("name");
