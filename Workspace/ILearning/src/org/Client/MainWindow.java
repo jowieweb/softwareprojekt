@@ -4,16 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.Client.GUI.LoginPanelListener;
+import org.Client.GUI.CategoryPanelListener;
 import org.Server.Packet;
 
-public class MainWindow extends JFrame implements ClientListener, LoginPanelListener {
-	
+public class MainWindow extends JFrame implements ClientListener, LoginPanelListener, CategoryPanelListener {
+	private static final long serialVersionUID = 1L;
 	private Client client;
 	private JButton but;
 	
@@ -65,6 +66,18 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 	@Override
 	public void login(String username, String password) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void categorySelected(int category, int level, int modus) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void categoryAdded(String newCategory) {
 		// TODO Auto-generated method stub
 		
 	}
