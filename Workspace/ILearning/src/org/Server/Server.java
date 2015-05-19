@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 public class Server implements TCPServerListener, DBConnectorListener {
 
 	DBConnector dbc = new DBConnector(this);
-
+//Kommentar
 	public Server() {
 //		Packet p = new Packet("steven", "1", Packet.Type.UNUSED);
 //		dbc.placeQuerry(p);
