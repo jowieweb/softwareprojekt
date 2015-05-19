@@ -61,10 +61,10 @@ public class DBConnector {
 		// resultSet gets the result of the SQL query
 		 
 		 
-		if (p.getUsername().equals("steven") && p.getPassword().equals("1")) {
-			System.out.println("steven");
-			return true;
-		}
+//		if (p.getUsername().equals("steven") && p.getPassword().equals("1")) {
+//			System.out.println("steven");
+//			return true;
+//		}
 		return false;
 	}
 
