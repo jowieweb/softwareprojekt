@@ -15,7 +15,7 @@ import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.QuestionPanelListener;
-import org.Server.Packet;
+import org.Packet;
 
 public class MainWindow extends JFrame implements ClientListener, LoginPanelListener,
 	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {

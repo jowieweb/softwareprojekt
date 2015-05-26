@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.Server.Packet;
+import org.Packet;
 
 public class TCPConnection extends Client implements Runnable{
 	

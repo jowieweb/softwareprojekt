@@ -13,7 +13,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.Client.TCPClientException;
-import org.Server.Packet;
+import org.Packet;
 
 /**
  * The class LoginPanel represents an JPanel with login forms. *

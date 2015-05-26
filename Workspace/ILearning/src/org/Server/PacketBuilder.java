@@ -1,5 +1,7 @@
 package org.Server;
 
+import org.Packet;
+
 public class PacketBuilder {
 
 	public static  Packet getPacket(Packet querry, String dbAnswer) {

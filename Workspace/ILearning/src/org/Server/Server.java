@@ -3,6 +3,8 @@ package org.Server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import org.Packet;
+
 public class Server implements TCPServerListener, DBConnectorListener {
 
 	DBConnector dbc = new DBConnector(this);

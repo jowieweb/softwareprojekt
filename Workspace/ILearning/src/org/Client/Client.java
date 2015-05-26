@@ -1,6 +1,6 @@
 package org.Client;
 
-import org.Server.Packet;
+import org.Packet;
 
 public abstract class Client {
 	
