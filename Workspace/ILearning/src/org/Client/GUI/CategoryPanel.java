@@ -25,7 +25,10 @@ public class CategoryPanel extends JPanel {
 	private DefaultListModel<String> categoryListModel;
 
 	 
-	
+	/**
+	 * The constructor builds all widgets of the panel and registers the ActionListeners.
+	 * @param listener	class to callback
+	 */
 	public CategoryPanel(CategoryPanelListener listener) {
 		this.listener = listener;
 		this.categoryListModel = new DefaultListModel();
@@ -47,6 +50,13 @@ public class CategoryPanel extends JPanel {
 		add(pan);
 	}
 	
+	
+	/**
+	 * Sets the provided parameters to the GUI
+	 * @param categories
+	 * @param level
+	 * @param modus
+	 */
 	public void setCategories(String[] categories, int[] level,int[] modus)
 	{
 		for(String s:categories){

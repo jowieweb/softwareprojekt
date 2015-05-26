@@ -84,11 +84,18 @@ public class LoginPanel extends JPanel {
 		this.add(pan);
 	}
 	
+	/**
+	 * This function enables the loginButton. 
+	 * Should be called to allow a second login attempt.
+	 */
 	public void enableLoginButton()
 	{
 		loginButton.setEnabled(true);
 	}
 	
+	/**
+	 * This function gets the username and the password from the textfield and calls the listener
+	 */
 	private void login(){
 		loginButton.setEnabled(false);
 		listener.login(nameTextField.getText(), new String(passwordtextField.getPassword()));
