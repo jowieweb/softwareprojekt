@@ -44,10 +44,15 @@ public class CategoryPanel extends JPanel {
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
 		
+		JPanel west = new JPanel();
+		west.add(categoryListBox);
+		pan.add(west,"West");
 		JPanel north = new JPanel();
-		north.add(categoryListBox);
-		pan.add(north,"North");
+		north.add(levelComboBox);
+		pan.add(north, "North");
+		
 		add(pan);
+		
 	}
 	
 	
@@ -57,11 +62,14 @@ public class CategoryPanel extends JPanel {
 	 * @param level
 	 * @param modus
 	 */
-	public void setCategories(String[] categories, int[] level,int[] modus)
+	public void setCategories(String[] categories, String[] level,int[] modus)
 	{
 		for(String s:categories){
 			categoryListModel.addElement(s);			
-		}		
+		}	
+		for(String s:level){
+			levelComboBox.addItem(s);
+		}
 	}
 	
 }

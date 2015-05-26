@@ -47,7 +47,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		pack();
 		int[] test = {1,2,3};
 		String[] temp = {"test", "2", "3"};
-		categoryPanel.setCategories(temp, test, test);
+		categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
 		pack();
 	}
 

@@ -11,7 +11,8 @@ public class Packet implements Serializable {
 	private String username;
 	private String password;
 	private String frage;
-
+	private String[] topics;
+	private String[] level;
 	public enum Type {
 		UNUSED, SERVER, CLIENT
 	};
@@ -64,6 +65,24 @@ public class Packet implements Serializable {
 
 	public void setFrage(String p) {
 		frage = p;
+	}
+	public void setTopics(String[] para)
+	{
+		this.topics = para;
+	}
+	
+	public String[] getTopics() {
+		return this.topics;
+	}
+	
+	public void setLevel(String[] lvl)
+	{
+		level = lvl;
+	}
+	
+	public String[] getLevel()
+	{
+		return level;
 	}
 
 }
