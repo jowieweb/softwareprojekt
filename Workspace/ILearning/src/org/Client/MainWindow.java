@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.Client.GUI.AdministrationPanelListener;
+import org.Client.GUI.CategoryPanel;
+import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.QuestionPanelListener;
@@ -19,31 +21,14 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
 	private Client client;
-	private JButton but;
-	
-	public MainWindow(){
+	private LoginPanel lp;
+	private CategoryPanel categoryPanel;
+	public MainWindow(){		
 		super("Frame");
+		 lp = new LoginPanel(this);
+		 
 		client = new TCPConnection(this, "127.0.0.1", 12345);
-		JPanel pan = new JPanel();
-		pan.add(new JLabel("Test"));
-		but = new JButton("login");
-		but.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				but.setEnabled(false);
-				Packet p = new Packet("klaus", "1" , Packet.Type.CLIENT);
-				try {
-					client.sendPacket(p);
-				} catch (TCPClientException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		});
-		pan.add(but);
-		add(pan);
+		add(lp);
 		pack();
 		setVisible(true);
 		setLocationRelativeTo(null);
@@ -54,22 +39,35 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void recieveClientData(Packet p) {
 		System.out.println(p.getUsername());
 		System.out.println(p.getLoginStatus());
-		done();
+		
+		lp.setVisible(false);
+		remove(lp);
+		categoryPanel = new CategoryPanel(this);
+		add(categoryPanel);
+		pack();
+		int[] test = {1,2,3};
+		String[] temp = {"test", "2", "3"};
+		categoryPanel.setCategories(temp, test, test);
+		pack();
 	}
 
 	@Override
 	public void exceptionInClientData(TCPClientException e) {
 		JOptionPane.showMessageDialog(this, e.getMessage() + "\n" + e.getCause().getMessage());
-		done();
+		lp.enableLoginButton();
 	}
 	
-	private void done(){
-		but.setEnabled(true);
-	}
 
 	@Override
 	public void login(String username, String password) {
 		// TODO Auto-generated method stub
+		Packet p = new Packet(username, password , Packet.Type.CLIENT);
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
