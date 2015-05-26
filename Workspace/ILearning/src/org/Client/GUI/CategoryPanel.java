@@ -1,6 +1,8 @@
 package org.Client.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -52,6 +54,16 @@ public class CategoryPanel extends JPanel {
 		pan.add(north, "North");
 		
 		add(pan);
+		
+		
+		submitButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				listener.categorySelected(categoryListBox.getSelectedValue().toString(),levelComboBox.getSelectedItem().toString() , 0);
+			}
+		});
 		
 	}
 	

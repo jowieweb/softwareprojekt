@@ -23,6 +23,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private Client client;
 	private LoginPanel lp;
 	private CategoryPanel categoryPanel;
+	private String username;
+	private String password;
 	public MainWindow(){		
 		super("Frame");
 		 lp = new LoginPanel(this);
@@ -39,7 +41,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void recieveClientData(Packet p) {
 		System.out.println(p.getUsername());
 		System.out.println(p.getLoginStatus());
-		
+		username = p.getUsername();
+		password = p.getPassword();
 		lp.setVisible(false);
 		remove(lp);
 		categoryPanel = new CategoryPanel(this);
@@ -72,9 +75,11 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	}
 
 	@Override
-	public void categorySelected(int category, int level, int modus) {
+	public void categorySelected(String category, String level, int modus) {
 		// TODO Auto-generated method stub
-		
+		Packet p = new Packet(username,password, Packet.Type.CLIENT);
+		p.setSelectedTopic(category);
+		p.setSelectedLevel(level);
 	}
 
 	@Override

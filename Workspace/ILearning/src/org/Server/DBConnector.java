@@ -37,9 +37,12 @@ public class DBConnector {
 		if (checkLogin(p)) {
 			String answerString = "";
 			Packet answer = PacketBuilder.getPacket(p, answerString);
+			
 			addCategories(answer);
 			addLevel(answer);
+
 			DBCL.DBDataReceive(answer);
+			
 		} else {
 			DBCL.loginFailed(p);
 		}
