@@ -11,8 +11,9 @@ public class Packet implements Serializable {
 	private String username;
 	private String password;
 	private String frage;
-	private String selectedTopic;
-	private String selectedLevel;
+	private String answer[];
+	private String selectedTopic="";
+	private String selectedLevel="";
 	private String[] topics;
 	private String[] level;
 
@@ -70,6 +71,16 @@ public class Packet implements Serializable {
 		if (p != null) {
 			frage = p;
 		}
+	}
+	public void setAnswers(String[] p){
+		if(p!=null){
+			answer = p;
+		}
+	}
+	
+	public String[] getAnswers()
+	{
+		return answer;
 	}
 
 	public void setTopics(String[] para) {

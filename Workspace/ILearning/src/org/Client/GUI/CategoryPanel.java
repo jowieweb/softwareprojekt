@@ -47,12 +47,14 @@ public class CategoryPanel extends JPanel {
 		pan.setLayout(new BorderLayout());
 		
 		JPanel west = new JPanel();
-		west.add(categoryListBox);
-		pan.add(west,"West");
+		JPanel south = new JPanel();
 		JPanel north = new JPanel();
+		west.add(categoryListBox);
 		north.add(levelComboBox);
+		south.add(submitButton);
+		pan.add(west,"West");
 		pan.add(north, "North");
-		
+		pan.add(south, "South");
 		add(pan);
 		
 		
@@ -64,6 +66,7 @@ public class CategoryPanel extends JPanel {
 				listener.categorySelected(categoryListBox.getSelectedValue().toString(),levelComboBox.getSelectedItem().toString() , 0);
 			}
 		});
+		
 		
 	}
 	

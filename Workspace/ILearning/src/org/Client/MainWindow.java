@@ -39,18 +39,21 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 	@Override
 	public void recieveClientData(Packet p) {
-		System.out.println(p.getUsername());
-		System.out.println(p.getLoginStatus());
-		username = p.getUsername();
-		password = p.getPassword();
-		lp.setVisible(false);
-		remove(lp);
-		categoryPanel = new CategoryPanel(this);
-		add(categoryPanel);
-		pack();
-		int[] test = {1,2,3};
-		String[] temp = {"test", "2", "3"};
-		categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
+		if(p.getAnswers() != null){
+			System.out.println(p.getFrage());
+		} else
+		{
+			System.out.println(p.getUsername());
+			System.out.println(p.getLoginStatus());
+			username = p.getUsername();
+			password = p.getPassword();
+			lp.setVisible(false);
+			remove(lp);
+			categoryPanel = new CategoryPanel(this);
+			add(categoryPanel);
+			int[] test = {1,2,3};
+			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);			
+		}
 		pack();
 	}
 
@@ -80,6 +83,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		Packet p = new Packet(username,password, Packet.Type.CLIENT);
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

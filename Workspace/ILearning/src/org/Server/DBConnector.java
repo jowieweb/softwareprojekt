@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.Packet;
 
@@ -37,12 +38,21 @@ public class DBConnector {
 		if (checkLogin(p)) {
 			String answerString = "";
 			Packet answer = PacketBuilder.getPacket(p, answerString);
-			
-			addCategories(answer);
-			addLevel(answer);
+			// das ist nicht wirklich schön, und um geht total das Factory
+			// pattern, aber wir haben im Packet Builder keinen zugriff auf die
+			// DB mehr,
+			// also müssen wir an dieser Stelle auswerten, was alles in das
+			// Packet rein muss.
+			if (p.getSelectedTopic().equals("")
+					&& p.getSelectedLevel().equals("")) {
+				addCategories(answer);
+				addLevel(answer);
+			} else {
+				setFrage(answer);
+			}
 
 			DBCL.DBDataReceive(answer);
-			
+
 		} else {
 			DBCL.loginFailed(p);
 		}
@@ -63,7 +73,8 @@ public class DBConnector {
 		}
 
 	}
-	private void addLevel(Packet p){
+
+	private void addLevel(Packet p) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
 					"SELECT title FROM Level");
@@ -72,9 +83,40 @@ public class DBConnector {
 				level += resultSet.getString("title") + ";";
 			}
 			p.setLevel(level.split(";"));
+			resultSet.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	private void setFrage(Packet p) {
+		try {
+			ResultSet resultSet = connect
+					.createStatement()
+					.executeQuery(
+							"select questiontext, answer1, answer2, answer3, answer4 from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
+									+ p.getSelectedTopic() + "'");
+			if (resultSet.next()) {
+				p.setFrage(resultSet.getString("questiontext"));
+
+				ArrayList<String> answers = new ArrayList<String>();
+				for (int i = 1; i < 5; i++) {
+					answers.add(resultSet.getString(("answer" + i)).toString());
+				}
+				
+				String[] stockArr = new String[answers.size()];
+				stockArr = answers.toArray(stockArr);
+				
+				p.setAnswers(stockArr);
+			} else {
+				System.out.println("EMPTY");
+			}
+			resultSet.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 

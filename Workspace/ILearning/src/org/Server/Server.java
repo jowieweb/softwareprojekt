@@ -17,6 +17,7 @@ public class Server implements TCPServerListener, DBConnectorListener {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("Server running...");
 		new Server();
 	}
 

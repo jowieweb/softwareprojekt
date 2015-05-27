@@ -14,6 +14,8 @@ public class PacketBuilder {
 		Packet p = new Packet(querry.getUsername(), querry.getPassword(),
 				Packet.Type.SERVER, Packet.Login.ADMIN);
 		p.setSocket(querry.getSocket());
+		p.setSelectedLevel(querry.getSelectedLevel());
+		p.setSelectedTopic(querry.getSelectedTopic());
 		return p;
 	}
 
