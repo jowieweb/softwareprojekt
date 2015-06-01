@@ -12,6 +12,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * The class CategoryPanel represents a JPanel that displays all available categories.
+ */
 public class CategoryPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList<String> categoryListBox;
@@ -26,7 +29,6 @@ public class CategoryPanel extends JPanel {
 	private CategoryPanelListener listener;
 	private DefaultListModel<String> categoryListModel;
 
-	 
 	/**
 	 * The constructor builds all widgets of the panel and registers the ActionListeners.
 	 * @param listener	class to callback
@@ -57,7 +59,6 @@ public class CategoryPanel extends JPanel {
 		pan.add(south, "South");
 		add(pan);
 		
-		
 		submitButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -65,11 +66,8 @@ public class CategoryPanel extends JPanel {
 				// TODO Auto-generated method stub
 				listener.categorySelected(categoryListBox.getSelectedValue().toString(),levelComboBox.getSelectedItem().toString() , 0);
 			}
-		});
-		
-		
+		});	
 	}
-	
 	
 	/**
 	 * Sets the provided parameters to the GUI
@@ -86,5 +84,4 @@ public class CategoryPanel extends JPanel {
 			levelComboBox.addItem(s);
 		}
 	}
-	
 }

@@ -2,6 +2,8 @@ package org.Client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,10 +54,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			remove(lp);
 			categoryPanel = new CategoryPanel(this);
 			add(categoryPanel);
+			
 			int[] test = {1,2,3};
-			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);			
+			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
 		}
 		pack();
+		setMinimumSize(getSize());
 	}
 
 	@Override
