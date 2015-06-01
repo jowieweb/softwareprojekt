@@ -1,18 +1,13 @@
 package org.Client;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.Client.GUI.AdministrationPanel;
 import org.Client.GUI.AdministrationPanelListener;
@@ -53,6 +48,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		menuBar = new JMenuBar();
 		menu = new JMenu("Bearbeiten");
 		editMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				changeQuestionPanelToEditMode();
@@ -216,7 +213,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
-	private void changeQuestionPanelToEditMode() {
+	public void changeQuestionPanelToEditMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 		
@@ -231,7 +228,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
-	private void changeQuestionPanelToAnswerMode() {
+	public void changeQuestionPanelToAnswerMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 		

@@ -1,12 +1,8 @@
 package org.Client.GUI;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 
 /**
  * Abstract class for displaying questions.
@@ -59,9 +55,14 @@ public abstract class QuestionPanel extends JPanel {
 	 * @return answers
 	 */
 	public String[] getAnswerTexts() {
+		System.out.println("Peter");
 		return null;
 	}
 	
+	/**
+	 * Return question.
+	 * @return question
+	 */
 	public String getQuestionText() {
 		return null;
 	}

@@ -1,8 +1,6 @@
 package org.Client.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -10,7 +8,6 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -107,6 +104,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 *            array with answer options
 	 */
 	public void setAnswerText(String[] text) {
+		System.out.println(text);
 		for (int i = 0; i < text.length && i < 4; i++) {
 			this.answerButton[i].setText( text[i]);
 		}
@@ -140,8 +138,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 * 
 	 * @param pic
 	 */
-	public void setPicture(Image pic)
-	{
+	public void setPicture(Image pic) {
 		picturePanel = new ImagePanel(pic);
 	}
 }
