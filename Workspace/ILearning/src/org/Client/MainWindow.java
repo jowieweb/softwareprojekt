@@ -44,8 +44,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void recieveClientData(Packet p) {
 		if(p.getAnswers() != null){
 			System.out.println(p.getFrage());
-		} else
-		{
+
+		} else {
 			System.out.println(p.getUsername());
 			System.out.println(p.getLoginStatus());
 			username = p.getUsername();

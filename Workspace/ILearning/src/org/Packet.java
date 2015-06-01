@@ -18,7 +18,7 @@ public class Packet implements Serializable {
 	private String[] level;
 
 	public enum Type {
-		UNUSED, SERVER, CLIENT
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, LOGIN, USER_MANAGEMENT
 	};
 
 	public enum Login {
@@ -72,14 +72,13 @@ public class Packet implements Serializable {
 			frage = p;
 		}
 	}
-	public void setAnswers(String[] p){
-		if(p!=null){
+	public void setAnswers(String[] p) {
+		if(p!=null) {
 			answer = p;
 		}
 	}
 	
-	public String[] getAnswers()
-	{
+	public String[] getAnswers() {
 		return answer;
 	}
 
@@ -113,16 +112,13 @@ public class Packet implements Serializable {
 		}
 	}
 
-	public void setSelectedLevel(String lvl)
-	{
-		if(lvl != null)
-		{
+	public void setSelectedLevel(String lvl) {
+		if(lvl != null) {
 			selectedLevel = lvl;
 		}
 	}
 	
-	public String getSelectedLevel()
-	{
+	public String getSelectedLevel() {
 		return selectedLevel;
 	}
 }
