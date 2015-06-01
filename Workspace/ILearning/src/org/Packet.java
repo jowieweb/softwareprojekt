@@ -121,4 +121,8 @@ public class Packet implements Serializable {
 	public String getSelectedLevel() {
 		return selectedLevel;
 	}
+	
+	public Type getPacketType() {
+		return type;
+	}
 }

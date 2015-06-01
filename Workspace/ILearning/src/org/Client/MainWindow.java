@@ -42,10 +42,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 	@Override
 	public void recieveClientData(Packet p) {
-		if(p.getAnswers() != null){
-			System.out.println(p.getFrage());
-
-		} else {
+		if (p == null) {
+			return;
+		}
+		
+		switch (p.getPacketType()) {
+		case CATEGORY:
 			System.out.println(p.getUsername());
 			System.out.println(p.getLoginStatus());
 			username = p.getUsername();
@@ -57,7 +59,9 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			
 			int[] test = {1,2,3};
 			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
+			break;
 		}
+
 		pack();
 		setMinimumSize(getSize());
 	}
