@@ -38,7 +38,6 @@ public class DBConnector {
 		Packet.Login login = checkLogin(p);
 		if (login != Packet.Login.FAIL) {
 			String answerString = "";
-			//unused ist natürlich nur ein dummy und muss richtig gesetzt werden
 			Packet answer = PacketBuilder.getPacket(p, answerString, login, Packet.Type.UNUSED);
 			// das ist nicht wirklich schön, und um geht total das Factory
 			// pattern, aber wir haben im Packet Builder keinen zugriff auf die
@@ -69,6 +68,7 @@ public class DBConnector {
 				categorys += resultSet.getString("title") + ";";
 			}
 			p.setTopics(categorys.split(";"));
+			p.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,6 +115,7 @@ public class DBConnector {
 				System.out.println("EMPTY");
 			}
 			resultSet.close();
+			p.setPacketType(Packet.Type.ANSWER_QUESTION);
 
 		} catch (Exception e) {
 			e.printStackTrace();
