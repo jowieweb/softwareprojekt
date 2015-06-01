@@ -260,4 +260,15 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		add(questionPanel);
 		pack();
 	}
+	
+	/**
+	 * Replaces QuestionPanel with CategoryPanel.
+	 */
+	public void changeQuestionPanelToCategoryPanel() {
+		remove(questionPanel);
+		questionPanel = null;
+		add(categoryPanel);
+		pack();
+		// TODO: Reload category list
+	}
 }

@@ -3,11 +3,13 @@ package org.Client.GUI;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +23,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel questionLabel;
 	private ImagePanel picturePanel;
+	private JButton nextButton;
+	private JButton backButton;
 
 	/**
 	 * constructor builds JPanel.
@@ -32,10 +36,19 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
 		super(listener);
 		this.questionLabel = new JLabel();
-
+		
+		this.nextButton = new JButton("Nächste Frage");
+		this.backButton = new JButton("Zurück zur Kategorieauswahl");
+		this.nextButton.setVisible(false);
+		this.backButton.setVisible(false);
+		
 		this.picturePanel = new ImagePanel();
+		JPanel southPan = new JPanel();
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
+		southPan.add(backButton);
+		southPan.add(submitButton);
+		southPan.add(nextButton);
 
 		JPanel center = new JPanel();
 		JPanel south = new JPanel();
@@ -44,7 +57,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		north.add(questionLabel, "North");
 		north.add(picturePanel, "South");
 
-		south.add(submitButton);
+		south.add(southPan);
 
 		center.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -63,6 +76,54 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
+		
+		this.submitButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				submitButtonClicked();
+			}
+		});
+		this.backButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				backButtonClicked();
+			}
+		});
+		this.nextButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nextButtonClicked();
+			}
+		});
+	}
+	
+	/**
+	 * This method is invoked when submitButton is clicked.
+	 */
+	private void submitButtonClicked() {
+		this.submitButton.setVisible(false);
+		this.backButton.setVisible(true);
+		this.nextButton.setVisible(true);
+		
+		// Invoke callback method
+		//listener.answerSelected(answer);
+	}
+	
+	/**
+	 * This method is invoked when backButton is clicked.	
+	 */
+	private void backButtonClicked() {
+		this.listener.changeQuestionPanelToCategoryPanel();
+	}
+	
+	/**
+	 * This method is invoked when nextButton is clicked.
+	 */
+	private void nextButtonClicked() {
+		
 	}
 
 	private JPanel getRadioLabel(final JCheckBox radio) {
