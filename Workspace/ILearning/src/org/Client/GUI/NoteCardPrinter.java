@@ -6,20 +6,20 @@ import java.util.logging.Logger;
 
 import org.Packet;
 
-/*
+/**
  * NoteCardPrinter.
- * Druckt eine Frage in Karteikarten-Format.
+ * prints questions in card format
  */
 public class NoteCardPrinter {
 
 	private Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
-	/*
-	 * Konvertiert ein Fragenpacket in ein Stringarray.
+	/**
+	 * converts a package into a string[]
 	 * 
-	 * @param p Ein Fragenpacket
+	 * @param p package
 	 */
-	public String[] packetToArray(Packet p) {
+	private String[] packetToArray(Packet p) {
 		// TODO: Convert Packet to String-Array!
 		log.severe("packetToArray not yet implemented!");
 		String[] testPacket = new String[] { "Titel der Testfrage?",
@@ -28,9 +28,13 @@ public class NoteCardPrinter {
 				"AntwortOption D", };
 		return testPacket;
 	}
+	
 
-	public NoteCardPrinter() {
-
+	/**
+	 * prints a set of questions
+	 * @param p the package containing the questions
+	 */
+	public NoteCardPrinter(Packet p) {
 		log.info("NoteCardPrinter initialized.");
 		PrinterJob pj = PrinterJob.getPrinterJob();
 		pj.setPrintable(new PrintTemplate(packetToArray(null)));
@@ -55,9 +59,5 @@ public class NoteCardPrinter {
 		} else {
 			log.info("Printer: done.");
 		}
-	}
-
-	public static void main(String[] args) {
-		new NoteCardPrinter();
 	}
 }

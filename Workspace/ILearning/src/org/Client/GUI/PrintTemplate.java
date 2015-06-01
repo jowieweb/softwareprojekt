@@ -6,9 +6,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
-/*
- * Das PrintTemplate. Uebergeben wird ein 2D-String-Array
- * welches dynamisch formatiert wird.
+/**
+ * Formats a given 2D String Array 
  */
 public class PrintTemplate implements Printable {
 
@@ -28,8 +27,8 @@ public class PrintTemplate implements Printable {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.translate(pf.getImageableX(), pf.getImageableY());
 
-		int yt = 0; // temporaeres y, wird spaeter hochgezaehlt!
-		// Titel dynamisch
+		int yt = 0; // temorary y, will be counted up
+		// title dynamic
 		int charlauf = 0;
 		while (charlauf < data[0].length()) {
 			if (charlauf + 70 < data[0].length()) {
@@ -45,7 +44,7 @@ public class PrintTemplate implements Printable {
 
 		}
 
-		// Fragentext dynamisch
+		// questiontext dynamic
 		charlauf = 0;
 		while (charlauf < data[1].length()) {
 			if (charlauf + 70 < data[1].length()) {
@@ -62,7 +61,7 @@ public class PrintTemplate implements Printable {
 		}
 		// g.drawString(data[1], 110, 145 + yt);
 
-		// Antwortmoeglichkeiten A
+		// choise A
 		int yt2 = 0;
 		charlauf = 0;
 		while (charlauf < data[2].length()) {
@@ -77,7 +76,7 @@ public class PrintTemplate implements Printable {
 			}
 			charlauf += 27;
 		}
-		// Antwortmoeglichkeiten C
+		// choise C
 		charlauf = 0;
 		int yt3 = 0;
 		while (charlauf < data[4].length()) {
@@ -131,14 +130,14 @@ public class PrintTemplate implements Printable {
 		
 		//g.drawString(data[5], 320, 325 + yt + yt2 + yt4);
 
-		// Rahmen der Antwortmoeglichkeiten
+		// frame of the answer choise
 		g.drawRect(110, 210 + yt, 180, 80 + yt2);
 		g.drawRect(310, 210 + yt, 180, 80 + yt2);
 
 		g.drawRect(110, 310 + yt + yt2, 180, 80 + yt4);
 		g.drawRect(310, 310 + yt + yt2, 180, 80 + yt4);
 
-		// Rahmen aussen
+		// outter frame
 		g.drawRect(100, 100, 400, 300 + yt + yt2 + yt4);
 		// tell the caller that this page is part
 		// of the printed document
