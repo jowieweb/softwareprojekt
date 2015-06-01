@@ -65,6 +65,31 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(south, "South");
 		add(pan);
 	}
+	
+	private JPanel getRadioLabel(final JRadioButton btn) {
+		JPanel p = new JPanel();
+		JTextArea l = new JTextArea(4,100);
+		l.setBackground(this.getBackground());
+		l.setText(btn.getText());
+		l.setEditable(false);
+		l.setLineWrap(true);
+		l.setWrapStyleWord(true);
+		l.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }			 
+		});
+		p.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }
+		});
+		l.setHighlighter(null);
+		btn.setText("");
+		p.add(btn);
+		p.add(l);
+		return p;
+	}
 
 	/**
 	 * Sets question
