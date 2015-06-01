@@ -1,16 +1,7 @@
 package org.Client;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import org.Client.GUI.AdministrationPanelListener;
 import org.Client.GUI.CategoryPanel;
 import org.Client.GUI.LoginPanel;
@@ -19,6 +10,10 @@ import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.QuestionPanelListener;
 import org.Packet;
 
+/**
+ * The class MainWindow represents the main window, which display different panels
+ * depending on the current state.
+ */
 public class MainWindow extends JFrame implements ClientListener, LoginPanelListener,
 	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +22,10 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private CategoryPanel categoryPanel;
 	private String username;
 	private String password;
+	
+	/**
+	 * constructor creates window.
+	 */
 	public MainWindow(){		
 		super("Frame");
 		 lp = new LoginPanel(this);
@@ -40,8 +39,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		setMinimumSize(getSize());
 	}
 
+	/**
+	 * Is invoked when a packet is received.
+	 * @param p the received packet
+	 */
 	@Override
-	public void recieveClientData(Packet p) {
+	public void receiveClientData(Packet p) {
 		if (p == null) {
 			return;
 		}
@@ -60,6 +63,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			int[] test = {1,2,3};
 			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
 			break;
+		default:
+			break;
 		}
 
 		pack();
@@ -72,11 +77,15 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		lp.enableLoginButton();
 	}
 	
-
+	/**
+	 * Callbackmethod invoked when submitButton on loginPanel is pressed.
+	 * @param username the username
+	 * @param password the user's password
+	 */
 	@Override
 	public void login(String username, String password) {
-		// TODO Auto-generated method stub
-		Packet p = new Packet(username, password , Packet.Type.LOGIN);
+		Packet p = new Packet(username, password);
+		p.setPacketType(Packet.Type.LOGIN);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -86,10 +95,16 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		
 	}
 
+	/**
+	 * Callbackmethod is invoked when submitButton on categoryPanel is pressed.
+	 * @param category the selected category
+	 * @param level the selected level
+	 * @param modus the selected modus
+	 */
 	@Override
 	public void categorySelected(String category, String level, int modus) {
-		// TODO Auto-generated method stub
-		Packet p = new Packet(username,password, Packet.Type.CATEGORY);
+		Packet p = new Packet(username,password);
+		p.setPacketType(Packet.Type.CATEGORY);
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
 		try {
@@ -136,5 +151,4 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		// TODO Auto-generated method stub
 		
 	}
-
 }

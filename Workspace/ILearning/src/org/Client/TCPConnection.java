@@ -44,7 +44,7 @@ public class TCPConnection extends Client implements Runnable{
 			st.writeObject(packet);
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			Packet rp = (Packet)in.readObject();
-			listener.recieveClientData(rp);
+			listener.receiveClientData(rp);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			listener.exceptionInClientData(new TCPClientException("Unknown Host", e));

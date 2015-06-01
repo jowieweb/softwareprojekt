@@ -5,6 +5,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
+/**
+ * The class Packet represents a packet. It includes a type, login information, etc.
+ */
 public class Packet implements Serializable {
 
 	private Socket client;
@@ -28,17 +31,16 @@ public class Packet implements Serializable {
 	private Type type = Type.UNUSED;
 	private Login login = Login.FAIL;
 
-	public Packet(String username, String password, Type t) {
-		this(username, password, t, Login.FAIL);
-	}
-
-	public Packet(String username, String password, Type t, Login l) {
+	/**
+	 * Constructor builds new packet. 
+	 * @param username the username
+	 * @param password the password (MD5)
+	 */
+	public Packet(String username, String password) {
 		if (username == null || password == null) {
 			password = "";
 			username = "";
 		}
-		type = t;
-		login = l;
 		this.username = username;
 		this.password = password;
 	}
@@ -124,5 +126,9 @@ public class Packet implements Serializable {
 	
 	public Type getPacketType() {
 		return type;
+	}
+	
+	public void setPacketType(Type t) {
+		type = t;
 	}
 }
