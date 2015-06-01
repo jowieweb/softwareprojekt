@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -31,8 +30,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
 		super(listener);
 		this.questionLabel = new JLabel();
+
 		this.picturePanel = new ImagePanel();
-		
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
 
@@ -58,7 +57,6 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
-
 	}
 	
 	private JPanel getRadioLabel(final JRadioButton btn) {
@@ -140,5 +138,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	public void setPicture(Image pic) {
 		picturePanel = new ImagePanel(pic);
+		picturePanel.setVisible(true);
+		repaint();
 	}
 }

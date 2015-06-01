@@ -1,10 +1,15 @@
 package org.Server;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import org.Packet;
 
@@ -101,12 +106,10 @@ public class DBConnector {
 
 	private void setFrage(Packet p) {
 		try {
-			String debug = "select questiontext, answer1, answer2, answer3, answer4 from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
-					+ p.getSelectedTopic() + "'";
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
-							"select questiontext, answer1, answer2, answer3, answer4 from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
+							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
 									+ p.getSelectedTopic() + "' ORDER BY RAND()");
 			if (resultSet.next()) {
 				p.setFrage(resultSet.getString("questiontext"));
@@ -120,6 +123,12 @@ public class DBConnector {
 				stockArr = answers.toArray(stockArr);
 				
 				p.setAnswers(stockArr);
+				String imageurl = resultSet.getString("image");
+				if(imageurl.length()> 1){					
+					setImage(p,imageurl);
+				}else{
+					setImage(p,"url.jpg");
+				}
 			} else {
 				System.out.println("EMPTY");
 			}
@@ -131,6 +140,17 @@ public class DBConnector {
 			System.exit(0);
 		}
 	}
+	
+	private void setImage(Packet p, String url){
+		try {
+			Image image = ImageIO.read(new File(url));
+			p.setImage(image);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
 
 	private Packet.Login checkLogin(Packet p) {
 		try {
