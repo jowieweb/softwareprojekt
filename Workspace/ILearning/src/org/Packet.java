@@ -9,7 +9,6 @@ import java.net.Socket;
  * The class Packet represents a packet. It includes a type, login information, etc.
  */
 public class Packet implements Serializable {
-
 	private Socket client;
 	private String username;
 	private String password;

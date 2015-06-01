@@ -2,11 +2,15 @@ package org.Client;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.Client.GUI.AdministrationPanel;
 import org.Client.GUI.AdministrationPanelListener;
+import org.Client.GUI.AnswerQuestionPanel;
 import org.Client.GUI.CategoryPanel;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.CategoryPanelListener;
+import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
 import org.Packet;
 
@@ -20,6 +24,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private Client client;
 	private LoginPanel lp;
 	private CategoryPanel categoryPanel;
+	private QuestionPanel questionPanel;
+	private AdministrationPanel adminPanel;
 	private String username;
 	private String password;
 	
@@ -60,9 +66,22 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			categoryPanel = new CategoryPanel(this);
 			add(categoryPanel);
 			
-			int[] test = {1,2,3};
+			int[] test = {1,2,3};	// TODO: remove after testing
 			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
 			break;
+			
+		case ANSWER_QUESTION:
+			remove(categoryPanel);
+			if (questionPanel != null) {
+				questionPanel.setVisible(false);
+				remove(questionPanel);
+			}
+			questionPanel = new AnswerQuestionPanel();
+			add(questionPanel);
+			questionPanel.setQuestionText(p.getFrage());
+			questionPanel.setAnswerText(p.getAnswers());
+			break;
+			
 		default:
 			break;
 		}
@@ -139,10 +158,20 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		
 	}
 
+	/**
+	 * Callbackmethod invoked when submitButton on questionPanel is pressed.
+	 * @param answer the index of the selected answer
+	 */
 	@Override
 	public void answerSelected(int answer) {
-		// TODO Auto-generated method stub
-		
+		Packet p = new Packet(username, password);
+		p.setPacketType(Packet.Type.ANSWER_QUESTION);
+		p.setFrage(questionPanel.getQuestionText());
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -45,4 +45,12 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		
 		return answers;
 	}
+	
+	/**
+	 * Returns the question.
+	 * @return question
+	 */
+	public String getQuestionText() {
+		return questionLabel.getText();
+	}
 }

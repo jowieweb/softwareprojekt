@@ -55,4 +55,8 @@ public abstract class QuestionPanel extends JPanel {
 	public String[] getAnswerTexts() {
 		return null;
 	}
+	
+	public String getQuestionText() {
+		return null;
+	}
 }

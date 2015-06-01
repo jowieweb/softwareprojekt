@@ -30,7 +30,6 @@ public class LoginPanel extends JPanel {
 	 * @param listener
 	 *            class to callback
 	 */
-
 	public LoginPanel(LoginPanelListener listener) {
 		this.listener = listener;
 		this.nameLabel = new JLabel("Benutzername:");
