@@ -2,8 +2,11 @@ package org.Client.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -32,11 +35,16 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		north.add(questionLabel);
 		south.add(submitButton);
 		
-		center.setLayout(new GridLayout(4,1));
+		center.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridy = 0;
+		
 		setAnswerText(text);
 		for(JRadioButton radio: answerButton){
-			center.add(getRadioLabel(radio));
+			center.add(getRadioLabel(radio),gbc);
+			gbc.gridy++;
 		}
+//		center.setPreferredSize(new Dimension(1000, 1000));
 		pan.add(center, "Center");
 		pan.add(north, "North");
 		pan.add(south, "South");
@@ -47,10 +55,23 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private JPanel getRadioLabel(JRadioButton btn)
 	{
 		JPanel p = new JPanel();
-		JTextArea l = new JTextArea(btn.getText());
+		JTextArea l = new JTextArea(4,100);
+		l.setBackground(this.getBackground());
+		l.setText(btn.getText());
 		l.setEditable(false);
 		l.setLineWrap(true);
 		l.setWrapStyleWord(true);
+		l.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }			 
+		});
+		p.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }
+		});
+		l.setHighlighter(null);
 		btn.setText("");
 		p.add(btn);
 		p.add(l);
