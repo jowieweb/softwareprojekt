@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -22,6 +23,8 @@ import javax.swing.JTextArea;
 public class AnswerQuestionPanel extends QuestionPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel questionLabel;
+	private ImagePanel picturePanel;
+	
 
 	/**
 	 * constructor builds JPanel.
@@ -31,7 +34,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
 		super(listener);
 		this.questionLabel = new JLabel();
-
+		this.picturePanel = new ImagePanel();
 		
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
@@ -39,7 +42,10 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		JPanel center = new JPanel();
 		JPanel south = new JPanel();
 		JPanel north = new JPanel();
+		north.setLayout(new GridLayout(2, 1));
 		north.add(questionLabel);
+		north.add(picturePanel);
+		
 		south.add(submitButton);
 		
 		center.setLayout(new GridBagLayout());
@@ -51,7 +57,6 @@ public class AnswerQuestionPanel extends QuestionPanel {
 			center.add(getRadioLabel(radio),gbc);
 			gbc.gridy++;
 		}
-//		center.setPreferredSize(new Dimension(1000, 1000));
 		pan.add(center, "Center");
 		pan.add(north, "North");
 		pan.add(south, "South");
@@ -104,5 +109,14 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	public String getQuestionText() {
 		return questionLabel.getText();
+	}
+	
+	/**
+	 * 
+	 * @param pic
+	 */
+	public void setPicture(Image pic)
+	{
+		picturePanel = new ImagePanel(pic);
 	}
 }
