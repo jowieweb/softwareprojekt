@@ -20,11 +20,12 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel questionLabel;
 	private ImagePanel picturePanel;
-	
 
 	/**
 	 * constructor builds JPanel.
-	 * @param listener callback method object
+	 * 
+	 * @param listener
+	 *            callback method object
 	 * @param text
 	 */
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
@@ -38,44 +39,51 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		JPanel center = new JPanel();
 		JPanel south = new JPanel();
 		JPanel north = new JPanel();
-		north.setLayout(new GridLayout(2, 1));
-		north.add(questionLabel);
-		north.add(picturePanel);
-		
+		north.setLayout(new BorderLayout());
+		north.add(questionLabel, "North");
+		north.add(picturePanel, "South");
+
 		south.add(submitButton);
-		
+
 		center.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridy = 0;
-		
+
 		setAnswerText(text);
-		for(JRadioButton radio: answerButton){
-			center.add(getRadioLabel(radio),gbc);
-			gbc.gridy++;
+		for (JRadioButton radio : answerButton) {
+			JPanel p = getRadioLabel(radio);
+			if (p != null) {
+				center.add(p, gbc);
+				gbc.gridy++;
+			}
 		}
 		pan.add(center, "Center");
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
 	}
-	
+
 	private JPanel getRadioLabel(final JRadioButton btn) {
+		if (btn.getText().length() == 0) {
+			return null;
+		}
+
 		JPanel p = new JPanel();
-		JTextArea l = new JTextArea(4,100);
+		JTextArea l = new JTextArea(4, 100);
 		l.setBackground(this.getBackground());
 		l.setText(btn.getText());
 		l.setEditable(false);
 		l.setLineWrap(true);
 		l.setWrapStyleWord(true);
 		l.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-                btn.setSelected(!btn.isSelected());
-            }			 
+			public void mouseClicked(MouseEvent e) {
+				btn.setSelected(!btn.isSelected());
+			}
 		});
 		p.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e){
-                btn.setSelected(!btn.isSelected());
-            }
+			public void mouseClicked(MouseEvent e) {
+				btn.setSelected(!btn.isSelected());
+			}
 		});
 		btn.setToolTipText(btn.getText());
 		l.setHighlighter(null);
@@ -83,6 +91,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		p.add(btn);
 		p.add(l);
 		return p;
+
 	}
 
 	/**
@@ -93,7 +102,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	public void setQuestionText(String text) {
 		this.questionLabel.setText(text);
-		questionLabel.setFont (questionLabel.getFont ().deriveFont (24.0f));
+		questionLabel.setFont(questionLabel.getFont().deriveFont(24.0f));
 	}
 
 	/**
@@ -105,7 +114,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public void setAnswerText(String[] text) {
 		System.out.println(text);
 		for (int i = 0; i < text.length && i < 4; i++) {
-			this.answerButton[i].setText( text[i]);
+			this.answerButton[i].setText(text[i]);
 		}
 	}
 
@@ -132,13 +141,13 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public String getQuestionText() {
 		return questionLabel.getText();
 	}
-	
+
 	/**
 	 * 
 	 * @param pic
 	 */
 	public void setPicture(Image pic) {
-		picturePanel = new ImagePanel(pic);
+		picturePanel.setImage(pic);
 		picturePanel.setVisible(true);
 		repaint();
 	}
