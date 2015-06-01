@@ -1,8 +1,12 @@
 package org.Client.GUI;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
 /**
  * Abstract class for displaying questions.
@@ -24,6 +28,31 @@ public abstract class QuestionPanel extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			this.answerButton[i] = new JRadioButton();
 		}
+	}
+	
+	protected JPanel getRadioLabel(final JRadioButton btn) {
+		JPanel p = new JPanel();
+		JTextArea l = new JTextArea(4,100);
+		l.setBackground(this.getBackground());
+		l.setText(btn.getText());
+		l.setEditable(false);
+		l.setLineWrap(true);
+		l.setWrapStyleWord(true);
+		l.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }			 
+		});
+		p.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+                btn.setSelected(!btn.isSelected());
+            }
+		});
+		l.setHighlighter(null);
+		btn.setText("");
+		p.add(btn);
+		p.add(l);
+		return p;
 	}
 	
 	/**
