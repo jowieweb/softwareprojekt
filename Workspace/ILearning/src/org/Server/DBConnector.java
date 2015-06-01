@@ -35,9 +35,11 @@ public class DBConnector {
 
 	public void placeQuerry(Packet p) {
 
-		if (checkLogin(p)) {
+		Packet.Login login = checkLogin(p);
+		if (login != Packet.Login.FAIL) {
 			String answerString = "";
-			Packet answer = PacketBuilder.getPacket(p, answerString);
+			//unused ist natürlich nur ein dummy und muss richtig gesetzt werden
+			Packet answer = PacketBuilder.getPacket(p, answerString, login, Packet.Type.UNUSED);
 			// das ist nicht wirklich schön, und um geht total das Factory
 			// pattern, aber wir haben im Packet Builder keinen zugriff auf die
 			// DB mehr,
@@ -120,7 +122,7 @@ public class DBConnector {
 		}
 	}
 
-	private boolean checkLogin(Packet p) {
+	private Packet.Login checkLogin(Packet p) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
 					"select name, admin from User where name = '"
@@ -132,22 +134,20 @@ public class DBConnector {
 				String admin = resultSet.getString("admin");
 				System.out.println("User: " + user);
 				System.out.println("admin:" + admin);
-				return true;
+				if(admin.equals("admin")){
+					return Packet.Login.ADMIN;					
+				}
+				else{
+					return Packet.Login.USER;
+				}
 			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+			return Packet.Login.FAIL;
 		}
-		// resultSet gets the result of the SQL query
-
-		// if (p.getUsername().equals("steven") && p.getPassword().equals("1"))
-		// {
-		// System.out.println("steven");
-		// return true;
-		// }
-		return false;
+		return Packet.Login.FAIL;
 	}
 
 }
