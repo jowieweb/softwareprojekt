@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
 
 /**
  * The class AnswerQuestionPanel represents a JPanel that displays a question
@@ -76,6 +76,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
+		
+		new MakeSound("haishort.wav").execute();
 		
 		this.submitButton.addActionListener(new ActionListener() {
 
