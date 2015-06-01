@@ -63,6 +63,10 @@ public class Packet implements Serializable {
 	public Login getLoginStatus() {
 		return login;
 	}
+	
+	public void setLoginStatus(Login status) {
+		login = status;
+	}
 
 	public String getFrage() {
 		return frage;
