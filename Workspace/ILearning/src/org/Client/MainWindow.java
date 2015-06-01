@@ -42,7 +42,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setMinimumSize(getSize());
+//		setMinimumSize(getSize());
 	}
 
 	/**
@@ -76,10 +76,10 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 				questionPanel.setVisible(false);
 				remove(questionPanel);
 			}
-			questionPanel = new AnswerQuestionPanel();
+			questionPanel = new AnswerQuestionPanel(p.getAnswers());
 			add(questionPanel);
 			questionPanel.setQuestionText(p.getFrage());
-			questionPanel.setAnswerText(p.getAnswers());
+//			questionPanel.setAnswerText(p.getAnswers());
 			break;
 			
 		default:
@@ -87,7 +87,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		}
 
 		pack();
-		setMinimumSize(getSize());
+//		setMinimumSize(getSize());
 	}
 
 	@Override

@@ -94,6 +94,8 @@ public class DBConnector {
 
 	private void setFrage(Packet p) {
 		try {
+			String debug = "select questiontext, answer1, answer2, answer3, answer4 from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
+					+ p.getSelectedTopic() + "'";
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
