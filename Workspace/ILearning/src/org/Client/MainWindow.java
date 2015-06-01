@@ -1,7 +1,13 @@
 package org.Client;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.Client.GUI.AdministrationPanel;
 import org.Client.GUI.AdministrationPanelListener;
@@ -26,6 +32,9 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private CategoryPanel categoryPanel;
 	private QuestionPanel questionPanel;
 	private AdministrationPanel adminPanel;
+	private JMenuBar menuBar;
+	private JMenuItem editMenuItem;
+	private JMenu menu;
 	private String username;
 	private String password;
 	
@@ -34,8 +43,17 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 */
 	public MainWindow(){		
 		super("Frame");
-		 lp = new LoginPanel(this);
-		 
+		lp = new LoginPanel(this);
+		editMenuItem = new JMenuItem("Bearbeiten");
+		menuBar = new JMenuBar();
+		menu = new JMenu("Bearbeiten");
+		
+		menuBar.add(menu);
+		menu.add(editMenuItem);
+		
+		setJMenuBar(menuBar);
+		
+		menu.setVisible(false);
 		client = new TCPConnection(this, "127.0.0.1", 12345);
 		add(lp);
 		pack();
@@ -78,6 +96,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
+			menu.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
 //			questionPanel.setAnswerText(p.getAnswers());
 			break;
