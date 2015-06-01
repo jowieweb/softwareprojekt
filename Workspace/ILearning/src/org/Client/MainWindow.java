@@ -35,6 +35,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setMinimumSize(getSize());
 	}
 
 	@Override

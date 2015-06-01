@@ -31,7 +31,7 @@ public class CategoryPanel extends JPanel {
 	 * The constructor builds all widgets of the panel and registers the ActionListeners.
 	 * @param listener	class to callback
 	 */
-	public CategoryPanel(CategoryPanelListener listener) {
+	public CategoryPanel(final CategoryPanelListener listener) {
 		this.listener = listener;
 		this.categoryListModel = new DefaultListModel();
 		this.categoryListBox = new JList<String>(categoryListModel);
