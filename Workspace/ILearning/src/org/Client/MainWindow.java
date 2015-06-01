@@ -129,6 +129,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			add(questionPanel);
 			editMenu.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
+			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 //			questionPanel.setAnswerText(p.getAnswers());
 			break;
 			

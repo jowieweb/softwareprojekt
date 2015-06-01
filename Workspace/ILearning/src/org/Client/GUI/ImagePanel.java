@@ -16,7 +16,7 @@ public class ImagePanel extends JPanel {
 	 
 	   public ImagePanel()
 	   {
-		   this.setVisible(true);
+		   this.setVisible(false);
 	   }
 	   
 	   public ImagePanel(Image image) {
