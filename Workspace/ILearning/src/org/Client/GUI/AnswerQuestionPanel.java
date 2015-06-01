@@ -7,10 +7,15 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 
 /**
  * The class AnswerQuestionPanel represents a JPanel that displays a question
@@ -61,6 +66,10 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
+		new MakeSound("haishort.wav").execute();
+
+		
+		
 	}
 
 	private JPanel getRadioLabel(final JRadioButton btn) {
