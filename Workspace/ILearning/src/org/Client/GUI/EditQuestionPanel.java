@@ -10,4 +10,8 @@ public class EditQuestionPanel extends QuestionPanel {
 	private JTextField mediaURLTextField;
 	private JLabel mediaURLLabel;
 	
+	public EditQuestionPanel(QuestionPanelListener listener) {
+		super(listener);
+		// TODO Auto-generated constructor stub
+	}
 }

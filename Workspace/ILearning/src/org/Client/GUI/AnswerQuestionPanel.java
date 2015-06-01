@@ -19,8 +19,13 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel questionLabel;
 
-	public AnswerQuestionPanel(String[] text) {
-		super();
+	/**
+	 * constructor builds JPanel.
+	 * @param listener callback method object
+	 * @param text
+	 */
+	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
+		super(listener);
 		this.questionLabel = new JLabel();
 
 		JPanel pan = new JPanel();
@@ -44,8 +49,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	}
 	
-	private JPanel getRadioLabel(JRadioButton btn)
-	{
+	private JPanel getRadioLabel(JRadioButton btn) {
 		JPanel p = new JPanel();
 		JTextArea l = new JTextArea(btn.getText());
 		l.setEditable(false);
