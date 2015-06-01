@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,10 +40,10 @@ public class EditQuestionPanel extends QuestionPanel {
 		this.backupAnswersText = new String[4];
 		
 		for (int i = 0; i < 4; i++) {
-			answerTextFields[i] = new JTextField(30);
+			answerTextFields[i] = new JTextField(50);
 		}
 		
-		this.mediaURLTextField = new JTextField(20);
+		this.mediaURLTextField = new JTextField(40);
 		this.mediaURLLabel = new JLabel("Hier könnte Ihre URL stehen:");
 		
 		this.abortButton = new JButton("Abbrechen");
@@ -53,6 +54,8 @@ public class EditQuestionPanel extends QuestionPanel {
 				abortButtonClicked();
 			}
 		});
+		
+		
 		
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());

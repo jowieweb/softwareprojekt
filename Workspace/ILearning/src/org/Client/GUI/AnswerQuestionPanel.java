@@ -7,9 +7,10 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 /**
@@ -49,7 +50,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		gbc.gridy = 0;
 		
 		setAnswerText(text);
-		for(JRadioButton radio: answerButton){
+		for(JCheckBox radio: answerButton){
 			center.add(getRadioLabel(radio),gbc);
 			gbc.gridy++;
 		}
@@ -59,28 +60,28 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		add(pan);
 	}
 	
-	private JPanel getRadioLabel(final JRadioButton btn) {
+	private JPanel getRadioLabel(final JCheckBox radio) {
 		JPanel p = new JPanel();
 		JTextArea l = new JTextArea(4,100);
 		l.setBackground(this.getBackground());
-		l.setText(btn.getText());
+		l.setText(radio.getText());
 		l.setEditable(false);
 		l.setLineWrap(true);
 		l.setWrapStyleWord(true);
 		l.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
-                btn.setSelected(!btn.isSelected());
+                radio.setSelected(!radio.isSelected());
             }			 
 		});
 		p.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
-                btn.setSelected(!btn.isSelected());
+                radio.setSelected(!radio.isSelected());
             }
 		});
-		btn.setToolTipText(btn.getText());
+		radio.setToolTipText(radio.getText());
 		l.setHighlighter(null);
-		btn.setText("");
-		p.add(btn);
+		radio.setText("");
+		p.add(radio);
 		p.add(l);
 		return p;
 	}
@@ -118,7 +119,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		String[] answers = new String[4];
 
 		for (int i = 0; i < 4; i++) {
-			answers[i] = this.answerButton[i].getText();
+			answers[i] = this.answerButton[i].getToolTipText();
 		}
 
 		return answers;
