@@ -77,6 +77,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
                 btn.setSelected(!btn.isSelected());
             }
 		});
+		btn.setToolTipText(btn.getText());
 		l.setHighlighter(null);
 		btn.setText("");
 		p.add(btn);
