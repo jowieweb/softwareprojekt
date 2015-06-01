@@ -12,6 +12,5 @@ public class EditQuestionPanel extends QuestionPanel {
 	
 	public EditQuestionPanel(QuestionPanelListener listener) {
 		super(listener);
-		// TODO Auto-generated constructor stub
 	}
 }

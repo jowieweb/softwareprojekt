@@ -1,7 +1,12 @@
 package org.Client;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -13,6 +18,7 @@ import org.Client.GUI.AdministrationPanel;
 import org.Client.GUI.AdministrationPanelListener;
 import org.Client.GUI.AnswerQuestionPanel;
 import org.Client.GUI.CategoryPanel;
+import org.Client.GUI.EditQuestionPanel;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.CategoryPanelListener;
@@ -44,9 +50,16 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public MainWindow(){		
 		super("Frame");
 		lp = new LoginPanel(this);
-		editMenuItem = new JMenuItem("Bearbeiten");
 		menuBar = new JMenuBar();
 		menu = new JMenu("Bearbeiten");
+		editMenuItem = new JMenuItem(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeQuestionPanelToEditMode();
+			}
+		});
+		
+		editMenuItem.setText("Bearbeiten");
 		
 		menuBar.add(menu);
 		menu.add(editMenuItem);
@@ -198,5 +211,34 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			String mediaURL) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
+	 */
+	private void changeQuestionPanelToEditMode() {
+		String[] answers = questionPanel.getAnswerTexts();
+		String question = questionPanel.getQuestionText();
+		
+		remove(questionPanel);
+		questionPanel = new EditQuestionPanel(this);
+		questionPanel.setAnswerText(answers);
+		questionPanel.setQuestionText(question);
+		add(questionPanel);
+		pack();
+	}
+	
+	/**
+	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
+	 */
+	private void changeQuestionPanelToAnswerMode() {
+		String[] answers = questionPanel.getAnswerTexts();
+		String question = questionPanel.getQuestionText();
+		
+		remove(questionPanel);
+		questionPanel = new AnswerQuestionPanel(this, answers);
+		questionPanel.setQuestionText(question);
+		add(questionPanel);
+		pack();
 	}
 }
