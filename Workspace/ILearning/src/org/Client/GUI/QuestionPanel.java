@@ -12,11 +12,13 @@ public abstract class QuestionPanel extends JPanel {
 	protected static final long serialVersionUID = 1L;
 	protected JButton submitButton;
 	protected JRadioButton[] answerButton;
+	protected QuestionPanelListener listener;
 	
 	/**
 	 * constructor creates submitButton and all answerButtons.
 	 */
-	public QuestionPanel() {
+	public QuestionPanel(QuestionPanelListener listener) {
+		this.listener = listener;
 		this.submitButton = new JButton("Absenden");
 		this.answerButton = new JRadioButton[4];
 		for (int i = 0; i < 4; i++) {

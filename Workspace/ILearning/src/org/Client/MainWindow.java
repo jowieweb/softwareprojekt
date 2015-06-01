@@ -76,7 +76,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 				questionPanel.setVisible(false);
 				remove(questionPanel);
 			}
-			questionPanel = new AnswerQuestionPanel(p.getAnswers());
+			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
 			questionPanel.setQuestionText(p.getFrage());
 //			questionPanel.setAnswerText(p.getAnswers());
