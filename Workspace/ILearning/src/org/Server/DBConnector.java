@@ -44,6 +44,10 @@ public class DBConnector {
 		}
 	}
 
+	/**
+	 * places all Querrys to the DB
+	 * @param p 
+	 */
 	public void placeQuerry(Packet p) {
 		
 		rekCount=0;
@@ -71,6 +75,10 @@ public class DBConnector {
 		}
 	}
 
+	/**
+	 * adds the categorie to the packet
+	 * @param p
+	 */
 	private void addCategories(Packet p) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
@@ -88,6 +96,10 @@ public class DBConnector {
 
 	}
 
+	/**
+	 * adds all level form the DB to the packet.
+	 * @param p
+	 */
 	private void addLevel(Packet p) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
@@ -104,6 +116,10 @@ public class DBConnector {
 		}
 	}
 
+	/**
+	 * sets a question text to the packet.
+	 * @param p
+	 */
 	private void setFrage(Packet p) {
 		try {
 			ResultSet resultSet = connect
@@ -141,6 +157,11 @@ public class DBConnector {
 		}
 	}
 	
+	/**
+	 * adds an image to the packet
+	 * @param p
+	 * @param url the URL 
+	 */
 	private void setImage(Packet p, String url){
 		try {
 			Image image = ImageIO.read(new File(url));
@@ -152,6 +173,11 @@ public class DBConnector {
 	}
 
 
+	/**
+	 * checks the login if wrong Login.FAIL
+	 * @param p
+	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
+	 */
 	private Packet.Login checkLogin(Packet p) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
