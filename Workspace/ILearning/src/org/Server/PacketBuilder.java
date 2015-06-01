@@ -12,7 +12,7 @@ public class PacketBuilder {
 
 	private static Packet copyPacket(Packet querry) {
 		Packet p = new Packet(querry.getUsername(), querry.getPassword(),
-				Packet.Type.SERVER, Packet.Login.ADMIN);
+				Packet.Type.LOGIN, Packet.Login.ADMIN);
 		p.setSocket(querry.getSocket());
 		p.setSelectedLevel(querry.getSelectedLevel());
 		p.setSelectedTopic(querry.getSelectedTopic());

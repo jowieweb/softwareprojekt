@@ -72,7 +72,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void login(String username, String password) {
 		// TODO Auto-generated method stub
-		Packet p = new Packet(username, password , Packet.Type.CLIENT);
+		Packet p = new Packet(username, password , Packet.Type.LOGIN);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -85,7 +85,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void categorySelected(String category, String level, int modus) {
 		// TODO Auto-generated method stub
-		Packet p = new Packet(username,password, Packet.Type.CLIENT);
+		Packet p = new Packet(username,password, Packet.Type.CATEGORY);
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
 		try {
