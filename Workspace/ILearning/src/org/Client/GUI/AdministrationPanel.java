@@ -10,7 +10,6 @@ import javax.swing.JTextField;
  * The class AdministrationPanel represents a form thats allows users to edit user information.
  *
  */
-
 public class AdministrationPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList<String> userList;
