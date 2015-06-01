@@ -18,6 +18,8 @@ public class PacketBuilder {
 		p.setSocket(querry.getSocket());
 		p.setSelectedLevel(querry.getSelectedLevel());
 		p.setSelectedTopic(querry.getSelectedTopic());
+		if(querry.getImage() != null)
+			p.setImage(querry.getImage());
 		return p;
 	}
 

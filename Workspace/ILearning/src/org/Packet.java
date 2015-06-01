@@ -1,9 +1,12 @@
 package org;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+
+import javax.swing.ImageIcon;
 
 /**
  * The class Packet represents a packet. It includes a type, login information, etc.
@@ -18,6 +21,7 @@ public class Packet implements Serializable {
 	private String selectedLevel="";
 	private String[] topics;
 	private String[] level;
+	private ImageIcon image;
 
 	public enum Type {
 		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, LOGIN, USER_MANAGEMENT
@@ -42,6 +46,7 @@ public class Packet implements Serializable {
 		}
 		this.username = username;
 		this.password = password;
+		this.image = null;
 	}
 
 	public void setSocket(Socket s) {
@@ -133,5 +138,16 @@ public class Packet implements Serializable {
 	
 	public void setPacketType(Type t) {
 		type = t;
+	}
+	
+	public void setImage(Image i){
+		
+		image =new ImageIcon(i);
+	}
+	public Image getImage(){
+		if(image != null){
+			return image.getImage();
+		}
+		return null;
 	}
 }
