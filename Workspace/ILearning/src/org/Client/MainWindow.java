@@ -35,7 +35,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private AdministrationPanel adminPanel;
 	private JMenuBar menuBar;
 	private JMenuItem editMenuItem;
-	private JMenu menu;
+	private JMenuItem exitMenuItem;
+	private JMenuItem aboutMenuItem;
+	private JMenu editMenu;
+	private JMenu fileMenu;
+	private JMenu helpMenu;
+	
 	private String username;
 	private String password;
 	
@@ -46,7 +51,18 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		super("Frame");
 		lp = new LoginPanel(this);
 		menuBar = new JMenuBar();
-		menu = new JMenu("Bearbeiten");
+		editMenu = new JMenu("Bearbeiten");
+		fileMenu = new JMenu("Datei");
+		helpMenu = new JMenu("Hilfe");
+		
+		aboutMenuItem = new JMenuItem("Über..");
+		exitMenuItem = new JMenuItem(new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(NORMAL);
+			}
+		});
 		editMenuItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -56,14 +72,19 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			}
 		});
 		
+		exitMenuItem.setText("Beenden");
 		editMenuItem.setText("Bearbeiten");
 		
-		menuBar.add(menu);
-		menu.add(editMenuItem);
+		menuBar.add(fileMenu);
+		menuBar.add(editMenu);
+		menuBar.add(helpMenu);
+		fileMenu.add(exitMenuItem);
+		editMenu.add(editMenuItem);
+		helpMenu.add(aboutMenuItem);
 		
 		setJMenuBar(menuBar);
 		
-		menu.setVisible(false);
+		editMenu.setVisible(false);
 		client = new TCPConnection(this, "127.0.0.1", 12345);
 		add(lp);
 		pack();
@@ -106,7 +127,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
-			menu.setVisible(true);
+			editMenu.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 //			questionPanel.setAnswerText(p.getAnswers());

@@ -1,8 +1,8 @@
 package org.Client.GUI;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 /**
  * Abstract class for displaying questions.
@@ -11,7 +11,7 @@ import javax.swing.JRadioButton;
 public abstract class QuestionPanel extends JPanel {
 	protected static final long serialVersionUID = 1L;
 	protected JButton submitButton;
-	protected JRadioButton[] answerButton;
+	protected JCheckBox[] answerButton;
 	protected QuestionPanelListener listener;
 	
 	/**
@@ -20,9 +20,9 @@ public abstract class QuestionPanel extends JPanel {
 	public QuestionPanel(QuestionPanelListener listener) {
 		this.listener = listener;
 		this.submitButton = new JButton("Absenden");
-		this.answerButton = new JRadioButton[4];
+		this.answerButton = new JCheckBox[4];
 		for (int i = 0; i < 4; i++) {
-			this.answerButton[i] = new JRadioButton();
+			this.answerButton[i] = new JCheckBox();
 		}
 	}
 	

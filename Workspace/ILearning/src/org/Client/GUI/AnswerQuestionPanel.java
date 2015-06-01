@@ -7,13 +7,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
@@ -55,7 +50,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		gbc.gridy = 0;
 
 		setAnswerText(text);
-		for (JRadioButton radio : answerButton) {
+
+		for (JCheckBox radio : answerButton) {
 			JPanel p = getRadioLabel(radio);
 			if (p != null) {
 				center.add(p, gbc);
@@ -72,32 +68,32 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		
 	}
 
-	private JPanel getRadioLabel(final JRadioButton btn) {
-		if (btn.getText().length() == 0) {
+	private JPanel getRadioLabel(final JCheckBox radio) {
+		if (radio.getText().length() == 0) {
 			return null;
 		}
 
 		JPanel p = new JPanel();
 		JTextArea l = new JTextArea(4, 100);
 		l.setBackground(this.getBackground());
-		l.setText(btn.getText());
+		l.setText(radio.getText());
 		l.setEditable(false);
 		l.setLineWrap(true);
 		l.setWrapStyleWord(true);
 		l.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				btn.setSelected(!btn.isSelected());
+				radio.setSelected(!radio.isSelected());
 			}
 		});
 		p.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				btn.setSelected(!btn.isSelected());
+				radio.setSelected(!radio.isSelected());
 			}
 		});
-		btn.setToolTipText(btn.getText());
+		radio.setToolTipText(radio.getText());
 		l.setHighlighter(null);
-		btn.setText("");
-		p.add(btn);
+		radio.setText("");
+		p.add(radio);
 		p.add(l);
 		return p;
 
@@ -121,9 +117,10 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 *            array with answer options
 	 */
 	public void setAnswerText(String[] text) {
-		System.out.println(text);
-		for (int i = 0; i < text.length && i < 4; i++) {
-			this.answerButton[i].setText(text[i]);
+		if (text != null) {
+			for (int i = 0; i < text.length && i < 4; i++) {
+				this.answerButton[i].setText(text[i]);
+			}
 		}
 	}
 
@@ -136,7 +133,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		String[] answers = new String[4];
 
 		for (int i = 0; i < 4; i++) {
-			answers[i] = this.answerButton[i].getText();
+			answers[i] = this.answerButton[i].getToolTipText();
 		}
 
 		return answers;
