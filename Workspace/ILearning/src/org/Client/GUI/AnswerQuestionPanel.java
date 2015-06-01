@@ -2,6 +2,7 @@ package org.Client.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -31,6 +32,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		super(listener);
 		this.questionLabel = new JLabel();
 
+		
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
 
@@ -56,6 +58,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		add(pan);
 
 	}
+
 	
 	private JPanel getRadioLabel(JRadioButton btn) {
 		JPanel p = new JPanel();
@@ -91,6 +94,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	public void setQuestionText(String text) {
 		this.questionLabel.setText(text);
+		questionLabel.setFont (questionLabel.getFont ().deriveFont (24.0f));
 	}
 
 	/**

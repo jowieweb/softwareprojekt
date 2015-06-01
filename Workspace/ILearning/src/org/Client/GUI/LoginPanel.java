@@ -39,6 +39,8 @@ public class LoginPanel extends JPanel {
 		this.nameTextField = new JTextField(8);
 		this.passwordtextField = new JPasswordField(8);
 
+		passwordtextField.setText("1");
+		nameTextField.setText("klaus");
 		JPanel pan = new JPanel();
 		JPanel north = new JPanel();
 		JPanel south = new JPanel();
@@ -51,6 +53,16 @@ public class LoginPanel extends JPanel {
 
 		});
 		passwordtextField.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				login();
+			}
+
+		});
+		
+		nameTextField.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
