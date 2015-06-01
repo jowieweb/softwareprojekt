@@ -15,10 +15,16 @@ public class DBConnector {
 
 	DBConnectorListener DBCL;
 	private java.sql.Connection connect = null;
-
+	private int rekCount = 0;
 	public DBConnector(DBConnectorListener l) {
 		DBCL = l;
-
+		connect();		
+	}
+	
+	/**
+	 * starts the connection to the mysql server
+	 */
+	private void connect(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager
@@ -34,7 +40,8 @@ public class DBConnector {
 	}
 
 	public void placeQuerry(Packet p) {
-
+		
+		rekCount=0;
 		Packet.Login login = checkLogin(p);
 		if (login != Packet.Login.FAIL) {
 			String answerString = "";
@@ -100,7 +107,7 @@ public class DBConnector {
 					.createStatement()
 					.executeQuery(
 							"select questiontext, answer1, answer2, answer3, answer4 from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
-									+ p.getSelectedTopic() + "'");
+									+ p.getSelectedTopic() + "' ORDER BY RAND()");
 			if (resultSet.next()) {
 				p.setFrage(resultSet.getString("questiontext"));
 
@@ -147,6 +154,11 @@ public class DBConnector {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			connect();
+			if(rekCount > 2){
+				rekCount++;
+				return checkLogin(p);				
+			} 
 			e.printStackTrace();
 			return Packet.Login.FAIL;
 		}
