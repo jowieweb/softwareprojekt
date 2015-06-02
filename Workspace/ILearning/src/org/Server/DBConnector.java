@@ -65,6 +65,7 @@ public class DBConnector {
 				addCategories(answer);
 				addLevel(answer);
 			} else {
+				checkAnswers(answer);				
 				setFrage(answer);
 			}
 
@@ -75,6 +76,31 @@ public class DBConnector {
 		}
 	}
 
+	private void checkAnswers(Packet p){
+		if(p.getSelectedAnswer() != null){
+			try {
+				String debug = "select solution from Question where Question.questiontext ='" + p.getFrage() + "'";
+				ResultSet result = connect.createStatement().executeQuery("select solution from Question where Question.questiontext ='" + p.getFrage() + "'");
+				while(result.next()){
+					String sol =  result.getString("solution");
+					int intsol = Integer.parseInt(sol) -1;
+					boolean right = false;
+					if(p.getSelectedAnswer()[intsol] == 1){
+						right = true;
+					}
+					for(int i=0;i<4;i++){
+						if(p.getSelectedAnswer()[i] == 1 && i != intsol){
+							right = false;
+						}
+					}
+					p.setWasRight(right);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+	}
 	/**
 	 * adds the categorie to the packet
 	 * @param p

@@ -22,6 +22,8 @@ public class Packet implements Serializable {
 	private String[] topics;
 	private String[] level;
 	private ImageIcon image;
+	private int[] selectedAnswer;
+	private boolean wasRight;
 
 	public enum Type {
 		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, LOGIN, USER_MANAGEMENT
@@ -149,5 +151,22 @@ public class Packet implements Serializable {
 			return image.getImage();
 		}
 		return null;
+	}
+	public void setSelectedAnswer(int[] para)
+	{
+		selectedAnswer = para;
+	}
+	
+	public int[] getSelectedAnswer(){
+		return selectedAnswer;
+	}
+	
+	public boolean getWasRight(){
+		return wasRight;
+	}
+	
+	public void setWasRight(boolean w)
+	{
+		wasRight = w;
 	}
 }
