@@ -26,7 +26,9 @@ public class AdministrationPanel extends JPanel {
 	private JButton backButton;
 	private JButton submitButton;
 	private JButton removeUserButton;
+	private JButton newUserButton;
 	private AdministrationPanelListener listener;
+	private JPanel oldPanel;
 	
 	public AdministrationPanel(AdministrationPanelListener listener) {
 		this.listener = listener;
@@ -91,11 +93,15 @@ public class AdministrationPanel extends JPanel {
 		
 		backButton = new JButton("Zurück");
 		removeUserButton = new JButton("Benutzer entfernen");
+		newUserButton = new JButton("Neuen Benutzer anlegen");
 		submitButton = new JButton("Absenden");
+
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(backButton);
 		buttonPanel.add(removeUserButton);
+		buttonPanel.add(newUserButton);
 		buttonPanel.add(submitButton);
+
 		backButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -103,14 +109,30 @@ public class AdministrationPanel extends JPanel {
 				// TODO display LoginPanel/CategoryPanel
 			}
 		});
-		
-		/*
-		GridBagConstraints gbc_removeUserButton_1 = new GridBagConstraints();
-		gbc_removeUserButton_1.anchor = GridBagConstraints.SOUTH;
-		gbc_removeUserButton_1.insets = new Insets(0, 0, 0, 5);
-		gbc_removeUserButton_1.gridx = 4;
-		gbc_removeUserButton_1.gridy = 3;
-		add(removeUserButton, gbc_removeUserButton_1);*/
+		removeUserButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO remove user
+				
+			}
+		});
+		newUserButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO create new user
+				
+			}	
+		});
+		submitButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO submit
+				
+			}
+		});
 		
 		GridBagConstraints gbc_submitButton = new GridBagConstraints();
 		gbc_submitButton.anchor = GridBagConstraints.SOUTH;
@@ -119,5 +141,9 @@ public class AdministrationPanel extends JPanel {
 		gbc_submitButton.gridx = 4;
 		gbc_submitButton.gridy = 3;
 		add(buttonPanel, gbc_submitButton);
+	}
+	
+	public void setOldPanel(JPanel panel) {
+		this.oldPanel = panel;
 	}
 }
