@@ -140,12 +140,10 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 				remove(questionPanel);
 				if(p.getWasRight()){
 					JOptionPane.showMessageDialog(this,"Die Frage wurde richtig beantwortet");
-					lp.enableLoginButton();
 					
 				}
 				else{
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
-					lp.enableLoginButton();
 					
 				}
 				
