@@ -42,6 +42,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private JMenu fileMenu;
 	private JMenu helpMenu;
 	
+	private Packet lastPacket;
+	
 	private String username;
 	private String password;
 	
@@ -136,12 +138,28 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			if (questionPanel != null) {
 				questionPanel.setVisible(false);
 				remove(questionPanel);
+				if(p.getWasRight()){
+					JOptionPane.showMessageDialog(this,"Die Frage wurde richtig beantwortet");
+					lp.enableLoginButton();
+					
+				}
+				else{
+					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
+					lp.enableLoginButton();
+					
+				}
+				
+				System.out.println(p.getWasRight());
+			}
+			else
+			{
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
 			editMenuItem.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
+			
 //			questionPanel.setAnswerText(p.getAnswers());
 			break;
 			
@@ -187,8 +205,10 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void categorySelected(String category, String level, int modus) {
 		Packet p = new Packet(username,password);
 		p.setPacketType(Packet.Type.CATEGORY);
+		
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
+		lastPacket = p;
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -227,10 +247,15 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 * @param answer the index of the selected answer
 	 */
 	@Override
-	public void answerSelected(int answer) {
+	public void answerSelected(int[] answer) {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 		p.setFrage(questionPanel.getQuestionText());
+		p.setTopics(lastPacket.getTopics());
+		p.setSelectedTopic(lastPacket.getSelectedTopic());
+		p.setLevel(p.getLevel());
+		
+		p.setSelectedAnswer(answer);		
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {

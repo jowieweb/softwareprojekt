@@ -1,6 +1,7 @@
 package org.Client.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -109,7 +111,13 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		this.submitButton.setVisible(false);
 		this.backButton.setVisible(true);
 		this.nextButton.setVisible(true);
+		int[] selected = new int[4];
+		for(int i =0;i<answerButton.length;i++)
+		{
+			selected[i] = (answerButton[i].isSelected()==false)?0:1;
+		}
 		
+		this.listener.answerSelected(selected);
 		// Invoke callback method
 		//listener.answerSelected(answer);
 	}

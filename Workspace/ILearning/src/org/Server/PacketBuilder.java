@@ -8,7 +8,7 @@ public class PacketBuilder {
 		Packet answer = copyPacket(querry);
 		answer.setPacketType(type);
 		answer.setLoginStatus(login);
-		answer.setFrage(dbAnswer);
+//		answer.setFrage(dbAnswer);
 		return answer;
 	}
 	
@@ -18,6 +18,9 @@ public class PacketBuilder {
 		p.setSocket(querry.getSocket());
 		p.setSelectedLevel(querry.getSelectedLevel());
 		p.setSelectedTopic(querry.getSelectedTopic());
+		p.setSelectedAnswer(querry.getSelectedAnswer());
+		p.setFrage(querry.getFrage());
+		p.setWasRight(querry.getWasRight());
 		if(querry.getImage() != null)
 			p.setImage(querry.getImage());
 		return p;
