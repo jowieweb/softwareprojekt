@@ -5,9 +5,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.border.EtchedBorder;
 import javax.swing.JPasswordField;
 
@@ -19,6 +23,7 @@ public class AdministrationPanel extends JPanel {
 	private final JTextField userTextField = new JTextField();
 	private JPasswordField passwordTextField;
 	private JList<String> userList;
+	private JButton backButton;
 	private JButton submitButton;
 	private JButton removeUserButton;
 	private AdministrationPanelListener listener;
@@ -84,24 +89,35 @@ public class AdministrationPanel extends JPanel {
 		add(passwordTextField, gbc_passwordTextField);
 		passwordTextField.setColumns(10);
 		
+		backButton = new JButton("Zurück");
 		removeUserButton = new JButton("Benutzer entfernen");
+		submitButton = new JButton("Absenden");
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(backButton);
+		buttonPanel.add(removeUserButton);
+		buttonPanel.add(submitButton);
+		backButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO display LoginPanel/CategoryPanel
+			}
+		});
+		
+		/*
 		GridBagConstraints gbc_removeUserButton_1 = new GridBagConstraints();
 		gbc_removeUserButton_1.anchor = GridBagConstraints.SOUTH;
 		gbc_removeUserButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_removeUserButton_1.gridx = 4;
 		gbc_removeUserButton_1.gridy = 3;
-		add(removeUserButton, gbc_removeUserButton_1);
+		add(removeUserButton, gbc_removeUserButton_1);*/
 		
-		submitButton = new JButton("Absenden");
 		GridBagConstraints gbc_submitButton = new GridBagConstraints();
 		gbc_submitButton.anchor = GridBagConstraints.SOUTH;
 		gbc_submitButton.insets = new Insets(0, 0, 0, 5);
 		gbc_submitButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_submitButton.gridx = 5;
+		gbc_submitButton.gridx = 4;
 		gbc_submitButton.gridy = 3;
-		add(submitButton, gbc_submitButton);
-
-		
-
+		add(buttonPanel, gbc_submitButton);
 	}
 }

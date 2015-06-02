@@ -297,6 +297,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		if (loginPanel != null) {
 			remove(loginPanel);
 		}
+		
+		userMenuItem.setVisible(false);
 		add(adminPanel);
 		pack();
 	}
