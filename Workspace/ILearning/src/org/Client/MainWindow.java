@@ -29,7 +29,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
 	private Client client;
-	private LoginPanel lp;
+	private LoginPanel loginPanel;
 	private CategoryPanel categoryPanel;
 	private QuestionPanel questionPanel;
 	private AdministrationPanel adminPanel;
@@ -37,6 +37,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private JMenuItem editMenuItem;
 	private JMenuItem exitMenuItem;
 	private JMenuItem aboutMenuItem;
+	private JMenuItem userMenuItem;
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
@@ -51,13 +52,22 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 */
 	public MainWindow(){		
 		super("Frame");
-		lp = new LoginPanel(this);
+		loginPanel = new LoginPanel(this);
+		adminPanel = new AdministrationPanel(this);
 		menuBar = new JMenuBar();
 		editMenu = new JMenu("Bearbeiten");
 		fileMenu = new JMenu("Datei");
 		helpMenu = new JMenu("Hilfe");
 		
 		aboutMenuItem = new JMenuItem("Über..");
+		userMenuItem = new JMenuItem(new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				changePanelToAdministrationPanel();
+				
+			}
+		});
 		exitMenuItem = new JMenuItem(new AbstractAction() {
 
 			@Override
@@ -76,19 +86,21 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		
 		exitMenuItem.setText("Beenden");
 		editMenuItem.setText("Bearbeiten");
+		userMenuItem.setText("Nutzerverwaltung anzeigen");
 		
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
 		fileMenu.add(exitMenuItem);
 		editMenu.add(editMenuItem);
+		editMenu.add(userMenuItem);
 		helpMenu.add(aboutMenuItem);
 		
 		setJMenuBar(menuBar);
 		
-		editMenu.setVisible(false);
+		editMenuItem.setVisible(false);
 		client = new TCPConnection(this, "127.0.0.1", 12345);
-		add(lp);
+		add(loginPanel);
 		pack();
 		setVisible(true);
 		setLocationRelativeTo(null);
@@ -112,8 +124,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			System.out.println(p.getLoginStatus());
 			username = p.getUsername();
 			password = p.getPassword();
-			lp.setVisible(false);
-			remove(lp);
+			loginPanel.setVisible(false);
+			remove(loginPanel);
 			categoryPanel = new CategoryPanel(this);
 			add(categoryPanel);
 			
@@ -144,7 +156,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
-			editMenu.setVisible(true);
+			editMenuItem.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 			
@@ -162,7 +174,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void exceptionInClientData(TCPClientException e) {
 		JOptionPane.showMessageDialog(this, e.getMessage() + "\n" + e.getCause().getMessage());
-		lp.enableLoginButton();
+		loginPanel.enableLoginButton();
 	}
 	
 	/**
@@ -295,5 +307,24 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		add(categoryPanel);
 		pack();
 		// TODO: Reload category list
+	}
+	
+	/**
+	 * Replaces current panel with adminPanel.
+	 */
+	private void changePanelToAdministrationPanel() {
+		if (questionPanel != null) {
+			remove(questionPanel);
+		}
+		if (categoryPanel != null) {	
+			remove(categoryPanel);
+		}
+		if (loginPanel != null) {
+			remove(loginPanel);
+		}
+		
+		userMenuItem.setVisible(false);
+		add(adminPanel);
+		pack();
 	}
 }
