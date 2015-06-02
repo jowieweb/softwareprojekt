@@ -217,7 +217,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 	@Override
 	public void addUser(String username, String password) {
-		// TODO Auto-generated method stub
+		// TODO remove after testing
+		System.out.println("Username: " + username + " Pw: " + password);
 		
 	}
 
@@ -297,9 +298,18 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		if (loginPanel != null) {
 			remove(loginPanel);
 		}
-		
+
 		userMenuItem.setVisible(false);
 		add(adminPanel);
+		pack();
+	}
+	
+	/**
+	 * 
+	 */
+	public void changeAdministrationPanelToCategoryPanel() {
+		remove(adminPanel);
+		add(categoryPanel);
 		pack();
 	}
 }
