@@ -168,7 +168,7 @@ public class AdministrationPanel extends JPanel {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			String pw = new String(password);
 			byte[] bytes = md5.digest(pw.getBytes("UTF-8"));
-			hash = new String(bytes);
+			hash = byteArrayToHexString(bytes);
 			
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -177,5 +177,22 @@ public class AdministrationPanel extends JPanel {
 		}
 		
 		return hash;
+	}
+	
+	private String byteArrayToHexString(byte[] array) {
+		char[] h = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+				'9', 'A', 'B', 'C', 'D', 'E', 'F'};
+		String hex = new String();
+		
+		if (array == null) {
+			return null;
+		}
+
+		for (byte n : array) {
+			hex += h[(n >>> 4) & 0x0F];
+			hex += h[n & 0x0F];
+		}
+		
+		return hex;
 	}
 }
