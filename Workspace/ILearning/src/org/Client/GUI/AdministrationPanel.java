@@ -11,6 +11,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.JPasswordField;
@@ -30,8 +33,12 @@ public class AdministrationPanel extends JPanel {
 	private AdministrationPanelListener listener;
 	private JPanel oldPanel;
 	
-	public AdministrationPanel(AdministrationPanelListener listener) {
-		this.listener = listener;
+	/**
+	 * The constructor builds the panel.
+	 * @param listener callback method object
+	 */
+	public AdministrationPanel(AdministrationPanelListener l) {
+		this.listener = l;
 		String blub[] = {"dummy","dummy","dummy","dummy","dummy","dummy","dummy"};
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{30, 129, 62, 75, 75, 75, 75, 0};
@@ -106,7 +113,9 @@ public class AdministrationPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO display LoginPanel/CategoryPanel
+				if (listener != null) {
+					listener.changeAdministrationPanelToCategoryPanel();
+				}
 			}
 		});
 		removeUserButton.addActionListener(new ActionListener() {
@@ -121,8 +130,8 @@ public class AdministrationPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO create new user
 				
+				listener.addUser(userTextField.getText(), getPasswordHash(passwordTextField.getPassword()));
 			}	
 		});
 		submitButton.addActionListener(new ActionListener() {
@@ -143,7 +152,47 @@ public class AdministrationPanel extends JPanel {
 		add(buttonPanel, gbc_submitButton);
 	}
 	
-	public void setOldPanel(JPanel panel) {
-		this.oldPanel = panel;
+	/**
+	 * Hashes a char array.
+	 * @param password password to hash
+	 * @return hashed password
+	 */
+	private String getPasswordHash(char[] password) {
+		String hash = null;
+		
+		if (password == null) {
+			return null;
+		}
+		
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			String pw = new String(password);
+			byte[] bytes = md5.digest(pw.getBytes("UTF-8"));
+			hash = byteArrayToHexString(bytes);
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return hash;
+	}
+	
+	private String byteArrayToHexString(byte[] array) {
+		char[] h = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+				'9', 'A', 'B', 'C', 'D', 'E', 'F'};
+		String hex = new String();
+		
+		if (array == null) {
+			return null;
+		}
+
+		for (byte n : array) {
+			hex += h[(n >>> 4) & 0x0F];
+			hex += h[n & 0x0F];
+		}
+		
+		return hex;
 	}
 }

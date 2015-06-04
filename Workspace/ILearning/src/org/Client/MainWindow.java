@@ -1,4 +1,4 @@
-package org.Client;
+﻿package org.Client;
 
 import java.awt.event.ActionEvent;
 
@@ -138,6 +138,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			if (questionPanel != null) {
 				questionPanel.setVisible(false);
 				remove(questionPanel);
+				
+				//TODO: lassen wir das so?
 				if(p.getWasRight()){
 					JOptionPane.showMessageDialog(this,"Die Frage wurde richtig beantwortet");
 					
@@ -145,7 +147,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 				else{
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
 					
-				}
+				} 
 				
 				System.out.println(p.getWasRight());
 			}
