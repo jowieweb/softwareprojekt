@@ -35,7 +35,7 @@ public class CategoryPanel extends JPanel {
 	 */
 	public CategoryPanel(final CategoryPanelListener listener) {
 		this.listener = listener;
-		this.categoryListModel = new DefaultListModel();
+		this.categoryListModel = new DefaultListModel<String>();
 		this.categoryListBox = new JList<String>(categoryListModel);
 		this.changeButton = new JButton();		// TODO: Set button label
 		this.editCategoryTextField = new JTextField();

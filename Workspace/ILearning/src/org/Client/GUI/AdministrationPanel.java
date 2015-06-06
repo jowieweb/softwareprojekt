@@ -23,6 +23,10 @@ import javax.swing.JPasswordField;
  *
  */
 public class AdministrationPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3958850544461012322L;
 	private final JTextField userTextField = new JTextField();
 	private JPasswordField passwordTextField;
 	private JList<String> userList;
@@ -31,7 +35,7 @@ public class AdministrationPanel extends JPanel {
 	private JButton removeUserButton;
 	private JButton newUserButton;
 	private AdministrationPanelListener listener;
-	private JPanel oldPanel;
+//	private JPanel oldPanel;
 	
 	/**
 	 * The constructor builds the panel.
@@ -55,7 +59,7 @@ public class AdministrationPanel extends JPanel {
 		gbc_lblNewLabel.gridx = 1;
 		gbc_lblNewLabel.gridy = 0;
 		add(lblNewLabel, gbc_lblNewLabel);
-		userList = new JList(blub);
+		userList = new JList<String>(blub);
 		userList.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GridBagConstraints gbc_userList = new GridBagConstraints();
 		gbc_userList.fill = GridBagConstraints.VERTICAL;

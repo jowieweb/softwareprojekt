@@ -61,6 +61,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		
 		aboutMenuItem = new JMenuItem("Über..");
 		userMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = -358338731196690668L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -69,6 +70,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			}
 		});
 		exitMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = -2684501250646388101L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -185,7 +187,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void login(String username, String password) {
 		Packet p = new Packet(username, password);
-		p.setPacketType(Packet.Type.LOGIN);
+		p.setPacketType(Packet.Type.CATEGORY);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -204,7 +206,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void categorySelected(String category, String level, int modus) {
 		Packet p = new Packet(username,password);
-		p.setPacketType(Packet.Type.CATEGORY);
+		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 		
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
@@ -326,5 +328,11 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		userMenuItem.setVisible(false);
 		add(adminPanel);
 		pack();
+	}
+
+	@Override
+	public void changeAdministrationPanelToCategoryPanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

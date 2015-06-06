@@ -1,8 +1,6 @@
 package org;
 
 import java.awt.Image;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
 
@@ -12,6 +10,7 @@ import javax.swing.ImageIcon;
  * The class Packet represents a packet. It includes a type, login information, etc.
  */
 public class Packet implements Serializable {
+	private static final long serialVersionUID = -5954611261930673901L;
 	private Socket client;
 	private String username;
 	private String password;
@@ -26,7 +25,7 @@ public class Packet implements Serializable {
 	private boolean wasRight;
 
 	public enum Type {
-		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, LOGIN, USER_MANAGEMENT
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
 	};
 
 	public enum Login {

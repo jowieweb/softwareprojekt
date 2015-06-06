@@ -5,13 +5,12 @@ import java.io.ObjectOutputStream;
 
 import org.Packet;
 
-public class Server implements TCPServerListener, DBConnectorListener {
+public class Server implements TCPServerListener {
 
-	DBConnector dbc = new DBConnector(this);
-//Kommentar2
+	private PacketBuilder builder;
+	
 	public Server() {
-//		Packet p = new Packet("steven", "1", Packet.Type.UNUSED);
-//		dbc.placeQuerry(p);
+		builder = new PacketBuilder();
 		new TCPServer(this);
 	}
 
@@ -24,34 +23,21 @@ public class Server implements TCPServerListener, DBConnectorListener {
 	@Override
 	public boolean tcpReceive(Packet p) {
 		// TODO Auto-generated method stub
-		dbc.placeQuerry(p);
+//		dbc.placeQuerry(p);
+		
+		Packet answer = builder.getPacket(p);
+		
+		ObjectOutputStream oos = getOOS(p);
+		answer.setSocket(null);
+		try {
+			oos.writeObject(answer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
-	@Override 
-	public void DBDataReceive(Packet p) {
-		// TODO Auto-generated method stub
-		ObjectOutputStream oos = getOOS(p);
-		p.setSocket(null);
-		try {
-			oos.writeObject(p);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void loginFailed(Packet p) {
-		// TODO Auto-generated method stub
-		// p.sendAnswer();
-		try {
-			p.getSocket().close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	private ObjectOutputStream getOOS(Packet p)
 	{

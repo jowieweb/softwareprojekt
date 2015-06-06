@@ -36,6 +36,7 @@ public class TCPConnection extends Client implements Runnable{
 		t.start();
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void run() {
 		try {

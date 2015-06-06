@@ -1,7 +1,6 @@
 package org.Client.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
