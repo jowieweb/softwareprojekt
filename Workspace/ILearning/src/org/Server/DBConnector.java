@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import org.Packet;
 
-
 public class DBConnector {
 
 	private java.sql.Connection connect = null;
@@ -40,8 +39,6 @@ public class DBConnector {
 		}
 	}
 
-	
-
 	public void checkAnswers(Packet p) {
 		if (p.getSelectedAnswer() != null) {
 			try {
@@ -60,7 +57,7 @@ public class DBConnector {
 							right = false;
 						}
 					}
-					updateCheckedAnswer(p);
+					updateCheckedAnswer(p, right);
 					p.setWasRight(right);
 				}
 			} catch (SQLException e) {
@@ -69,10 +66,54 @@ public class DBConnector {
 			}
 		}
 	}
-	
-	public void updateCheckedAnswer(Packet p)
-	{
-		
+
+	public void updateCheckedAnswer(Packet p, boolean wasRight) {
+		String debug = "";
+		String correct = "0";
+		String incorrect = "1";
+		if (wasRight) {
+			incorrect = "0";
+			correct = "1";
+		}
+
+		try {
+			debug = "select count(*) from User_data where User_data.questionid = (select id from Question where questiontext = '"
+					+ p.getFrage()
+					+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+					+ p.getUsername() + "')";
+
+			ResultSet result = connect.createStatement().executeQuery(debug);
+			int count = 0;
+			while (result.next()) {
+				count = result.getInt(1);
+			}
+
+			if (count == 1) {
+				debug = "update User_data set falseCount= falsecount + "
+						+ incorrect
+						+ ", lastAnswered = now(), overallCount = overallCount +1, correctAnswered = correctAnswered + "
+						+ correct
+						+ " where User_data.questionid = (select id from Question where questiontext = '"
+						+ p.getFrage()
+						+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+						+ p.getUsername() + "')";
+
+			} else if (count == 0) {
+				debug = "insert into User_data(userid,questionid,falseCount,lastAnswered,overallCount,correctAnswered) values((select `User`.id from `User` where `User`.`name` = '"
+						+ p.getUsername()
+						+ "') , (select id from Question where questiontext = '"
+						+ p.getFrage()
+						+ "'),"
+						+ incorrect
+						+ ",now(),"
+						+ correct + ",1)";
+			}
+			connect.createStatement().execute(debug);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -187,9 +228,8 @@ public class DBConnector {
 	public Packet.Login checkLogin(String username, String password) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
-					"select name, admin from User where name = '"
-							+ username + "' and password = '"
-							+ password + "'");
+					"select name, admin from User where name = '" + username
+							+ "' and password = '" + password + "'");
 
 			while (resultSet.next()) {
 				String user = resultSet.getString("name");
@@ -208,7 +248,7 @@ public class DBConnector {
 			connect();
 			if (rekCount > 2) {
 				rekCount++;
-				return checkLogin(username,password);
+				return checkLogin(username, password);
 			}
 			e.printStackTrace();
 			return Packet.Login.FAIL;
