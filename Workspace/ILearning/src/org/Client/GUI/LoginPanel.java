@@ -26,7 +26,7 @@ public class LoginPanel extends JPanel {
 	/**
 	 * The constructor builds all widgets of the panel and registers the
 	 * ActionListeners.
-	 * 
+	 *
 	 * @param listener
 	 *            class to callback
 	 */
@@ -61,7 +61,7 @@ public class LoginPanel extends JPanel {
 			}
 
 		});
-		
+
 		nameTextField.addActionListener(new ActionListener() {
 
 			@Override

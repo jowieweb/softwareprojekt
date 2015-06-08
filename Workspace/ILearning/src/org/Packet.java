@@ -45,7 +45,7 @@ public class Packet implements Serializable {
 	private Management_Type m_type = Management_Type.UNUSED;
 
 	/**
-	 * Constructor builds new packet. 
+	 * Constructor builds new packet.
 	 * @param username the username
 	 * @param password the password (MD5)
 	 */
@@ -78,7 +78,7 @@ public class Packet implements Serializable {
 	public Login getLoginStatus() {
 		return login;
 	}
-	
+
 	public void setLoginStatus(Login status) {
 		login = status;
 	}
@@ -97,7 +97,7 @@ public class Packet implements Serializable {
 			answer = p;
 		}
 	}
-	
+
 	public String[] getAnswers() {
 		return answer;
 	}
@@ -137,21 +137,21 @@ public class Packet implements Serializable {
 			selectedLevel = lvl;
 		}
 	}
-	
+
 	public String getSelectedLevel() {
 		return selectedLevel;
 	}
-	
+
 	public Type getPacketType() {
 		return type;
 	}
-	
+
 	public void setPacketType(Type t) {
 		type = t;
 	}
-	
+
 	public void setImage(Image i){
-		
+
 		image =new ImageIcon(i);
 	}
 	public Image getImage(){
@@ -164,20 +164,20 @@ public class Packet implements Serializable {
 	{
 		selectedAnswer = para;
 	}
-	
+
 	public int[] getSelectedAnswer(){
 		return selectedAnswer;
 	}
-	
+
 	public boolean getWasRight(){
 		return wasRight;
 	}
-	
+
 	public void setWasRight(boolean w)
 	{
 		wasRight = w;
 	}
-	
+
 	public void addUserToUserList(String[] s){
 		if(users== null){
 			users = new ArrayList<String[]>();
@@ -186,7 +186,7 @@ public class Packet implements Serializable {
 			users.add(s);
 		}
 	}
-	
+
 	public ArrayList<String[]> getUsers(){
 		return users;
 	}

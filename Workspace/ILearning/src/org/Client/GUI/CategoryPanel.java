@@ -44,10 +44,10 @@ public class CategoryPanel extends JPanel {
 		this.levelComboBox = new JComboBox<String>();
 		this.modusComboBox = new JComboBox<String>();
 		this.downloadButton = new JButton("Fragen herunterladen");
-		this.printQuestionsButton = new JButton("Fragen ausdrucken");	
+		this.printQuestionsButton = new JButton("Fragen ausdrucken");
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
-		
+
 		JPanel west = new JPanel();
 		JPanel south = new JPanel();
 		JPanel north = new JPanel();
@@ -58,17 +58,17 @@ public class CategoryPanel extends JPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
-		
+
 		submitButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				listener.categorySelected(categoryListBox.getSelectedValue().toString(),levelComboBox.getSelectedItem().toString() , 0);
 			}
-		});	
+		});
 	}
-	
+
 	/**
 	 * Sets the provided parameters to the GUI
 	 * @param categories
@@ -78,8 +78,8 @@ public class CategoryPanel extends JPanel {
 	public void setCategories(String[] categories, String[] level,int[] modus)
 	{
 		for(String s:categories){
-			categoryListModel.addElement(s);			
-		}	
+			categoryListModel.addElement(s);
+		}
 		for(String s:level){
 			levelComboBox.addItem(s);
 		}

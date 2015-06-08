@@ -44,30 +44,33 @@ public class DBConnector {
 	}
 
 	/**
-	 * Retrieves the answer from a question from the database and checks the given answer. 
-	 * @param p a Packet that contains the user's answer.
+	 * Retrieves the answer from a question from the database and checks the
+	 * given answer.
+	 *
+	 * @param packet
+	 * a Packet that contains the user's answer.
 	 */
-	public void checkAnswers(Packet p) {
-		if (p.getSelectedAnswer() != null) {
+	public void checkAnswers(Packet packet) {
+		if (packet.getSelectedAnswer() != null) {
 			try {
 				ResultSet result = connect.createStatement().executeQuery(
 						"select solution from Question where Question.questiontext ='"
-								+ p.getFrage() + "'");
+								+ packet.getFrage() + "'");
 				while (result.next()) {
 					String sol = result.getString("solution");
 					int intsol = Integer.parseInt(sol) - 1;
 					boolean right = false;
-					if (p.getSelectedAnswer()[intsol] == 1) {
+					if (packet.getSelectedAnswer()[intsol] == 1) {
 						right = true;
 					}
-					
+
 					for (int i = 0; i < 4; i++) {
-						if (p.getSelectedAnswer()[i] == 1 && i != intsol) {
+						if (packet.getSelectedAnswer()[i] == 1 && i != intsol) {
 							right = false;
 						}
 					}
-					updateCheckedAnswer(p, right);
-					p.setWasRight(right);
+					updateCheckedAnswer(packet, right);
+					packet.setWasRight(right);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -76,11 +79,11 @@ public class DBConnector {
 	}
 
 	/**
-	 * 
-	 * @param p
+	 *
+	 * @param packet
 	 * @param wasRight
 	 */
-	public void updateCheckedAnswer(Packet p, boolean wasRight) {
+	public void updateCheckedAnswer(Packet packet, boolean wasRight) {
 		String debug = "";
 		String incorrect = "1";
 		if (wasRight) {
@@ -90,10 +93,11 @@ public class DBConnector {
 		try {
 			debug = "select count(*) from User_data where User_data.questionid ="
 					+ " (select id from Question where questiontext = '"
-					+ p.getFrage()
+					+ packet.getFrage()
 					+ "') and User_data.userid = (select `User`.id from"
 					+ " `User` where `User`.`name` = '"
-					+ p.getUsername() + "')";
+					+ packet.getUsername()
+					+ "')";
 
 			ResultSet result = connect.createStatement().executeQuery(debug);
 			int count = 0;
@@ -106,15 +110,15 @@ public class DBConnector {
 						+ incorrect
 						+ ", lastAnswered = now(), overallCount = overallCount +1"
 						+ " where Question_data.QuestionID = (select id from Question where questiontext = '"
-						+ p.getFrage()
+						+ packet.getFrage()
 						+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
-						+ p.getUsername() + "')";
+						+ packet.getUsername() + "')";
 
 			} else if (count == 0) {
 				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
-						+ p.getUsername()
+						+ packet.getUsername()
 						+ "') , (select id from Question where questiontext = '"
-						+ p.getFrage() + "')," + incorrect + ",now(),1)";
+						+ packet.getFrage() + "')," + incorrect + ",now(),1)";
 			}
 			connect.createStatement().execute(debug);
 
@@ -126,10 +130,10 @@ public class DBConnector {
 
 	/**
 	 * adds the category to the packet
-	 * 
-	 * @param p
+	 *
+	 * @param packet
 	 */
-	public void addCategories(Packet p) {
+	public void addCategories(Packet packet) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
 					"select title from Topic");
@@ -137,8 +141,8 @@ public class DBConnector {
 			while (resultSet.next()) {
 				categorys += resultSet.getString("title") + ";";
 			}
-			p.setTopics(categorys.split(";"));
-			p.setPacketType(Packet.Type.CATEGORY);
+			packet.setTopics(categorys.split(";"));
+			packet.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -147,10 +151,10 @@ public class DBConnector {
 
 	/**
 	 * adds all levels from the database to the packet.
-	 * 
-	 * @param p
+	 *
+	 * @param packet
 	 */
-	public void addLevel(Packet p) {
+	public void addLevel(Packet packet) {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
 					"SELECT title FROM Level");
@@ -158,7 +162,7 @@ public class DBConnector {
 			while (resultSet.next()) {
 				level += resultSet.getString("title") + ";";
 			}
-			p.setLevel(level.split(";"));
+			packet.setLevel(level.split(";"));
 			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -167,19 +171,19 @@ public class DBConnector {
 
 	/**
 	 * sets a question text to the packet.
-	 * 
-	 * @param p
+	 *
+	 * @param packet
 	 */
-	public void setFrage(Packet p) {
+	public void setFrage(Packet packet) {
 		try {
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
 							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
-									+ p.getSelectedTopic()
+									+ packet.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
-				p.setFrage(resultSet.getString("questiontext"));
+				packet.setFrage(resultSet.getString("questiontext"));
 
 				ArrayList<String> answers = new ArrayList<String>();
 				for (int i = 1; i < 5; i++) {
@@ -189,18 +193,18 @@ public class DBConnector {
 				String[] stockArr = new String[answers.size()];
 				stockArr = answers.toArray(stockArr);
 
-				p.setAnswers(stockArr);
+				packet.setAnswers(stockArr);
 				String imageurl = resultSet.getString("image");
 				if (imageurl.length() > 1) {
-					setImage(p, imageurl);
+					setImage(packet, imageurl);
 				} else {
-					setImage(p, "url.jpg");
+					setImage(packet, "url.jpg");
 				}
 			} else {
 				System.out.println("EMPTY");
 			}
 			resultSet.close();
-			p.setPacketType(Packet.Type.ANSWER_QUESTION);
+			packet.setPacketType(Packet.Type.ANSWER_QUESTION);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,14 +214,14 @@ public class DBConnector {
 
 	/**
 	 * adds an image to the packet
-	 * 
-	 * @param p
+	 *
+	 * @param packet
 	 * @param url the URL
 	 */
-	private void setImage(Packet p, String url) {
+	private void setImage(Packet packet, String url) {
 		try {
 			Image image = ImageIO.read(new File(url));
-			p.setImage(image);
+			packet.setImage(image);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -225,7 +229,7 @@ public class DBConnector {
 
 	/**
 	 * checks the login, if wrong Login.FAIL
-	 * 
+	 *
 	 * @param username the username
 	 * @param password the password
 	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
@@ -234,7 +238,7 @@ public class DBConnector {
 		try {
 			ResultSet resultSet = connect.createStatement().executeQuery(
 					"select name, admin from User where name = '" + username
-							+ "' and password = '" + password + "'");
+					+ "' and password = '" + password + "'");
 
 			while (resultSet.next()) {
 				String user = resultSet.getString("name");
@@ -268,7 +272,7 @@ public class DBConnector {
 						debug);
 				while (resultSet.next()) {
 					String toAdd[] = new String[3];
-					toAdd[0]= resultSet.getString("id");
+					toAdd[0] = resultSet.getString("id");
 					toAdd[1] = resultSet.getString("name");
 					toAdd[2] = resultSet.getString("password");
 					p.addUserToUserList(toAdd);

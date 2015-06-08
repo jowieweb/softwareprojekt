@@ -9,24 +9,24 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.Packet;
 import org.Client.GUI.AdministrationPanel;
 import org.Client.GUI.AdministrationPanelListener;
 import org.Client.GUI.AnswerQuestionPanel;
 import org.Client.GUI.CategoryPanel;
+import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.EditQuestionPanel;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
-import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
-import org.Packet;
 
 /**
  * The class MainWindow represents the main window, which display different panels
  * depending on the current state.
  */
 public class MainWindow extends JFrame implements ClientListener, LoginPanelListener,
-	CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
+CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
 	private Client client;
 	private LoginPanel loginPanel;
@@ -115,7 +115,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		setMinimumSize(getSize());
+		//		setMinimumSize(getSize());
 	}
 
 	/**
@@ -176,22 +176,22 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			questionPanel.setQuestionText(p.getFrage());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 
-//			questionPanel.setAnswerText(p.getAnswers());
+			//			questionPanel.setAnswerText(p.getAnswers());
 			break;
 		case  USER_MANAGEMENT:
 
 			changePanelToAdministrationPanel(p);
 			adminPanel.addUsers(p);
 			System.out.println("asd");
-			
-			
+
+
 			break;
 		default:
 			break;
 		}
 
 		pack();
-//		setMinimumSize(getSize());
+		//		setMinimumSize(getSize());
 	}
 
 	@Override
@@ -306,7 +306,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
-		
+
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 
@@ -321,6 +321,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
+	@Override
 	public void changeQuestionPanelToAnswerMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
@@ -335,6 +336,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces QuestionPanel with CategoryPanel.
 	 */
+	@Override
 	public void changeQuestionPanelToCategoryPanel() {
 		remove(questionPanel);
 		questionPanel = null;
@@ -347,8 +349,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 * Replaces current panel with adminPanel.
 	 */
 	private void changePanelToAdministrationPanel(Packet p) {
-		
-		
+
+
 		if (questionPanel != null) {
 			remove(questionPanel);
 		}
@@ -367,6 +369,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces currently displayed AdministrationPanel with CategoryPanel.
 	 */
+	@Override
 	public void changeAdministrationPanelToCategoryPanel() {
 		remove(adminPanel);
 		add(categoryPanel);

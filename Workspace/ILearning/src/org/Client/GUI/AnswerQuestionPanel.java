@@ -29,7 +29,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	/**
 	 * constructor builds JPanel.
-	 * 
+	 *
 	 * @param listener
 	 *            callback method object
 	 * @param text
@@ -37,12 +37,12 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] text) {
 		super(listener);
 		this.questionLabel = new JLabel();
-		
+
 		this.nextButton = new JButton("Nächste Frage");
 		this.backButton = new JButton("Zurück zur Kategorieauswahl");
 		this.nextButton.setVisible(false);
 		this.backButton.setVisible(false);
-		
+
 		this.picturePanel = new ImagePanel();
 		JPanel southPan = new JPanel();
 		JPanel pan = new JPanel();
@@ -77,9 +77,9 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		pan.add(north, "North");
 		pan.add(south, "South");
 		add(pan);
-		
+
 		new MakeSound("haishort.wav").execute();
-		
+
 		this.submitButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -102,7 +102,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 			}
 		});
 	}
-	
+
 	/**
 	 * This method is invoked when submitButton is clicked.
 	 */
@@ -115,24 +115,24 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		{
 			selected[i] = (answerButton[i].isSelected()==false)?0:1;
 		}
-		
+
 		this.listener.answerSelected(selected);
 		// Invoke callback method
 		//listener.answerSelected(answer);
 	}
-	
+
 	/**
-	 * This method is invoked when backButton is clicked.	
+	 * This method is invoked when backButton is clicked.
 	 */
 	private void backButtonClicked() {
 		this.listener.changeQuestionPanelToCategoryPanel();
 	}
-	
+
 	/**
 	 * This method is invoked when nextButton is clicked.
 	 */
 	private void nextButtonClicked() {
-		
+
 	}
 
 	private JPanel getRadioLabel(final JCheckBox radio) {
@@ -148,11 +148,13 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		l.setLineWrap(true);
 		l.setWrapStyleWord(true);
 		l.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				radio.setSelected(!radio.isSelected());
 			}
 		});
 		p.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				radio.setSelected(!radio.isSelected());
 			}
@@ -168,10 +170,11 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	/**
 	 * Sets question
-	 * 
+	 *
 	 * @param text
 	 *            question
 	 */
+	@Override
 	public void setQuestionText(String text) {
 		this.questionLabel.setText(text);
 		questionLabel.setFont(questionLabel.getFont().deriveFont(24.0f));
@@ -179,10 +182,11 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	/**
 	 * Sets provided text to radiobuttons.
-	 * 
+	 *
 	 * @param text
 	 *            array with answer options
 	 */
+	@Override
 	public void setAnswerText(String[] text) {
 		if (text != null) {
 			for (int i = 0; i < text.length && i < 4; i++) {
@@ -193,9 +197,10 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	/**
 	 * Returns all possible answers.
-	 * 
+	 *
 	 * @return all answers
 	 */
+	@Override
 	public String[] getAnswerTexts() {
 		String[] answers = new String[4];
 
@@ -208,15 +213,16 @@ public class AnswerQuestionPanel extends QuestionPanel {
 
 	/**
 	 * Returns the question.
-	 * 
+	 *
 	 * @return question
 	 */
+	@Override
 	public String getQuestionText() {
 		return questionLabel.getText();
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pic
 	 */
 	public void setPicture(Image pic) {

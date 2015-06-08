@@ -10,7 +10,7 @@ import org.Packet;
  */
 public class Server implements TCPServerListener {
 	private PacketBuilder builder;
-	
+
 	/**
 	 * The constructor instantiates the PacketBuilder and TCPServer.
 	 */
@@ -26,14 +26,14 @@ public class Server implements TCPServerListener {
 
 	/**
 	 * callback method that's invoked by TCPServer when a packet is received.
-	 * 
-	 * @param p the received packet
+	 *
+	 * @param packet the received packet
 	 */
 	@Override
-	public boolean tcpReceive(Packet p) {
-		Packet answer = builder.getPacket(p);
-		
-		ObjectOutputStream oos = getOOS(p);
+	public boolean tcpReceive(Packet packet) {
+		Packet answer = builder.getPacket(packet);
+
+		ObjectOutputStream oos = getOOS(packet);
 		answer.setSocket(null);
 		try {
 			oos.writeObject(answer);
@@ -46,12 +46,12 @@ public class Server implements TCPServerListener {
 
 	/**
 	 * Returns a new ObjectOutputStream for sending and receiving packets.
-	 * @param p Old Packet which contains an existing ObjectOutputStream
+	 * @param packet Old Packet which contains an existing ObjectOutputStream
 	 * @return a new ObjectOutputStream
 	 */
-	private ObjectOutputStream getOOS(Packet p) {
+	private ObjectOutputStream getOOS(Packet packet) {
 		try {
-			ObjectOutputStream ooStream = new ObjectOutputStream(p.getSocket().getOutputStream());
+			ObjectOutputStream ooStream = new ObjectOutputStream(packet.getSocket().getOutputStream());
 			return ooStream;
 		} catch (IOException e) {
 			e.printStackTrace();

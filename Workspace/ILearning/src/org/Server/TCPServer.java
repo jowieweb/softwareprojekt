@@ -12,7 +12,7 @@ import org.Packet;
  */
 public class TCPServer {
 	private TCPServerListener callback;
-	
+
 	/**
 	 * constructor registers an callback object.
 	 * @param tsl object with callback method tcpReceive
@@ -21,7 +21,7 @@ public class TCPServer {
 		callback = tsl;
 		listen();
 	}
-	
+
 	/**
 	 * Waits for packets and invokes callback method (tcpReceive) when packets arrive.
 	 */
@@ -29,16 +29,16 @@ public class TCPServer {
 	public void listen() {
 		try {
 			ServerSocket serverSocket = new ServerSocket(12345);
-			
+
 			while(true) {
-				
+
 				Socket socket = serverSocket.accept();
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-				
+
 				try {
 					Object obj = ois.readObject();
 					if(obj instanceof Packet) {
-						Packet p = (Packet) obj;	
+						Packet p = (Packet) obj;
 						p.setSocket(socket);
 						callback.tcpReceive(p);
 					}
@@ -48,6 +48,6 @@ public class TCPServer {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 }
