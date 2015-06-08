@@ -47,6 +47,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		new MakeSound("haishort.wav").execute();
 		setAnswerText(answers);
 		addButtonActionListeners();
+		
+		setVideo("http://www.808.dk/vstreamer.asp?video=gizmo.mp4");
 	}
 
 
@@ -176,6 +178,14 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		picturePanel.setImage(pic);
 		picturePanel.setVisible(true);
 		repaint();
+	}
+	
+	/**
+	 * Open a new VideoFrame.
+	 * @param videoURL url
+	 */
+	public void setVideo(String videoURL) {
+		new VideoFrame(videoURL);
 	}
 	
 	/**

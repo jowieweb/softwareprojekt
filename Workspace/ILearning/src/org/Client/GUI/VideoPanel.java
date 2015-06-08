@@ -81,7 +81,13 @@ public class VideoPanel extends JPanel {
 	}
 	
 	private String buildRequestURL(){
-		String auth = username+":"+password+"@";
+		String auth;
+		
+		if (username == null || password == null) {
+			return vidUrl;
+		} else {
+			auth = username+":"+password+"@";
+		}
 		return new StringBuilder(vidUrl).insert(vidUrl.indexOf(':')+3, auth).toString();
 	}
 	
