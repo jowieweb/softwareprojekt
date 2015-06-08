@@ -330,9 +330,12 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		pack();
 	}
 
-	@Override
+	/**
+	 * Replaces currently displayed AdministrationPanel with CategoryPanel.
+	 */
 	public void changeAdministrationPanelToCategoryPanel() {
-		// TODO Auto-generated method stub
-		
+		remove(adminPanel);
+		add(categoryPanel);
+		pack();
 	}
 }

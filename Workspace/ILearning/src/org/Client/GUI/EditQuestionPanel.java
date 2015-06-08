@@ -53,9 +53,7 @@ public class EditQuestionPanel extends QuestionPanel {
 				abortButtonClicked();
 			}
 		});
-		
-		
-		
+
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
 
@@ -94,6 +92,9 @@ public class EditQuestionPanel extends QuestionPanel {
 		add(pan);
 	}
 	
+	/**
+	 * Is invoked when abortButton is clicked (eventhandler).
+	 */
 	private void abortButtonClicked() {
 		resetValues();
 		listener.changeQuestionPanelToAnswerMode();	
@@ -112,7 +113,8 @@ public class EditQuestionPanel extends QuestionPanel {
 	}
 	
 	/**
-	 * 
+	 * Returns the currently displayed answers.
+	 * @return answers
 	 */
 	public String[] getAnswerTexts() {
 		String[] answers = new String[4];
@@ -124,10 +126,18 @@ public class EditQuestionPanel extends QuestionPanel {
 		return answers;
 	}
 	
+	/**
+	 * Returns the currently displayed question.
+	 * @return question
+	 */
 	public String getQuestionText() {
 		return this.questionTextField.getText();
 	}
 	
+	/**
+	 * Sets the answers.
+	 * @param answers answers
+	 */
 	public void setAnswerText(String[] answers) {
 		if (answers != null) {
 			for (int i = 0; i < answers.length && i < 4; i++) {
@@ -137,6 +147,10 @@ public class EditQuestionPanel extends QuestionPanel {
 		}
 	}
 	
+	/**
+	 * Sets the question text.
+	 * @param question qeustion text
+	 */
 	public void setQuestionText(String question) {
 		this.questionTextField.setText(question);
 		this.backupQuestionText = question;
