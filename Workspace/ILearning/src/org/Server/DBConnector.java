@@ -91,10 +91,10 @@ public class DBConnector {
 		}
 
 		try {
-			debug = "select count(*) from User_data where User_data.questionid ="
+			debug = "select count(*) from Question_data where Question_data.QuestionID ="
 					+ " (select id from Question where questiontext = '"
 					+ packet.getQuestion()
-					+ "') and User_data.userid = (select `User`.id from"
+					+ "') and Question_data.UserID = (select `User`.id from"
 					+ " `User` where `User`.`name` = '"
 					+ packet.getUsername()
 					+ "')";
