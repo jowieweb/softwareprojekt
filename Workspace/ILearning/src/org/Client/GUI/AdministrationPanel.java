@@ -46,8 +46,8 @@ public class AdministrationPanel extends JPanel {
 	 * The constructor builds the panel.
 	 * @param listener callback method object
 	 */
-	public AdministrationPanel(AdministrationPanelListener l) {
-		this.listener = l;
+	public AdministrationPanel(AdministrationPanelListener listener) {
+		this.listener = listener;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 30, 129, 62, 75, 75, 75, 75, 0 };

@@ -173,7 +173,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			questionPanel.setQuestionText(p.getQuestion());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 
-			//			questionPanel.setAnswerText(p.getAnswers());
 			break;
 		case  USER_MANAGEMENT:
 

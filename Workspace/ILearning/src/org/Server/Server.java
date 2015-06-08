@@ -43,7 +43,6 @@ public class Server implements TCPServerListener {
 		return false;
 	}
 
-
 	/**
 	 * Returns a new ObjectOutputStream for sending and receiving packets.
 	 * @param packet Old Packet which contains an existing ObjectOutputStream
