@@ -44,6 +44,15 @@ public class PacketBuilder {
 					dbc.removeUser(querry);
 				}
 				break;
+			case ADD_USER:
+				if(querry.getAnswers() != null){
+					dbc.addUser(querry);
+				}
+				break;
+			case CHANGE_USER:
+				if(querry.getAnswers() != null){
+					dbc.changeUser(querry);
+				}
 			default:
 				break;				
 			}
