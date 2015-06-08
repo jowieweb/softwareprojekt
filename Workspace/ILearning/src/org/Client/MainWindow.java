@@ -136,10 +136,13 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				System.out.println(p.getWasRight());
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
+			
 			add(questionPanel);
 			editMenuItem.setVisible(true);
 			questionPanel.setQuestionText(p.getQuestion());
+			
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
+			questionPanel.setQuestionID(p.getQuestionID());
 
 			break;
 		case  USER_MANAGEMENT:
@@ -299,11 +302,12 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeQuestionPanelToEditMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
-
+		String id = questionPanel.getQuestionID();
 		remove(questionPanel);
 		questionPanel = new EditQuestionPanel(this);
 		questionPanel.setAnswerText(answers);
 		questionPanel.setQuestionText(question);
+		questionPanel.setQuestionID(id);
 		add(questionPanel);
 		pack();
 	}
@@ -397,5 +401,25 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				changeQuestionPanelToEditMode();
 			}
 		});
+	}
+
+	@Override
+	public void updateQuestion(String id, String newQuestionText,
+			String[] newAnswers, int[] answersChecked, String newMediaURL) {
+		// TODO Auto-generated method stub
+		Packet p = new Packet(this.username, this.password);
+		p.setPacketType(Packet.Type.EDIT_QUESTION);
+		p.setEditQuestionType(Packet.Edit_Question_Type.UPDATE_QUESTION);
+		p.setQuestionID(id);
+		p.setAnswers(newAnswers);
+		p.setQuestion(newQuestionText);
+		p.setSelectedAnswers(answersChecked);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

@@ -13,6 +13,8 @@ public abstract class QuestionPanel extends JPanel {
 	protected JCheckBox[] answerButton;
 	protected QuestionPanelListener listener;
 
+	protected String questionID;
+
 	/**
 	 * constructor creates submitButton and all answerButtons.
 	 */
@@ -64,5 +66,21 @@ public abstract class QuestionPanel extends JPanel {
 	 */
 	public String getQuestionText() {
 		return null;
+	}
+	
+	/**
+	 * sets the QuestionID
+	 * @param id the id
+	 */
+	public void setQuestionID(String id){
+		questionID = id;
+	}
+	
+	/**
+	 * returns the QuestionID
+	 * @return
+	 */
+	public String getQuestionID(){
+		return questionID;
 	}
 }

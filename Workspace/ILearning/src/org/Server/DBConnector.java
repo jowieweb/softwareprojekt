@@ -179,12 +179,14 @@ public class DBConnector {
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
-							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
+							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
 									+ packet.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
 				packet.setQuestion(resultSet.getString("questiontext"));
-
+				
+				packet.setQuestionID(resultSet.getString(1));
+				
 				ArrayList<String> answers = new ArrayList<String>();
 				for (int i = 1; i < 5; i++) {
 					answers.add(resultSet.getString(("answer" + i)).toString());
@@ -287,6 +289,7 @@ public class DBConnector {
 			}
 		}
 	}
+	
 	public void changeUser(Packet p){
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
 			String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
@@ -326,5 +329,25 @@ public class DBConnector {
 				
 			}
 		}
+	}
+	
+	public void updateQuestion(Packet p){
+		if(p.getQuestionID().length()==0){
+			return;
+		}
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String debug = "update `Question` set questiontext = '"
+					+ p.getQuestion() + "', answer1 ='" + p.getAnswers()[0]
+					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
+					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
+					+ "' where id = " + p.getQuestionID();
+		try{
+				connect.createStatement().execute(debug);	
+			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

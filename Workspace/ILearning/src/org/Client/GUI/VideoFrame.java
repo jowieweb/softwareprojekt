@@ -35,13 +35,12 @@ public class VideoFrame {
         	public void run() {
         		frame = new JFrame();
         		frame.setBounds(100, 100, 600, 400);
-        		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 frame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
-                        mediaPlayerComponent.release();
-                        frame.dispose();
+//                        mediaPlayerComponent.release();
+//                        frame.dispose();
                     }
                 });
                 if(isWindows()){
