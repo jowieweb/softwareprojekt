@@ -40,7 +40,7 @@ public class PacketBuilder {
 		case USER_MANAGEMENT:
 			switch(querry.getManagementType()){
 			case REMOVE_USER:
-				if(querry.getFrage() != null){
+				if(querry.getQuestion() != null){
 					dbc.removeUser(querry);
 				}
 				break;
@@ -56,7 +56,6 @@ public class PacketBuilder {
 			default:
 				break;				
 			}
-			
 			
 			dbc.addAllUsers(answer);
 			break;
@@ -79,8 +78,8 @@ public class PacketBuilder {
 		p.setPacketType(querry.getPacketType());
 		p.setSelectedLevel(querry.getSelectedLevel());
 		p.setSelectedTopic(querry.getSelectedTopic());
-		p.setSelectedAnswer(querry.getSelectedAnswer());
-		p.setFrage(querry.getFrage());
+		p.setSelectedAnswers(querry.getSelectedAnswers());
+		p.setQuestion(querry.getQuestion());
 		p.setWasRight(querry.getWasRight());
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());

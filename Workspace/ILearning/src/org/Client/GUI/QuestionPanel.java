@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 
 /**
  * Abstract class for displaying questions.
- *
  */
 public abstract class QuestionPanel extends JPanel {
 	protected static final long serialVersionUID = 1L;
@@ -60,7 +59,7 @@ public abstract class QuestionPanel extends JPanel {
 	}
 
 	/**
-	 * Return question.
+	 * Returns question.
 	 * @return question
 	 */
 	public String getQuestionText() {

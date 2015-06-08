@@ -12,10 +12,10 @@ import javax.swing.ImageIcon;
  */
 public class Packet implements Serializable {
 	private static final long serialVersionUID = -5954611261930673901L;
-	private Socket client;
+	private Socket socket;
 	private String username;
 	private String password;
-	private String frage;
+	private String question;
 	private String answer[];
 	private String selectedTopic="";
 	private String selectedLevel="";
@@ -27,6 +27,9 @@ public class Packet implements Serializable {
 	
 	private ArrayList<String[]> users;
 
+	/**
+	 * Type for specifying the packet type.
+	 */
 	public enum Type {
 		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
 	};
@@ -36,6 +39,9 @@ public class Packet implements Serializable {
 	}
 	
 
+	/**
+	 * Login status with permissions.
+	 */
 	public enum Login {
 		FAIL, USER, ADMIN
 	}
@@ -59,134 +65,246 @@ public class Packet implements Serializable {
 		this.image = null;
 	}
 
-	public void setSocket(Socket s) {
-		client = s;
+	/**
+	 * Sets the socket for the packet.
+	 * @param socket socket
+	 */
+	public void setSocket(Socket socket) {
+		this.socket = socket;
 	}
 
+	/**
+	 * Returns the socket.
+	 * @return socket
+	 */
 	public Socket getSocket() {
-		return client;
+		return socket;
 	}
 
+	/**
+	 * Returns the password of the user.
+	 * @return password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Returns the username of the user.
+	 * @return username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Returns the login status (e.g. FAIL, USER or ADMIN) from the packet.
+	 * @return login status
+	 */
 	public Login getLoginStatus() {
 		return login;
 	}
 
+	/**
+	 * Sets the login Status for a packet.
+	 * @param status login status (FAIL, USER or ADMIN)
+	 */
 	public void setLoginStatus(Login status) {
 		login = status;
 	}
 
-	public String getFrage() {
-		return frage;
+	/**
+	 * Returns the question.
+	 * @return question
+	 */
+	public String getQuestion() {
+		return question;
 	}
 
-	public void setFrage(String p) {
-		if (p != null) {
-			frage = p;
+	/**
+	 * Sets the question for a packet.
+	 * @param question the question text
+	 */
+	public void setQuestion(String question) {
+		if (question != null) {
+			this.question = question;
 		}
 	}
-	public void setAnswers(String[] p) {
-		if(p!=null) {
-			answer = p;
+	
+	/**
+	 * Sets the answers for a packet.
+	 * @param answers available answers
+	 */
+	public void setAnswers(String[] answers) {
+		if(answers != null) {
+			answer = answers;
 		}
 	}
 
+	/**
+	 * Returns the answers.
+	 * @return answers
+	 */
 	public String[] getAnswers() {
 		return answer;
 	}
 
-	public void setTopics(String[] para) {
-		if (para != null) {
-			this.topics = para;
+	/**
+	 * Sets the topics for a packet. Used by CategoryPanel.
+	 * @param topics topics available
+	 */
+	public void setTopics(String[] topics) {
+		if (topics != null) {
+			this.topics = topics;
 		}
 	}
 
+	/**
+	 * Returns all available topics.
+	 * @return topics
+	 */
 	public String[] getTopics() {
 		return this.topics;
 	}
 
-	public void setLevel(String[] lvl) {
-		if (lvl != null) {
-			level = lvl;
+	/**
+	 * Sets all available levels for a packet. Used by CategoryPanel.
+	 * @param level levels to be added
+	 */
+	public void setLevel(String[] level) {
+		if (level != null) {
+			this.level = level;
 		}
 	}
 
+	/**
+	 * Returns all available levels.
+	 * @return levels
+	 */
 	public String[] getLevel() {
 		return level;
 	}
 
+	/**
+	 * Returns the selected topic.
+	 * @return selected topic
+	 */
 	public String getSelectedTopic() {
 		return selectedTopic;
 	}
 
+	/**
+	 * Sets the selected topic for a packet.
+	 * @param topic the selected topic
+	 */
 	public void setSelectedTopic(String topic) {
 		if (topic != null) {
 			selectedTopic = topic;
 		}
 	}
 
-	public void setSelectedLevel(String lvl) {
-		if(lvl != null) {
-			selectedLevel = lvl;
+	/**
+	 * Sets the selected level for a packet.
+	 * @param level the selected level
+	 */
+	public void setSelectedLevel(String level) {
+		if(level != null) {
+			selectedLevel = level;
 		}
 	}
 
+	/**
+	 * Returns the selected level.
+	 * @return selected level
+	 */
 	public String getSelectedLevel() {
 		return selectedLevel;
 	}
 
+	/**
+	 * Returns the packet type.
+	 * @return packet type
+	 */
 	public Type getPacketType() {
 		return type;
 	}
 
-	public void setPacketType(Type t) {
-		type = t;
+	/**
+	 * Sets the packet type for a packet.
+	 * @param type packet type
+	 */
+	public void setPacketType(Type type) {
+		this.type = type;
 	}
 
-	public void setImage(Image i){
-
-		image =new ImageIcon(i);
+	/**
+	 * Sets the image for a packet.
+	 * @param image image to be setted
+	 */
+	public void setImage(Image image){
+		this.image = new ImageIcon(image);
 	}
+
+	/**
+	 * Returns the image.
+	 * @return image
+	 */
 	public Image getImage(){
 		if(image != null){
 			return image.getImage();
 		}
 		return null;
 	}
-	public void setSelectedAnswer(int[] para)
-	{
-		selectedAnswer = para;
+	
+	/**
+	 * Sets the selected answer for a packet.
+	 * @param selectedAnswers the selected answers
+	 */
+	public void setSelectedAnswers(int[] selectedAnswers) {
+		this.selectedAnswer = selectedAnswers;
 	}
 
-	public int[] getSelectedAnswer(){
+	/**
+	 * Returns the selected answers.
+	 * @return selected answers
+	 */
+	public int[] getSelectedAnswers() {
 		return selectedAnswer;
 	}
 
-	public boolean getWasRight(){
+	/**
+	 * Returns whether the user answered the question correctly.
+	 * @return true (correct) or false (incorrect)
+	 */
+	public boolean getWasRight() {
 		return wasRight;
 	}
 
-	public void setWasRight(boolean w)
-	{
-		wasRight = w;
+	/**
+	 * Sets whether the user answered the question correctly.
+	 * @param correct true (correct) or false (incorrect)
+	 */
+	public void setWasRight(boolean correct) {
+		wasRight = correct;
 	}
 
-	public void addUserToUserList(String[] s){
-		if(users== null){
-			users = new ArrayList<String[]>();
+	/**
+	 * Adds a user to the user list, which is used by the AdministartionPanel.
+	 * @param users user to add
+	 */
+	public void addUsersToUserList(String[] users){
+		if(users == null){
+			this.users = new ArrayList<String[]>();
 		}
-		if(s != null && s.length ==3){
-			users.add(s);
+		if(users != null && users.length == 3){
+			this.users.add(users);
 		}
 	}
 
+	/**
+	 * Returns a list of all available users.
+	 * @return users
+	 */
 	public ArrayList<String[]> getUsers(){
 		return users;
 	}
