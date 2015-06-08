@@ -29,6 +29,9 @@ public class PacketBuilder {
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
 			break;
+		case USER_MANAGEMENT:
+			dbc.addAllUsers(answer);
+			break;
 		default:				
 			break;
 		}

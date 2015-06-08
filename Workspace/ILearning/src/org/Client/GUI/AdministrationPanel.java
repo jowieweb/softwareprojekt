@@ -1,25 +1,39 @@
 package org.Client.GUI;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JPasswordField;
 
+import org.Packet;
+
 /**
- * The class AdministrationPanel represents a form thats allows users to edit user information.
+ * The class AdministrationPanel represents a form thats allows users to edit
+ * user information.
  *
  */
 public class AdministrationPanel extends JPanel {
@@ -32,21 +46,27 @@ public class AdministrationPanel extends JPanel {
 	private JButton removeUserButton;
 	private JButton newUserButton;
 	private AdministrationPanelListener listener;
-	
+	private ArrayList<String[]> users;
+	private DefaultListModel<String> userListModel;
+
 	/**
 	 * The constructor builds the panel.
-	 * @param listener callback method object
+	 * 
+	 * @param listener
+	 *            callback method object
 	 */
 	public AdministrationPanel(AdministrationPanelListener l) {
 		this.listener = l;
-		String blub[] = {"dummy","dummy","dummy","dummy","dummy","dummy","dummy"};
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{30, 129, 62, 75, 75, 75, 75, 0};
-		gridBagLayout.rowHeights = new int[]{37, 41, 59, 140, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 30, 129, 62, 75, 75, 75, 75, 0 };
+		gridBagLayout.rowHeights = new int[] { 37, 41, 59, 140, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		JLabel lblNewLabel = new JLabel("Benutzerliste");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.SOUTH;
@@ -55,7 +75,10 @@ public class AdministrationPanel extends JPanel {
 		gbc_lblNewLabel.gridx = 1;
 		gbc_lblNewLabel.gridy = 0;
 		add(lblNewLabel, gbc_lblNewLabel);
-		userList = new JList<String>(blub);
+
+		userListModel = new DefaultListModel<String>();
+		userList = new JList<String>(userListModel);
+
 		userList.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GridBagConstraints gbc_userList = new GridBagConstraints();
 		gbc_userList.fill = GridBagConstraints.VERTICAL;
@@ -65,7 +88,7 @@ public class AdministrationPanel extends JPanel {
 		gbc_userList.gridx = 1;
 		gbc_userList.gridy = 1;
 		add(userList, gbc_userList);
-		
+
 		JLabel lblAsd = new JLabel("Benutzername");
 		GridBagConstraints gbc_lblAsd = new GridBagConstraints();
 		gbc_lblAsd.insets = new Insets(0, 0, 5, 5);
@@ -80,7 +103,7 @@ public class AdministrationPanel extends JPanel {
 		gbc_userTextField.gridy = 1;
 		add(userTextField, gbc_userTextField);
 		userTextField.setColumns(10);
-		
+
 		JLabel lblPasswort = new JLabel("Passwort");
 		GridBagConstraints gbc_lblPasswort = new GridBagConstraints();
 		gbc_lblPasswort.insets = new Insets(0, 0, 5, 5);
@@ -88,7 +111,7 @@ public class AdministrationPanel extends JPanel {
 		gbc_lblPasswort.gridx = 3;
 		gbc_lblPasswort.gridy = 2;
 		add(lblPasswort, gbc_lblPasswort);
-		
+
 		passwordTextField = new JPasswordField();
 		GridBagConstraints gbc_passwordTextField = new GridBagConstraints();
 		gbc_passwordTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -97,7 +120,7 @@ public class AdministrationPanel extends JPanel {
 		gbc_passwordTextField.gridy = 2;
 		add(passwordTextField, gbc_passwordTextField);
 		passwordTextField.setColumns(10);
-		
+
 		backButton = new JButton("Zurück");
 		removeUserButton = new JButton("Benutzer entfernen");
 		newUserButton = new JButton("Neuen Benutzer anlegen");
@@ -123,26 +146,27 @@ public class AdministrationPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO remove user
-				
+
 			}
 		});
 		newUserButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				listener.addUser(userTextField.getText(), getPasswordHash(passwordTextField.getPassword()));
-			}	
+
+				listener.addUser(userTextField.getText(),
+						getPasswordHash(passwordTextField.getPassword()));
+			}
 		});
 		submitButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO submit
-				
+
 			}
 		});
-		
+
 		GridBagConstraints gbc_submitButton = new GridBagConstraints();
 		gbc_submitButton.anchor = GridBagConstraints.SOUTH;
 		gbc_submitButton.insets = new Insets(0, 0, 0, 5);
@@ -150,45 +174,75 @@ public class AdministrationPanel extends JPanel {
 		gbc_submitButton.gridx = 4;
 		gbc_submitButton.gridy = 3;
 		add(buttonPanel, gbc_submitButton);
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userList.addListSelectionListener( new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				if (!e.getValueIsAdjusting()) {
+		            JList theList = (JList)e.getSource();
+
+
+		            userTextField.setText(users.get(theList.getSelectedIndex())[1]);
+		            passwordTextField.setText(users.get(theList.getSelectedIndex())[2]);
+		           
+		        }
+			}
+		});
 	}
-	
+
+	public void addUsers(Packet p) {
+
+		users = p.getUsers();
+
+		for (int i = 0; i < users.size(); i++) {
+
+			userListModel.addElement(users.get(i)[1]);
+		}
+	}
+
 	/**
 	 * Hashes a char array.
-	 * @param password password to hash
+	 * 
+	 * @param password
+	 *            password to hash
 	 * @return hashed password
 	 */
 	private String getPasswordHash(char[] password) {
 		String hash = null;
-		
+
 		if (password == null) {
 			return null;
 		}
-		
+
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			String pw = new String(password);
 			byte[] bytes = md5.digest(pw.getBytes("UTF-8"));
 			hash = byteArrayToHexString(bytes);
-			
+
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		
+
 		return hash;
 	}
-	
+
 	/**
 	 * Converts a byte array into a string.
-	 * @param array to be converted
+	 * 
+	 * @param array
+	 *            to be converted
 	 * @return string
 	 */
 	private String byteArrayToHexString(byte[] array) {
-		char[] h = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
-				'9', 'A', 'B', 'C', 'D', 'E', 'F'};
+		char[] h = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+				'B', 'C', 'D', 'E', 'F' };
 		String hex = new String();
-		
+
 		if (array == null) {
 			return null;
 		}
@@ -197,7 +251,7 @@ public class AdministrationPanel extends JPanel {
 			hex += h[(n >>> 4) & 0x0F];
 			hex += h[n & 0x0F];
 		}
-		
+
 		return hex;
 	}
 }

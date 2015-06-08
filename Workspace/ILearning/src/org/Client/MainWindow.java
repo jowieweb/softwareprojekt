@@ -52,8 +52,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 */
 	public MainWindow(){
 		super("Frame");
-		loginPanel = new LoginPanel(this);
 		adminPanel = new AdministrationPanel(this);
+		loginPanel = new LoginPanel(this);
 		menuBar = new JMenuBar();
 		editMenu = new JMenu("Bearbeiten");
 		fileMenu = new JMenu("Datei");
@@ -65,7 +65,14 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				changePanelToAdministrationPanel();
+				Packet p = new Packet(username, password);
+				p.setPacketType(Packet.Type.USER_MANAGEMENT);
+				try {
+					client.sendPacket(p);
+				} catch (TCPClientException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 		});
@@ -171,7 +178,14 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 
 //			questionPanel.setAnswerText(p.getAnswers());
 			break;
+		case  USER_MANAGEMENT:
 
+			changePanelToAdministrationPanel(p);
+			adminPanel.addUsers(p);
+			System.out.println("asd");
+			
+			
+			break;
 		default:
 			break;
 		}
@@ -282,6 +296,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
+		
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 
@@ -321,7 +336,9 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	/**
 	 * Replaces current panel with adminPanel.
 	 */
-	private void changePanelToAdministrationPanel() {
+	private void changePanelToAdministrationPanel(Packet p) {
+		
+		
 		if (questionPanel != null) {
 			remove(questionPanel);
 		}

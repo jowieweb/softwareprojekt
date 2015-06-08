@@ -3,6 +3,7 @@ package org;
 import java.awt.Image;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -23,6 +24,7 @@ public class Packet implements Serializable {
 	private ImageIcon image;
 	private int[] selectedAnswer;
 	private boolean wasRight;
+	private ArrayList<String[]> users;
 
 	public enum Type {
 		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
@@ -167,5 +169,18 @@ public class Packet implements Serializable {
 	public void setWasRight(boolean w)
 	{
 		wasRight = w;
+	}
+	
+	public void addUserToUserList(String[] s){
+		if(users== null){
+			users = new ArrayList<String[]>();
+		}
+		if(s != null && s.length ==3){
+			users.add(s);
+		}
+	}
+	
+	public ArrayList<String[]> getUsers(){
+		return users;
 	}
 }

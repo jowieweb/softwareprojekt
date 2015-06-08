@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import org.Packet;
+import org.Packet.Login;
 
 public class DBConnector {
 
@@ -229,7 +230,7 @@ public class DBConnector {
 				String admin = resultSet.getString("admin");
 				System.out.println("User: " + user);
 				System.out.println("admin:" + admin);
-				if (admin.equals("admin")) {
+				if (admin.equals("1")) {
 					return Packet.Login.ADMIN;
 				} else {
 					return Packet.Login.USER;
@@ -247,6 +248,26 @@ public class DBConnector {
 			return Packet.Login.FAIL;
 		}
 		return Packet.Login.FAIL;
+	}
+
+	public void addAllUsers(Packet p) {
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String debug = "SELECT * from `User`";
+			try {
+				ResultSet resultSet = connect.createStatement().executeQuery(
+						debug);
+				while (resultSet.next()) {
+					String toAdd[] = new String[3];
+					toAdd[0]= resultSet.getString("id");
+					toAdd[1] = resultSet.getString("name");
+					toAdd[2] = resultSet.getString("password");
+					p.addUserToUserList(toAdd);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
