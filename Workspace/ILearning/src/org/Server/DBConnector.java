@@ -279,5 +279,15 @@ public class DBConnector {
 			}
 		}
 	}
+	
+	public void removeUser(Packet p){
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  p.getFrage() + "'));";
+			try{connect.createStatement().execute(debug);	
+			
+			}catch(SQLException e){}
+			
+		}
+	}
 
 }

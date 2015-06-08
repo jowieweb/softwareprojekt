@@ -146,6 +146,7 @@ public class AdministrationPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO remove user
+				listener.removeUser(userTextField.getText());
 
 			}
 		});
@@ -175,19 +176,22 @@ public class AdministrationPanel extends JPanel {
 		gbc_submitButton.gridy = 3;
 		add(buttonPanel, gbc_submitButton);
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		userList.addListSelectionListener( new ListSelectionListener() {
-			
+		userList.addListSelectionListener(new ListSelectionListener() {
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
 				if (!e.getValueIsAdjusting()) {
-		            JList theList = (JList)e.getSource();
+					JList theList = (JList) e.getSource();
+					try{
+					if (users.size() >= theList.getSelectedIndex()) {
+						userTextField.setText(users.get(theList
+								.getSelectedIndex())[1]);
+						passwordTextField.setText(users.get(theList
+								.getSelectedIndex())[2]);
+					}}catch(Exception ex){}
 
-
-		            userTextField.setText(users.get(theList.getSelectedIndex())[1]);
-		            passwordTextField.setText(users.get(theList.getSelectedIndex())[2]);
-		           
-		        }
+				}
 			}
 		});
 	}
@@ -195,7 +199,7 @@ public class AdministrationPanel extends JPanel {
 	public void addUsers(Packet p) {
 
 		users = p.getUsers();
-
+		userListModel.removeAllElements();
 		for (int i = 0; i < users.size(); i++) {
 
 			userListModel.addElement(users.get(i)[1]);
