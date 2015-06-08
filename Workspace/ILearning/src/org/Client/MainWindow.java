@@ -262,15 +262,35 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	}
 
 	@Override
-	public void updateUser(String username, String password) {
+	public void updateUser(String id,String username, String password) {
 		// TODO Auto-generated method stub
-
+		Packet p = new Packet(this.username, this.password);
+		p.setPacketType(Packet.Type.USER_MANAGEMENT);
+		p.setManagemtType(Packet.Management_Type.CHANGE_USER);
+		p.setAnswers(new String[] {id,username,password});
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void addUser(String username, String password) {
 		// TODO Auto-generated method stub
+		Packet p = new Packet(this.username, this.password);
+		p.setPacketType(Packet.Type.USER_MANAGEMENT);
+		p.setManagemtType(Packet.Management_Type.ADD_USER);
+		p.setAnswers(new String[] {username,password});
 		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

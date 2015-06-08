@@ -151,12 +151,12 @@ public class AdministrationPanel extends JPanel {
 			}
 		});
 		newUserButton.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-				listener.addUser(userTextField.getText(),
-						getPasswordHash(passwordTextField.getPassword()));
+				userListModel.addElement("new User");
+				userList.setSelectedIndex(userListModel.size()-1);
+				
 			}
 		});
 		submitButton.addActionListener(new ActionListener() {
@@ -164,7 +164,14 @@ public class AdministrationPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO submit
-
+				if(userList.getSelectedValue().equals("new User")){
+					listener.addUser(userTextField.getText(), passwordTextField.getText());
+				}
+				else
+				{
+					String[] act = users.get(userListModel.getSize()-1);
+					listener.updateUser(act[0], userTextField.getText(), passwordTextField.getText());
+				}
 			}
 		});
 

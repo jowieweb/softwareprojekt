@@ -283,6 +283,17 @@ public class DBConnector {
 			}
 		}
 	}
+	public void changeUser(Packet p){
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
+			try{
+				connect.createStatement().execute(debug);	
+			
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public void removeUser(Packet p){
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
@@ -291,6 +302,22 @@ public class DBConnector {
 			
 			}catch(SQLException e){}
 			
+		}
+	}
+	public void addUser(Packet p)
+	{
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			if(p.getAnswers() != null && p.getAnswers().length == 2)
+			{
+				String debug = "Insert into `User`(name, password, surname, email) VALUES('" + p.getAnswers()[0] + "','" + p.getAnswers()[1] + "',' ',' ')";
+				try{
+					connect.createStatement().execute(debug);	
+				
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+				
+			}
 		}
 	}
 
