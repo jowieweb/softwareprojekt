@@ -264,8 +264,12 @@ public class DBConnector {
 		return Packet.Login.FAIL;
 	}
 
-	public void addAllUsers(Packet p) {
-		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+	/**
+	 * Gets all users from the database and packs them into the packet.
+	 * @param packet packet
+	 */
+	public void addAllUsers(Packet packet) {
+		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
 			String debug = "SELECT * from `User`";
 			try {
 				ResultSet resultSet = connect.createStatement().executeQuery(
@@ -275,7 +279,7 @@ public class DBConnector {
 					toAdd[0] = resultSet.getString("id");
 					toAdd[1] = resultSet.getString("name");
 					toAdd[2] = resultSet.getString("password");
-					p.addUsersToUserList(toAdd);
+					packet.addUsersToUserList(toAdd);
 				}
 
 			} catch (SQLException e) {
@@ -283,15 +287,17 @@ public class DBConnector {
 			}
 		}
 	}
-	
-	public void removeUser(Packet p){
-		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
-			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  p.getFrage() + "'));";
+
+	/**
+	 * Removes a user from the database.
+	 * @param packet packet
+	 */
+	public void removeUser(Packet packet){
+		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
+			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  packet.getQuestion() + "'));";
 			try{connect.createStatement().execute(debug);	
 			
-			}catch(SQLException e){}
-			
+			} catch(SQLException e){}
 		}
 	}
-
 }

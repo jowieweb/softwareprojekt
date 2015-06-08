@@ -167,9 +167,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 				System.out.println(p.getWasRight());
 			}
-			else
-			{
-			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
 			editMenuItem.setVisible(true);
