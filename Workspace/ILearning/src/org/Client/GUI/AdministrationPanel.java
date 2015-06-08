@@ -35,7 +35,7 @@ public class AdministrationPanel extends JPanel {
 	
 	/**
 	 * The constructor builds the panel.
-	 * @param listener callback method object
+	 * @param l callback method object
 	 */
 	public AdministrationPanel(AdministrationPanelListener l) {
 		this.listener = l;

@@ -12,17 +12,22 @@ import javax.imageio.ImageIO;
 
 import org.Packet;
 
+/**
+ * The DBConnector class retrieves data from the database.
+ */
 public class DBConnector {
-
 	private java.sql.Connection connect = null;
 	private int rekCount = 0;
 
+	/**
+	 * constructor invokes connect().
+	 */
 	public DBConnector() {
 		connect();
 	}
 
 	/**
-	 * starts the connection to the mysql server
+	 * starts the connection to the mysql-server
 	 */
 	private void connect() {
 		try {
@@ -31,14 +36,16 @@ public class DBConnector {
 					.getConnection("jdbc:mysql://j.z5n.de/ilearning?user=kuser&password=qwertzuiop");
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Retrieves the answer from a question from the database and checks the given answer. 
+	 * @param p a Packet that contains the user's answer.
+	 */
 	public void checkAnswers(Packet p) {
 		if (p.getSelectedAnswer() != null) {
 			try {
@@ -52,6 +59,7 @@ public class DBConnector {
 					if (p.getSelectedAnswer()[intsol] == 1) {
 						right = true;
 					}
+					
 					for (int i = 0; i < 4; i++) {
 						if (p.getSelectedAnswer()[i] == 1 && i != intsol) {
 							right = false;
@@ -61,12 +69,16 @@ public class DBConnector {
 					p.setWasRight(right);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * @param p
+	 * @param wasRight
+	 */
 	public void updateCheckedAnswer(Packet p, boolean wasRight) {
 		String debug = "";
 		String correct = "0";
@@ -77,9 +89,11 @@ public class DBConnector {
 		}
 
 		try {
-			debug = "select count(*) from User_data where User_data.questionid = (select id from Question where questiontext = '"
+			debug = "select count(*) from User_data where User_data.questionid ="
+					+ " (select id from Question where questiontext = '"
 					+ p.getFrage()
-					+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+					+ "') and User_data.userid = (select `User`.id from"
+					+ " `User` where `User`.`name` = '"
 					+ p.getUsername() + "')";
 
 			ResultSet result = connect.createStatement().executeQuery(debug);
@@ -91,15 +105,20 @@ public class DBConnector {
 			if (count == 1) {
 				debug = "update User_data set falseCount= falsecount + "
 						+ incorrect
-						+ ", lastAnswered = now(), overallCount = overallCount +1, correctAnswered = correctAnswered + "
+						+ ", lastAnswered = now(), overallCount = overallCount +1,"
+						+ " correctAnswered = correctAnswered + "
 						+ correct
-						+ " where User_data.questionid = (select id from Question where questiontext = '"
+						+ " where User_data.questionid = (select id from Question"
+						+ " where questiontext = '"
 						+ p.getFrage()
-						+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+						+ "') and User_data.userid = (select `User`.id from `User`"
+						+ " where `User`.`name` = '"
 						+ p.getUsername() + "')";
 
 			} else if (count == 0) {
-				debug = "insert into User_data(userid,questionid,falseCount,lastAnswered,overallCount,correctAnswered) values((select `User`.id from `User` where `User`.`name` = '"
+				debug = "insert into User_data(userid,questionid,falseCount,lastAnswered,"
+						+ "overallCount,correctAnswered) values((select `User`.id from"
+						+ " `User` where `User`.`name` = '"
 						+ p.getUsername()
 						+ "') , (select id from Question where questiontext = '"
 						+ p.getFrage()
@@ -117,7 +136,7 @@ public class DBConnector {
 	}
 
 	/**
-	 * adds the categorie to the packet
+	 * adds the category to the packet
 	 * 
 	 * @param p
 	 */
@@ -132,14 +151,13 @@ public class DBConnector {
 			p.setTopics(categorys.split(";"));
 			p.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
 	/**
-	 * adds all level form the DB to the packet.
+	 * adds all levels from the database to the packet.
 	 * 
 	 * @param p
 	 */
@@ -154,7 +172,6 @@ public class DBConnector {
 			p.setLevel(level.split(";"));
 			resultSet.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -169,7 +186,10 @@ public class DBConnector {
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
-							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
+							"select questiontext, answer1, answer2, answer3, answer4, image"
+									+ " from Topic join Question_Topic on Topic.id ="
+									+ " Question_Topic.topic_id join Question on Question.id"
+									+ " = Question_Topic.question_id where Topic.title = '"
 									+ p.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
@@ -206,23 +226,22 @@ public class DBConnector {
 	 * adds an image to the packet
 	 * 
 	 * @param p
-	 * @param url
-	 *            the URL
+	 * @param url the URL
 	 */
 	private void setImage(Packet p, String url) {
 		try {
 			Image image = ImageIO.read(new File(url));
 			p.setImage(image);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * checks the login if wrong Login.FAIL
+	 * checks the login, if wrong Login.FAIL
 	 * 
-	 * @param p
+	 * @param username the username
+	 * @param password the password
 	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
 	 */
 	public Packet.Login checkLogin(String username, String password) {
@@ -244,7 +263,6 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			connect();
 			if (rekCount > 2) {
 				rekCount++;

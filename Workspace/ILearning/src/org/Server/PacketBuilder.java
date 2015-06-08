@@ -2,16 +2,24 @@ package org.Server;
 
 import org.Packet;
 
+/**
+ * class that builds packets
+ */
 public class PacketBuilder {
-
 	DBConnector dbc;
 	
+	/**
+	 * The constructor instantiates a new DBConnector.
+	 */
 	public PacketBuilder(){
 		dbc = new DBConnector();
 	}
 	
-	
-	
+	/**
+	 * 
+	 * @param querry
+	 * @return
+	 */
 	public  Packet getPacket(Packet querry) {
 		Packet answer = copyPacket(querry);
 
@@ -37,6 +45,11 @@ public class PacketBuilder {
 	}
 	
 
+	/**
+	 * copys an existing packet.
+	 * @param querry 
+	 * @return
+	 */
 	private Packet copyPacket(Packet querry ) {
 		Packet p = new Packet(querry.getUsername(), querry.getPassword());
 		p.setSocket(querry.getSocket());
