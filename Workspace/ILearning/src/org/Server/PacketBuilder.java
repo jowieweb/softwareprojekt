@@ -59,8 +59,8 @@ public class PacketBuilder {
 		p.setPacketType(querry.getPacketType());
 		p.setSelectedLevel(querry.getSelectedLevel());
 		p.setSelectedTopic(querry.getSelectedTopic());
-		p.setSelectedAnswer(querry.getSelectedAnswer());
-		p.setFrage(querry.getFrage());
+		p.setSelectedAnswers(querry.getSelectedAnswers());
+		p.setQuestion(querry.getQuestion());
 		p.setWasRight(querry.getWasRight());
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());

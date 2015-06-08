@@ -51,21 +51,21 @@ public class DBConnector {
 	 * a Packet that contains the user's answer.
 	 */
 	public void checkAnswers(Packet packet) {
-		if (packet.getSelectedAnswer() != null) {
+		if (packet.getSelectedAnswers() != null) {
 			try {
 				ResultSet result = connect.createStatement().executeQuery(
 						"select solution from Question where Question.questiontext ='"
-								+ packet.getFrage() + "'");
+								+ packet.getQuestion() + "'");
 				while (result.next()) {
 					String sol = result.getString("solution");
 					int intsol = Integer.parseInt(sol) - 1;
 					boolean right = false;
-					if (packet.getSelectedAnswer()[intsol] == 1) {
+					if (packet.getSelectedAnswers()[intsol] == 1) {
 						right = true;
 					}
 
 					for (int i = 0; i < 4; i++) {
-						if (packet.getSelectedAnswer()[i] == 1 && i != intsol) {
+						if (packet.getSelectedAnswers()[i] == 1 && i != intsol) {
 							right = false;
 						}
 					}
@@ -93,7 +93,7 @@ public class DBConnector {
 		try {
 			debug = "select count(*) from User_data where User_data.questionid ="
 					+ " (select id from Question where questiontext = '"
-					+ packet.getFrage()
+					+ packet.getQuestion()
 					+ "') and User_data.userid = (select `User`.id from"
 					+ " `User` where `User`.`name` = '"
 					+ packet.getUsername()
@@ -110,7 +110,7 @@ public class DBConnector {
 						+ incorrect
 						+ ", lastAnswered = now(), overallCount = overallCount +1"
 						+ " where Question_data.QuestionID = (select id from Question where questiontext = '"
-						+ packet.getFrage()
+						+ packet.getQuestion()
 						+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
 						+ packet.getUsername() + "')";
 
@@ -118,7 +118,7 @@ public class DBConnector {
 				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
 						+ packet.getUsername()
 						+ "') , (select id from Question where questiontext = '"
-						+ packet.getFrage() + "')," + incorrect + ",now(),1)";
+						+ packet.getQuestion() + "')," + incorrect + ",now(),1)";
 			}
 			connect.createStatement().execute(debug);
 
@@ -183,7 +183,7 @@ public class DBConnector {
 									+ packet.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
-				packet.setFrage(resultSet.getString("questiontext"));
+				packet.setQuestion(resultSet.getString("questiontext"));
 
 				ArrayList<String> answers = new ArrayList<String>();
 				for (int i = 1; i < 5; i++) {
@@ -275,7 +275,7 @@ public class DBConnector {
 					toAdd[0] = resultSet.getString("id");
 					toAdd[1] = resultSet.getString("name");
 					toAdd[2] = resultSet.getString("password");
-					p.addUserToUserList(toAdd);
+					p.addUsersToUserList(toAdd);
 				}
 
 			} catch (SQLException e) {

@@ -173,7 +173,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			add(questionPanel);
 			editMenuItem.setVisible(true);
-			questionPanel.setQuestionText(p.getFrage());
+			questionPanel.setQuestionText(p.getQuestion());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
 
 			//			questionPanel.setAnswerText(p.getAnswers());
@@ -272,12 +272,12 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void answerSelected(int[] answer) {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
-		p.setFrage(questionPanel.getQuestionText());
+		p.setQuestion(questionPanel.getQuestionText());
 		p.setTopics(lastPacket.getTopics());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
 
-		p.setSelectedAnswer(answer);
+		p.setSelectedAnswers(answer);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
