@@ -69,17 +69,15 @@ public class DBConnector {
 
 	public void updateCheckedAnswer(Packet p, boolean wasRight) {
 		String debug = "";
-		String correct = "0";
 		String incorrect = "1";
 		if (wasRight) {
 			incorrect = "0";
-			correct = "1";
 		}
 
 		try {
-			debug = "select count(*) from User_data where User_data.questionid = (select id from Question where questiontext = '"
+			debug = "select count(*) from Question_data where Question_data.questionid = (select id from Question where questiontext = '"
 					+ p.getFrage()
-					+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+					+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
 					+ p.getUsername() + "')";
 
 			ResultSet result = connect.createStatement().executeQuery(debug);
@@ -89,24 +87,19 @@ public class DBConnector {
 			}
 
 			if (count == 1) {
-				debug = "update User_data set falseCount= falsecount + "
+				debug = "update Question_data set falseCount= falsecount + "
 						+ incorrect
-						+ ", lastAnswered = now(), overallCount = overallCount +1, correctAnswered = correctAnswered + "
-						+ correct
-						+ " where User_data.questionid = (select id from Question where questiontext = '"
+						+ ", lastAnswered = now(), overallCount = overallCount +1"
+						+ " where Question_data.QuestionID = (select id from Question where questiontext = '"
 						+ p.getFrage()
-						+ "') and User_data.userid = (select `User`.id from `User` where `User`.`name` = '"
+						+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
 						+ p.getUsername() + "')";
 
 			} else if (count == 0) {
-				debug = "insert into User_data(userid,questionid,falseCount,lastAnswered,overallCount,correctAnswered) values((select `User`.id from `User` where `User`.`name` = '"
+				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
 						+ p.getUsername()
 						+ "') , (select id from Question where questiontext = '"
-						+ p.getFrage()
-						+ "'),"
-						+ incorrect
-						+ ",now(),"
-						+ correct + ",1)";
+						+ p.getFrage() + "')," + incorrect + ",now(),1)";
 			}
 			connect.createStatement().execute(debug);
 
@@ -169,7 +162,7 @@ public class DBConnector {
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
-							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question_Topic on Topic.id = Question_Topic.topic_id join Question on Question.id = Question_Topic.question_id where Topic.title = '"
+							"select questiontext, answer1, answer2, answer3, answer4, image from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
 									+ p.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
