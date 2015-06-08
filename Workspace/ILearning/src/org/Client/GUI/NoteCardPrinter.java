@@ -9,6 +9,7 @@ import org.Packet;
 /**
  * NoteCardPrinter.
  * prints questions in card format
+ * @author Lukas Stuckstette
  */
 public class NoteCardPrinter {
 
