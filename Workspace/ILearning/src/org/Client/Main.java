@@ -4,6 +4,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+/**
+ * The main class starts the program
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -11,28 +14,21 @@ public class Main {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (UnsupportedLookAndFeelException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 				new MainWindow();
 				
 			}
-			
 		});
-
 	}
-
 }

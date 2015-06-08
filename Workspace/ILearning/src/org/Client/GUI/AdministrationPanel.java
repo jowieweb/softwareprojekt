@@ -23,9 +23,6 @@ import javax.swing.JPasswordField;
  *
  */
 public class AdministrationPanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3958850544461012322L;
 	private final JTextField userTextField = new JTextField();
 	private JPasswordField passwordTextField;
@@ -35,7 +32,6 @@ public class AdministrationPanel extends JPanel {
 	private JButton removeUserButton;
 	private JButton newUserButton;
 	private AdministrationPanelListener listener;
-//	private JPanel oldPanel;
 	
 	/**
 	 * The constructor builds the panel.
@@ -183,6 +179,11 @@ public class AdministrationPanel extends JPanel {
 		return hash;
 	}
 	
+	/**
+	 * Converts a byte array into a string.
+	 * @param array to be converted
+	 * @return string
+	 */
 	private String byteArrayToHexString(byte[] array) {
 		char[] h = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
 				'9', 'A', 'B', 'C', 'D', 'E', 'F'};
