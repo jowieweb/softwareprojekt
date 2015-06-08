@@ -20,7 +20,7 @@ public class TCPConnection extends Client implements Runnable {
 	 * The constructor awaits a ClientListener, the ip from the server and a port.
 	 * @param listener callback method object
 	 * @param ip	the server ip
-	 * @param port ther serverport
+	 * @param port the serverport
 	 */
 	public TCPConnection(ClientListener listener, String ip, int port) {
 		super(listener);

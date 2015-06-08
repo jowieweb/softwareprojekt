@@ -59,39 +59,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		fileMenu = new JMenu("Datei");
 		helpMenu = new JMenu("Hilfe");
 
-		aboutMenuItem = new JMenuItem("Über..");
-		userMenuItem = new JMenuItem(new AbstractAction() {
-			private static final long serialVersionUID = -358338731196690668L;
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Packet p = new Packet(username, password);
-				p.setPacketType(Packet.Type.USER_MANAGEMENT);
-				try {
-					client.sendPacket(p);
-				} catch (TCPClientException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-		exitMenuItem = new JMenuItem(new AbstractAction() {
-			private static final long serialVersionUID = -2684501250646388101L;
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(NORMAL);
-			}
-		});
-		editMenuItem = new JMenuItem(new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				changeQuestionPanelToEditMode();
-			}
-		});
+		createMenuItems();
 
 		exitMenuItem.setText("Beenden");
 		editMenuItem.setText("Bearbeiten");
@@ -190,14 +158,17 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		//		setMinimumSize(getSize());
 	}
 
-	@Override
+	/**
+	 * Callback method that is invoked by an exception.
+	 * @param e exception
+	 */
 	public void exceptionInClientData(TCPClientException e) {
 		JOptionPane.showMessageDialog(this, e.getMessage() + "\n" + e.getCause().getMessage());
 		loginPanel.enableLoginButton();
 	}
 
 	/**
-	 * Callbackmethod invoked when submitButton on loginPanel is pressed.
+	 * Callback method invoked when submitButton on loginPanel is pressed.
 	 * @param username the username
 	 * @param password the user's password
 	 */
@@ -205,17 +176,16 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void login(String username, String password) {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.CATEGORY);
+		
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
-	 * Callbackmethod is invoked when submitButton on categoryPanel is pressed.
+	 * Callback method is invoked when submitButton on categoryPanel is pressed.
 	 * @param category the selected category
 	 * @param level the selected level
 	 * @param modus the selected modus
@@ -228,10 +198,10 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
 		lastPacket = p;
+		
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -242,24 +212,30 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	}
 
-	@Override
+	/**
+	 * Callback method that is invoked by the AdministrationPanel when an user is removed.
+	 * @param username username of the user to be removed
+	 */
 	public void removeUser(String username) {
 		Packet p = new Packet(this.username, password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.REMOVE_USER);
 		p.setQuestion(username);
+		
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
-	@Override
-	public void updateUser(String id,String username, String password) {
-		// TODO Auto-generated method stub
+	/**
+	 * Callback method invoked by AdministrationPanel when an user is updated.
+	 * @param id	the id of the user
+	 * @param username	the username of the user
+	 * @param password the password of the user
+	 */
+	public void updateUser(String id, String username, String password) {
 		Packet p = new Packet(this.username, this.password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.CHANGE_USER);
@@ -268,14 +244,16 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	@Override
+	/**
+	 * Callback method invoked by AdminstrationPanel when a user is added.
+	 * @param username the username of the new user
+	 * @param password the password of the new user
+	 */
 	public void addUser(String username, String password) {
-		// TODO Auto-generated method stub
 		Packet p = new Packet(this.username, this.password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.ADD_USER);
@@ -284,17 +262,14 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
-	 * Callbackmethod invoked when submitButton on questionPanel is pressed.
+	 * Callback method invoked when submitButton on questionPanel is pressed.
 	 * @param answer the index of the selected answer
 	 */
-	@Override
 	public void answerSelected(int[] answer) {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
@@ -322,7 +297,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
-
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 
@@ -337,7 +311,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	/**
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
-	@Override
 	public void changeQuestionPanelToAnswerMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
@@ -352,7 +325,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	/**
 	 * Replaces QuestionPanel with CategoryPanel.
 	 */
-	@Override
 	public void changeQuestionPanelToCategoryPanel() {
 		remove(questionPanel);
 		questionPanel = null;
@@ -365,8 +337,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * Replaces current panel with adminPanel.
 	 */
 	private void changePanelToAdministrationPanel(Packet p) {
-
-
 		if (questionPanel != null) {
 			remove(questionPanel);
 		}
@@ -385,10 +355,47 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	/**
 	 * Replaces currently displayed AdministrationPanel with CategoryPanel.
 	 */
-	@Override
 	public void changeAdministrationPanelToCategoryPanel() {
 		remove(adminPanel);
 		add(categoryPanel);
 		pack();
+	}
+	
+	/**
+	 * Creates menu items.
+	 */
+	private void createMenuItems() {
+		aboutMenuItem = new JMenuItem("Über..");
+		userMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = -358338731196690668L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Packet p = new Packet(username, password);
+				p.setPacketType(Packet.Type.USER_MANAGEMENT);
+				
+				try {
+					client.sendPacket(p);
+				} catch (TCPClientException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		exitMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = -2684501250646388101L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(NORMAL);
+			}
+		});
+		editMenuItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				changeQuestionPanelToEditMode();
+			}
+		});
 	}
 }
