@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 import java.awt.GridBagLayout;
@@ -14,17 +13,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JPasswordField;
@@ -34,7 +28,6 @@ import org.Packet;
 /**
  * The class AdministrationPanel represents a form thats allows users to edit
  * user information.
- *
  */
 public class AdministrationPanel extends JPanel {
 	private static final long serialVersionUID = 3958850544461012322L;
@@ -51,9 +44,7 @@ public class AdministrationPanel extends JPanel {
 
 	/**
 	 * The constructor builds the panel.
-	 * 
-	 * @param listener
-	 *            callback method object
+	 * @param listener callback method object
 	 */
 	public AdministrationPanel(AdministrationPanelListener l) {
 		this.listener = l;
@@ -132,6 +123,98 @@ public class AdministrationPanel extends JPanel {
 		buttonPanel.add(newUserButton);
 		buttonPanel.add(submitButton);
 
+		addButtonActionListeners();
+
+		GridBagConstraints gbc_submitButton = new GridBagConstraints();
+		gbc_submitButton.anchor = GridBagConstraints.SOUTH;
+		gbc_submitButton.insets = new Insets(0, 0, 0, 5);
+		gbc_submitButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_submitButton.gridx = 4;
+		gbc_submitButton.gridy = 3;
+		add(buttonPanel, gbc_submitButton);
+		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()) {
+					JList<String> theList = (JList<String>) e.getSource();
+					try{
+					if (users.size() >= theList.getSelectedIndex()) {
+						userTextField.setText(users.get(theList
+								.getSelectedIndex())[1]);
+						passwordTextField.setText(users.get(theList
+								.getSelectedIndex())[2]);
+					}}catch(Exception ex){}
+
+				}
+			}
+		});
+	}
+
+	public void addUsers(Packet p) {
+		users = p.getUsers();
+		userListModel.removeAllElements();
+
+		for (int i = 0; i < users.size(); i++) {
+
+			userListModel.addElement(users.get(i)[1]);
+		}
+	}
+
+	/**
+	 * Hashes a char array with MD5.
+	 * @param password password to hash
+	 * @return hashed password
+	 */
+	private String getPasswordHash(char[] password) {
+		String hash = null;
+
+		if (password == null) {
+			return null;
+		}
+
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			String pw = new String(password);
+			byte[] bytes = md5.digest(pw.getBytes("UTF-8"));
+			hash = byteArrayToHexString(bytes);
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return hash;
+	}
+
+	/**
+	 * Converts a byte array into a string. 
+	 * @param array to be converted
+	 * @return string
+	 */
+	private String byteArrayToHexString(byte[] array) {
+		char[] h = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+				'B', 'C', 'D', 'E', 'F' };
+		String hex = new String();
+
+		if (array == null) {
+			return null;
+		}
+
+		for (byte n : array) {
+			hex += h[(n >>> 4) & 0x0F];
+			hex += h[n & 0x0F];
+		}
+
+		return hex;
+	}
+	
+	/**
+	 * Adds ActionListeners to backButton, removeUserbutton, newUserButton and submitButton.
+	 */
+	private void addButtonActionListeners() {
 		backButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -167,95 +250,5 @@ public class AdministrationPanel extends JPanel {
 
 			}
 		});
-
-		GridBagConstraints gbc_submitButton = new GridBagConstraints();
-		gbc_submitButton.anchor = GridBagConstraints.SOUTH;
-		gbc_submitButton.insets = new Insets(0, 0, 0, 5);
-		gbc_submitButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_submitButton.gridx = 4;
-		gbc_submitButton.gridy = 3;
-		add(buttonPanel, gbc_submitButton);
-		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		userList.addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				// TODO Auto-generated method stub
-				if (!e.getValueIsAdjusting()) {
-					JList theList = (JList) e.getSource();
-					try{
-					if (users.size() >= theList.getSelectedIndex()) {
-						userTextField.setText(users.get(theList
-								.getSelectedIndex())[1]);
-						passwordTextField.setText(users.get(theList
-								.getSelectedIndex())[2]);
-					}}catch(Exception ex){}
-
-				}
-			}
-		});
-	}
-
-	public void addUsers(Packet p) {
-
-		users = p.getUsers();
-		userListModel.removeAllElements();
-		for (int i = 0; i < users.size(); i++) {
-
-			userListModel.addElement(users.get(i)[1]);
-		}
-	}
-
-	/**
-	 * Hashes a char array.
-	 * 
-	 * @param password
-	 *            password to hash
-	 * @return hashed password
-	 */
-	private String getPasswordHash(char[] password) {
-		String hash = null;
-
-		if (password == null) {
-			return null;
-		}
-
-		try {
-			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			String pw = new String(password);
-			byte[] bytes = md5.digest(pw.getBytes("UTF-8"));
-			hash = byteArrayToHexString(bytes);
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
-		return hash;
-	}
-
-	/**
-	 * Converts a byte array into a string.
-	 * 
-	 * @param array
-	 *            to be converted
-	 * @return string
-	 */
-	private String byteArrayToHexString(byte[] array) {
-		char[] h = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
-				'B', 'C', 'D', 'E', 'F' };
-		String hex = new String();
-
-		if (array == null) {
-			return null;
-		}
-
-		for (byte n : array) {
-			hex += h[(n >>> 4) & 0x0F];
-			hex += h[n & 0x0F];
-		}
-
-		return hex;
 	}
 }
