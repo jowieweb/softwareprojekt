@@ -24,6 +24,7 @@ public class Packet implements Serializable {
 	private ImageIcon image;
 	private int[] selectedAnswer;
 	private boolean wasRight;
+	
 	private ArrayList<String[]> users;
 
 	/**
@@ -32,6 +33,11 @@ public class Packet implements Serializable {
 	public enum Type {
 		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
 	};
+	
+	public enum Management_Type {
+		UNUSED, ADD_USER, REMOVE_USER, CHANGE_USER
+	}
+	
 
 	/**
 	 * Login status with permissions.
@@ -42,6 +48,7 @@ public class Packet implements Serializable {
 
 	private Type type = Type.UNUSED;
 	private Login login = Login.FAIL;
+	private Management_Type m_type = Management_Type.UNUSED;
 
 	/**
 	 * Constructor builds new packet.
@@ -300,5 +307,13 @@ public class Packet implements Serializable {
 	 */
 	public ArrayList<String[]> getUsers(){
 		return users;
+	}
+	
+	public void setManagemtType(Management_Type mtype){
+		m_type = mtype;
+	}
+	
+	public Management_Type getManagementType(){
+		return m_type;
 	}
 }

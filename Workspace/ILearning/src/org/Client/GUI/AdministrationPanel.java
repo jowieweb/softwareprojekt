@@ -1,26 +1,33 @@
 package org.Client.GUI;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.JPasswordField;
 
 import org.Packet;
 
@@ -44,7 +51,7 @@ public class AdministrationPanel extends JPanel {
 
 	/**
 	 * The constructor builds the panel.
-	 *
+	 * 
 	 * @param listener
 	 *            callback method object
 	 */
@@ -139,6 +146,7 @@ public class AdministrationPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO remove user
+				listener.removeUser(userTextField.getText());
 
 			}
 		});
@@ -168,17 +176,20 @@ public class AdministrationPanel extends JPanel {
 		gbc_submitButton.gridy = 3;
 		add(buttonPanel, gbc_submitButton);
 		userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		userList.addListSelectionListener( new ListSelectionListener() {
+		userList.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
 				if (!e.getValueIsAdjusting()) {
-					JList theList = (JList)e.getSource();
-
-
-					userTextField.setText(users.get(theList.getSelectedIndex())[1]);
-					passwordTextField.setText(users.get(theList.getSelectedIndex())[2]);
+					JList theList = (JList) e.getSource();
+					try{
+					if (users.size() >= theList.getSelectedIndex()) {
+						userTextField.setText(users.get(theList
+								.getSelectedIndex())[1]);
+						passwordTextField.setText(users.get(theList
+								.getSelectedIndex())[2]);
+					}}catch(Exception ex){}
 
 				}
 			}
@@ -188,7 +199,7 @@ public class AdministrationPanel extends JPanel {
 	public void addUsers(Packet p) {
 
 		users = p.getUsers();
-
+		userListModel.removeAllElements();
 		for (int i = 0; i < users.size(); i++) {
 
 			userListModel.addElement(users.get(i)[1]);
@@ -197,7 +208,7 @@ public class AdministrationPanel extends JPanel {
 
 	/**
 	 * Hashes a char array.
-	 *
+	 * 
 	 * @param password
 	 *            password to hash
 	 * @return hashed password
@@ -226,7 +237,7 @@ public class AdministrationPanel extends JPanel {
 
 	/**
 	 * Converts a byte array into a string.
-	 *
+	 * 
 	 * @param array
 	 *            to be converted
 	 * @return string

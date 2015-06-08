@@ -38,6 +38,17 @@ public class PacketBuilder {
 			dbc.setFrage(answer);
 			break;
 		case USER_MANAGEMENT:
+			switch(querry.getManagementType()){
+			case REMOVE_USER:
+				if(querry.getFrage() != null){
+					dbc.removeUser(querry);
+				}
+				break;
+			default:
+				break;				
+			}
+			
+			
 			dbc.addAllUsers(answer);
 			break;
 		default:

@@ -248,7 +248,16 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	@Override
 	public void removeUser(String username) {
-		// TODO Auto-generated method stub
+		Packet p = new Packet(this.username, password);
+		p.setPacketType(Packet.Type.USER_MANAGEMENT);
+		p.setManagemtType(Packet.Management_Type.REMOVE_USER);
+		p.setFrage(username);
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -261,6 +270,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	@Override
 	public void addUser(String username, String password) {
 		// TODO Auto-generated method stub
+		
 
 	}
 
