@@ -293,7 +293,7 @@ public class Packet implements Serializable {
 	 * @param users user to add
 	 */
 	public void addUsersToUserList(String[] users){
-		if(users == null){
+		if(this.users == null){
 			this.users = new ArrayList<String[]>();
 		}
 		if(users != null && users.length == 3){

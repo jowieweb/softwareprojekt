@@ -8,6 +8,7 @@ import java.awt.print.PrinterException;
 
 /**
  * Formats a given 2D String Array
+ * @author Lukas Stuckstette
  */
 public class PrintTemplate implements Printable {
 
