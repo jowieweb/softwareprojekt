@@ -14,7 +14,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import com.sun.jna.NativeLibrary;
-/*
+/**
  * VideoPanel - A Panel displaying Media via the VLC-Plugin
  * @author Lukas Stuckstette
  * @version 1.0
@@ -28,7 +28,8 @@ public class VideoPanel extends JPanel {
 	private String password;
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private PlayerControlsPanel controlsPanel;
-	/*
+	
+	/**
 	 * Constructor.
 	 * @param vidUrl URL identifying the Media-Object. Syntax: 'http://<server-ip>:<server-port>/<media-object>'
 	 * @param username The username of the current user. Used for authentification.
@@ -70,7 +71,8 @@ public class VideoPanel extends JPanel {
 		this.add(controlsPanel, BorderLayout.SOUTH);
 		System.out.println(buildRequestURL());
 	}
-	/*
+	
+	/**
 	 * Plays the initialized Media.
 	 * WARNING! Only call this Method AFTER the JFrame using this Panel is initialized and visible!
 	 */
