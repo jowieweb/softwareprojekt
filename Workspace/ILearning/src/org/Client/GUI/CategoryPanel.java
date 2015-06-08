@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 /**
  * The class CategoryPanel represents a JPanel that displays all available categories.
  */
+@SuppressWarnings("unused")
 public class CategoryPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList<String> categoryListBox;
@@ -63,8 +64,8 @@ public class CategoryPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				listener.categorySelected(categoryListBox.getSelectedValue().toString(),levelComboBox.getSelectedItem().toString() , 0);
+				listener.categorySelected(categoryListBox.getSelectedValue().toString(),
+						levelComboBox.getSelectedItem().toString(), 0);
 			}
 		});
 	}

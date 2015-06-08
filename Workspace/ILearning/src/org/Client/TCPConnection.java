@@ -8,38 +8,53 @@ import java.net.UnknownHostException;
 
 import org.Packet;
 
-public class TCPConnection extends Client implements Runnable{
-
+/**
+ * The class TCPConnection handles the network stuff.
+ */
+public class TCPConnection extends Client implements Runnable {
 	private String serverIP;
 	private int port;
 	private Packet packet;
 
+	/**
+	 * The constructor awaits a ClientListener, the ip from the server and a port.
+	 * @param listener callback method object
+	 * @param ip	the server ip
+	 * @param port ther serverport
+	 */
 	public TCPConnection(ClientListener listener, String ip, int port) {
 		super(listener);
+		
 		if(ip.matches("((25[0-5]|(2[0-4]|1{0,1}"
 				+ "[0-9]){0,1}[0-9])\\.){3,3}"
 				+ "(25[0-5]|(2[0-4]|1{0,1}"
 				+ "[0-9]){0,1}[0-9])")) {
 			serverIP = ip;
 		}
+		
 		if(port > 1024 || port < 64000) {
 			this.port = port;
 		}
-
 	}
-
-	@Override
-	public void sendPacket(Packet p) throws TCPClientException{
-		if(serverIP==null||port == 0){
+	
+	/**
+	 * Sends a packet to the server.
+	 * @param packet the packet to send
+	 */
+	public void sendPacket(Packet packet) throws TCPClientException{
+		if(serverIP == null || port == 0){
 			throw new TCPClientException("SERVER_IP or PORT wrong!!");
 		}
-		packet = p;
+		
+		this.packet = packet;
 		Thread t = new Thread(this);
 		t.start();
 	}
 
 	@SuppressWarnings("resource")
-	@Override
+	/**
+	 * Thread-run-method. Is invoked by Thread.start().
+	 */
 	public void run() {
 		try {
 			Socket s = new Socket(serverIP, port);
@@ -48,22 +63,17 @@ public class TCPConnection extends Client implements Runnable{
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
 			Packet rp = (Packet)in.readObject();
 			listener.receiveClientData(rp);
+			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			listener.exceptionInClientData(new TCPClientException("Unknown Host", e));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			listener.exceptionInClientData(new TCPClientException("Connection Failed", e));
 		} catch (ClassNotFoundException e) {
 			listener.exceptionInClientData(new TCPClientException("Responding Element is wrong type.", e));
-
 		} catch (ClassCastException e){
 			listener.exceptionInClientData(new TCPClientException("Responding Element is wrong type.", e));
-
 		} catch (Exception e){
 			listener.exceptionInClientData(new TCPClientException("Unknown exception", e));
-
 		}
 	}
-
 }

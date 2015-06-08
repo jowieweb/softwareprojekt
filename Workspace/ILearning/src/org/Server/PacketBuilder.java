@@ -66,9 +66,8 @@ public class PacketBuilder {
 		return answer;
 	}
 
-
 	/**
-	 * copys an existing packet.
+	 * Copys an existing packet.
 	 * @param querry
 	 * @return
 	 */
@@ -86,5 +85,4 @@ public class PacketBuilder {
 		}
 		return p;
 	}
-
 }
