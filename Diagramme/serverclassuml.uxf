@@ -4,28 +4,26 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>160</y>
+      <x>410</x>
+      <y>170</y>
       <w>280</w>
       <h>170</h>
     </coordinates>
     <panel_attributes>Server
 --
--dbc:DBConnector
+-builder:PacketBuilder
 --
 +Server()
 +main()
 +tcpReceive(p:packet):boolean
-+DBDataReceive(p:Packet)
-+loginFailed(p:Packet)
 -getOOS(p:packet):ObjectOutputStream</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>810</x>
-      <y>310</y>
+      <x>830</x>
+      <y>340</y>
       <w>370</w>
       <h>340</h>
     </coordinates>
@@ -56,8 +54,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
-      <y>450</y>
+      <x>860</x>
+      <y>150</y>
       <w>280</w>
       <h>110</h>
     </coordinates>
@@ -75,62 +73,67 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>660</y>
-      <w>200</w>
+      <x>450</x>
+      <y>430</y>
+      <w>290</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>PacketBuilder
 --
 --
-+getPacket(querry:Packet,dbAnswer:String)
++getPacket(querry:Packet):Packet
 -copyPacket():Packet</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>50</x>
-      <y>590</y>
-      <w>200</w>
-      <h>100</h>
+      <x>20</x>
+      <y>440</y>
+      <w>340</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>DBConnector
 --
--DBCL: DBConnectorListener
 --
-DBConnector(l:BDConnector)
-+PlaceQuerry(p:Packet)
--checkLogin(p:Packet)</panel_attributes>
+DBConnector()
++checkLogin(username:String,password:String)
++checkAnswers(p:Packet)
++updateCheckedAnswer(p:packet:wasRight:boolean)
++addCategories(p:Packet)
++addLevel(p:Packet)
++setFrage(p:Packet)
+-checkLogin(p:Packet)
+-setImage(P:Packet,url:String)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
-      <y>270</y>
+      <x>680</x>
+      <y>240</y>
       <w>200</w>
-      <h>60</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>180.0;40.0;180.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>180.0;100.0;180.0;50.0;90.0;50.0;90.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
-      <y>320</y>
-      <w>30</w>
-      <h>150</h>
+      <x>680</x>
+      <y>200</y>
+      <w>200</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+    <additional_attributes>180.0;10.0;90.0;10.0;90.0;50.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>730</x>
-      <y>50</y>
+      <x>750</x>
+      <y>60</y>
       <w>130</w>
       <h>70</h>
     </coordinates>
@@ -144,19 +147,19 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>670</x>
-      <y>640</y>
-      <w>190</w>
-      <h>80</h>
+      <x>730</x>
+      <y>460</y>
+      <w>120</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>170.0;10.0;170.0;60.0;10.0;60.0</additional_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>80</y>
+      <x>540</x>
+      <y>90</y>
       <w>230</w>
       <h>100</h>
     </coordinates>
@@ -166,72 +169,34 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>270</y>
-      <w>170</w>
-      <h>370</h>
+      <x>540</x>
+      <y>330</y>
+      <w>30</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;350.0;120.0;350.0;120.0;10.0;150.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>80</x>
-      <y>180</y>
-      <w>180</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;interface&gt;
-DBConnectorListener
---
---
-+dbDataRecive(p:Packet)
-+loginFailed(p:Packet)</panel_attributes>
-    <additional_attributes/>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>250</x>
-      <y>220</y>
-      <w>160</w>
+      <x>800</x>
+      <y>120</y>
+      <w>80</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;60.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>460</y>
+      <w>120</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>110</y>
-      <w>100</w>
-      <h>420</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>80.0;10.0;80.0;400.0;10.0;400.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>150</x>
-      <y>280</y>
-      <w>30</w>
-      <h>330</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;310.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>240</x>
-      <y>650</y>
-      <w>260</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>240.0;50.0;170.0;50.0;170.0;10.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
