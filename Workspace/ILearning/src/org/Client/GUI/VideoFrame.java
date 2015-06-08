@@ -1,5 +1,7 @@
 package org.Client.GUI;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -19,7 +21,8 @@ import uk.co.caprica.vlcj.version.LibVlcVersion;
 public class VideoFrame {
     private JFrame frame;
     private EmbeddedMediaPlayerComponent mediaPlayerComponent;
-
+    private PlayerControlsPanel controlsPanel;
+    
     public static boolean isWindows() {
     	 
 		return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
@@ -48,14 +51,20 @@ public class VideoFrame {
                 }
     	        
         		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-        		frame.setContentPane(mediaPlayerComponent);
+        		controlsPanel = new PlayerControlsPanel(
+        				mediaPlayerComponent.getMediaPlayer());
+        		//frame.setContentPane(mediaPlayerComponent);
         		frame.setVisible(true);
-        		mediaPlayerComponent.getMediaPlayer().playMedia(url);
 
-        		
+        		frame.setLayout(new BorderLayout());
+        		frame.setVisible(true);
+        		frame.setBackground(Color.black);
+        		frame.add(mediaPlayerComponent, BorderLayout.CENTER);
+        		frame.add(controlsPanel, BorderLayout.SOUTH);
 
         	    new NativeDiscovery().discover();
 
+        	    mediaPlayerComponent.getMediaPlayer().playMedia(url);
    
         	}
         });

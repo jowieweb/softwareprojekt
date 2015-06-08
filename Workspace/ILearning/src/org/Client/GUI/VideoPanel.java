@@ -8,11 +8,13 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
+import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 /**
  * VideoPanel - A Panel displaying Media via the VLC-Plugin
@@ -29,6 +31,14 @@ public class VideoPanel extends JPanel {
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private PlayerControlsPanel controlsPanel;
 	
+	
+    public static boolean isWindows() {
+   	 
+		return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
+ 
+	}
+    
+    
 	/**
 	 * Constructor.
 	 * @param vidUrl URL identifying the Media-Object. Syntax: 'http://<server-ip>:<server-port>/<media-object>'
@@ -40,7 +50,15 @@ public class VideoPanel extends JPanel {
 		this.username = username;
 		this.password = password;
 
+      if(isWindows()){
+      NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
+              "C:\\Program Files\\VideoLAN\\VLC");
+      Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+      }
+		
 		buildPlayer(); // Set up the VLC-Enviroment
+		
+		
 		
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 		EmbeddedMediaPlayer embeddedMediaPlayer = mediaPlayerComponent
