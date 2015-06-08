@@ -251,7 +251,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		Packet p = new Packet(this.username, password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.REMOVE_USER);
-		p.setFrage(username);
+		p.setQuestion(username);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
