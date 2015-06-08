@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.Packet;
 
 public class TCPConnection extends Client implements Runnable{
-	
+
 	private String serverIP;
 	private int port;
 	private Packet packet;
@@ -19,11 +19,13 @@ public class TCPConnection extends Client implements Runnable{
 		if(ip.matches("((25[0-5]|(2[0-4]|1{0,1}"
 				+ "[0-9]){0,1}[0-9])\\.){3,3}"
 				+ "(25[0-5]|(2[0-4]|1{0,1}"
-				+ "[0-9]){0,1}[0-9])"))
+				+ "[0-9]){0,1}[0-9])")) {
 			serverIP = ip;
-		if(port > 1024 || port < 64000)
+		}
+		if(port > 1024 || port < 64000) {
 			this.port = port;
-			
+		}
+
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class TCPConnection extends Client implements Runnable{
 			listener.exceptionInClientData(new TCPClientException("Connection Failed", e));
 		} catch (ClassNotFoundException e) {
 			listener.exceptionInClientData(new TCPClientException("Responding Element is wrong type.", e));
-			
+
 		} catch (ClassCastException e){
 			listener.exceptionInClientData(new TCPClientException("Responding Element is wrong type.", e));
 

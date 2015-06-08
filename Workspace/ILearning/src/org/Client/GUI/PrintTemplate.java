@@ -7,7 +7,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
 /**
- * Formats a given 2D String Array 
+ * Formats a given 2D String Array
  */
 public class PrintTemplate implements Printable {
 
@@ -109,7 +109,7 @@ public class PrintTemplate implements Printable {
 			}
 			charlauf += 27;
 		}
-		
+
 		charlauf = 0;
 		int yt5 = 0;
 		while(charlauf < data[5].length()){
@@ -127,7 +127,7 @@ public class PrintTemplate implements Printable {
 			charlauf += 27;
 		}
 		//g.drawString(data[3], 120, 325 + yt + yt2 + yt4);
-		
+
 		//g.drawString(data[5], 320, 325 + yt + yt2 + yt4);
 
 		// frame of the answer choise

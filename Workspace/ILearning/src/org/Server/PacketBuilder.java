@@ -7,16 +7,16 @@ import org.Packet;
  */
 public class PacketBuilder {
 	DBConnector dbc;
-	
+
 	/**
 	 * The constructor instantiates a new DBConnector.
 	 */
 	public PacketBuilder(){
 		dbc = new DBConnector();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param querry
 	 * @return
 	 */
@@ -27,7 +27,7 @@ public class PacketBuilder {
 		if(answer.getLoginStatus() == Packet.Login.FAIL){
 			return answer;
 		}
-		
+
 		switch (answer.getPacketType()) {
 		case CATEGORY:
 			dbc.addCategories(answer);
@@ -40,17 +40,17 @@ public class PacketBuilder {
 		case USER_MANAGEMENT:
 			dbc.addAllUsers(answer);
 			break;
-		default:				
+		default:
 			break;
 		}
-		
+
 		return answer;
 	}
-	
+
 
 	/**
 	 * copys an existing packet.
-	 * @param querry 
+	 * @param querry
 	 * @return
 	 */
 	private Packet copyPacket(Packet querry ) {
@@ -62,8 +62,9 @@ public class PacketBuilder {
 		p.setSelectedAnswer(querry.getSelectedAnswer());
 		p.setFrage(querry.getFrage());
 		p.setWasRight(querry.getWasRight());
-		if(querry.getImage() != null)
+		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
+		}
 		return p;
 	}
 

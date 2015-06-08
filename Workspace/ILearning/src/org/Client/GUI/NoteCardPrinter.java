@@ -16,7 +16,7 @@ public class NoteCardPrinter {
 
 	/**
 	 * converts a package into a string[]
-	 * 
+	 *
 	 * @param p package
 	 */
 	private String[] packetToArray(Packet p) {
@@ -28,7 +28,7 @@ public class NoteCardPrinter {
 				"AntwortOption D", };
 		return testPacket;
 	}
-	
+
 
 	/**
 	 * prints a set of questions
