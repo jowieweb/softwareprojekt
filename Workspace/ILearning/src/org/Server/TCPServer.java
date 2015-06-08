@@ -7,21 +7,24 @@ import java.net.Socket;
 
 import org.Packet;
 
-public class TCPServer{
-	
+/**
+ * The TCPServer class handles sending and receiving packets.
+ */
+public class TCPServer {
 	private TCPServerListener callback;
 	
-	
+	/**
+	 * constructor registers an callback object.
+	 * @param tsl object with callback method tcpReceive
+	 */
 	public TCPServer(TCPServerListener tsl) {
-		
 		callback = tsl;
 		listen();
 	}
 	
-	public void setTCPCallback(TCPServerListener tsl) {
-		callback = tsl;
-	}
-	
+	/**
+	 * Waits for packets and invokes callback method (tcpReceive) when packets arrive.
+	 */
 	@SuppressWarnings("resource")
 	public void listen() {
 		try {
@@ -40,17 +43,11 @@ public class TCPServer{
 						callback.tcpReceive(p);
 					}
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                
 			}
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-
 }

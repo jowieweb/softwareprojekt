@@ -13,17 +13,22 @@ import javax.imageio.ImageIO;
 import org.Packet;
 import org.Packet.Login;
 
+/**
+ * The DBConnector class retrieves data from the database.
+ */
 public class DBConnector {
-
 	private java.sql.Connection connect = null;
 	private int rekCount = 0;
 
+	/**
+	 * constructor invokes connect().
+	 */
 	public DBConnector() {
 		connect();
 	}
 
 	/**
-	 * starts the connection to the mysql server
+	 * starts the connection to the mysql-server
 	 */
 	private void connect() {
 		try {
@@ -32,14 +37,16 @@ public class DBConnector {
 					.getConnection("jdbc:mysql://j.z5n.de/ilearning?user=kuser&password=qwertzuiop");
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Retrieves the answer from a question from the database and checks the given answer. 
+	 * @param p a Packet that contains the user's answer.
+	 */
 	public void checkAnswers(Packet p) {
 		if (p.getSelectedAnswer() != null) {
 			try {
@@ -53,6 +60,7 @@ public class DBConnector {
 					if (p.getSelectedAnswer()[intsol] == 1) {
 						right = true;
 					}
+					
 					for (int i = 0; i < 4; i++) {
 						if (p.getSelectedAnswer()[i] == 1 && i != intsol) {
 							right = false;
@@ -62,12 +70,16 @@ public class DBConnector {
 					p.setWasRight(right);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * @param p
+	 * @param wasRight
+	 */
 	public void updateCheckedAnswer(Packet p, boolean wasRight) {
 		String debug = "";
 		String incorrect = "1";
@@ -76,9 +88,11 @@ public class DBConnector {
 		}
 
 		try {
-			debug = "select count(*) from Question_data where Question_data.questionid = (select id from Question where questiontext = '"
+			debug = "select count(*) from User_data where User_data.questionid ="
+					+ " (select id from Question where questiontext = '"
 					+ p.getFrage()
-					+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
+					+ "') and User_data.userid = (select `User`.id from"
+					+ " `User` where `User`.`name` = '"
 					+ p.getUsername() + "')";
 
 			ResultSet result = connect.createStatement().executeQuery(debug);
@@ -111,7 +125,7 @@ public class DBConnector {
 	}
 
 	/**
-	 * adds the categorie to the packet
+	 * adds the category to the packet
 	 * 
 	 * @param p
 	 */
@@ -126,14 +140,13 @@ public class DBConnector {
 			p.setTopics(categorys.split(";"));
 			p.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
 	/**
-	 * adds all level form the DB to the packet.
+	 * adds all levels from the database to the packet.
 	 * 
 	 * @param p
 	 */
@@ -148,7 +161,6 @@ public class DBConnector {
 			p.setLevel(level.split(";"));
 			resultSet.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -200,23 +212,22 @@ public class DBConnector {
 	 * adds an image to the packet
 	 * 
 	 * @param p
-	 * @param url
-	 *            the URL
+	 * @param url the URL
 	 */
 	private void setImage(Packet p, String url) {
 		try {
 			Image image = ImageIO.read(new File(url));
 			p.setImage(image);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * checks the login if wrong Login.FAIL
+	 * checks the login, if wrong Login.FAIL
 	 * 
-	 * @param p
+	 * @param username the username
+	 * @param password the password
 	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
 	 */
 	public Packet.Login checkLogin(String username, String password) {
@@ -238,7 +249,6 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			connect();
 			if (rekCount > 2) {
 				rekCount++;
