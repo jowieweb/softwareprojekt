@@ -1,4 +1,4 @@
-﻿package org.Client;
+package org.Client;
 
 import java.awt.event.ActionEvent;
 
@@ -41,16 +41,16 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
-	
+
 	private Packet lastPacket;
-	
+
 	private String username;
 	private String password;
-	
+
 	/**
 	 * constructor creates window.
 	 */
-	public MainWindow(){		
+	public MainWindow(){
 		super("Frame");
 		loginPanel = new LoginPanel(this);
 		adminPanel = new AdministrationPanel(this);
@@ -58,7 +58,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		editMenu = new JMenu("Bearbeiten");
 		fileMenu = new JMenu("Datei");
 		helpMenu = new JMenu("Hilfe");
-		
+
 		aboutMenuItem = new JMenuItem("Über..");
 		userMenuItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = -358338731196690668L;
@@ -66,7 +66,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				changePanelToAdministrationPanel();
-				
+
 			}
 		});
 		exitMenuItem = new JMenuItem(new AbstractAction() {
@@ -85,11 +85,11 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 				changeQuestionPanelToEditMode();
 			}
 		});
-		
+
 		exitMenuItem.setText("Beenden");
 		editMenuItem.setText("Bearbeiten");
 		userMenuItem.setText("Nutzerverwaltung anzeigen");
-		
+
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
@@ -97,10 +97,11 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		editMenu.add(editMenuItem);
 		editMenu.add(userMenuItem);
 		helpMenu.add(aboutMenuItem);
-		
+
 		setJMenuBar(menuBar);
-		
+
 		editMenuItem.setVisible(false);
+		userMenuItem.setVisible(false);
 		client = new TCPConnection(this, "127.0.0.1", 12345);
 		add(loginPanel);
 		pack();
@@ -119,38 +120,44 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		if (p == null) {
 			return;
 		}
-		
+
 		switch (p.getPacketType()) {
 		case CATEGORY:
 			System.out.println(p.getUsername());
 			System.out.println(p.getLoginStatus());
 			username = p.getUsername();
 			password = p.getPassword();
+
 			loginPanel.setVisible(false);
 			remove(loginPanel);
 			categoryPanel = new CategoryPanel(this);
 			add(categoryPanel);
-			
+
+			// enable user-edit-mode if user has admin rights
+			if (p.getLoginStatus() == Packet.Login.ADMIN) {
+				userMenuItem.setVisible(true);
+			}
+
 			int[] test = {1,2,3};	// TODO: remove after testing
 			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
 			break;
-			
+
 		case ANSWER_QUESTION:
 			remove(categoryPanel);
 			if (questionPanel != null) {
 				questionPanel.setVisible(false);
 				remove(questionPanel);
-				
+
 				//TODO: lassen wir das so?
 				if(p.getWasRight()){
 					JOptionPane.showMessageDialog(this,"Die Frage wurde richtig beantwortet");
-					
+
 				}
 				else{
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
-					
-				} 
-				
+
+				}
+
 				System.out.println(p.getWasRight());
 			}
 			else
@@ -161,10 +168,10 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			editMenuItem.setVisible(true);
 			questionPanel.setQuestionText(p.getFrage());
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
-			
+
 //			questionPanel.setAnswerText(p.getAnswers());
 			break;
-			
+
 		default:
 			break;
 		}
@@ -178,7 +185,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		JOptionPane.showMessageDialog(this, e.getMessage() + "\n" + e.getCause().getMessage());
 		loginPanel.enableLoginButton();
 	}
-	
+
 	/**
 	 * Callbackmethod invoked when submitButton on loginPanel is pressed.
 	 * @param username the username
@@ -194,7 +201,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -207,7 +214,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void categorySelected(String category, String level, int modus) {
 		Packet p = new Packet(username,password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
-		
+
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
 		lastPacket = p;
@@ -222,25 +229,25 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	@Override
 	public void categoryAdded(String newCategory) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUser(String username) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateUser(String username, String password) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void addUser(String username, String password) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -255,8 +262,8 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		p.setTopics(lastPacket.getTopics());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
-		
-		p.setSelectedAnswer(answer);		
+
+		p.setSelectedAnswer(answer);
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -268,16 +275,16 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 	public void questionAdded(String questionText, String[] answers,
 			String mediaURL) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
-		
+
 		remove(questionPanel);
 		questionPanel = new EditQuestionPanel(this);
 		questionPanel.setAnswerText(answers);
@@ -285,21 +292,21 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		add(questionPanel);
 		pack();
 	}
-	
+
 	/**
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
 	public void changeQuestionPanelToAnswerMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
-		
+
 		remove(questionPanel);
 		questionPanel = new AnswerQuestionPanel(this, answers);
 		questionPanel.setQuestionText(question);
 		add(questionPanel);
 		pack();
 	}
-	
+
 	/**
 	 * Replaces QuestionPanel with CategoryPanel.
 	 */
@@ -310,7 +317,7 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		pack();
 		// TODO: Reload category list
 	}
-	
+
 	/**
 	 * Replaces current panel with adminPanel.
 	 */
@@ -318,13 +325,13 @@ public class MainWindow extends JFrame implements ClientListener, LoginPanelList
 		if (questionPanel != null) {
 			remove(questionPanel);
 		}
-		if (categoryPanel != null) {	
+		if (categoryPanel != null) {
 			remove(categoryPanel);
 		}
 		if (loginPanel != null) {
 			remove(loginPanel);
 		}
-		
+
 		userMenuItem.setVisible(false);
 		add(adminPanel);
 		pack();
