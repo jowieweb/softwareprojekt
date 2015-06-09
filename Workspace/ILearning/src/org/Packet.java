@@ -27,6 +27,7 @@ public class Packet implements Serializable {
 	private boolean wasRight;
 	
 	private ArrayList<String[]> users;
+	private ArrayList<String[]> userScore;
 
 	/**
 	 * Type for specifying the packet type.
@@ -365,6 +366,27 @@ public class Packet implements Serializable {
 	public Edit_Question_Type getEditQuestionType()
 	{
 		return eq_type;
+	}
+	
+	public void clearUserScore(){
+		userScore.clear();
+	}
+	
+	public void addUserScore(String[] user)
+	{
+		if(userScore ==null)
+			userScore = new ArrayList<String[]>();
+		userScore.add(user);
+	}
+	
+	
+	public String[][] getUserScore(){
+		String[][] ret = new String[userScore.size()][2];
+		for(int i =0;i< userScore.size();i++){
+			ret[i]=userScore.get(i);
+		}		
+		return ret;
+		
 	}
 	
 }

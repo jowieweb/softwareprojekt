@@ -36,6 +36,7 @@ public class PacketBuilder {
 		case ANSWER_QUESTION:
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
+			dbc.setHighScore(answer);
 			break;
 		case USER_MANAGEMENT:
 			switch(querry.getManagementType()){

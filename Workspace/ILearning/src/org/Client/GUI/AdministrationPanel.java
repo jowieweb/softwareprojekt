@@ -252,7 +252,7 @@ public class AdministrationPanel extends JPanel {
 				}
 				else
 				{
-					String[] act = users.get(userListModel.getSize()-1);
+					String[] act = users.get(userList.getSelectedIndex());
 					listener.updateUser(act[0], userTextField.getText(), passwordTextField.getText());
 				}
 			}

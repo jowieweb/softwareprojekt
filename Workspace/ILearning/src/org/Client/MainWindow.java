@@ -132,8 +132,10 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
 
 				}
-
-				System.out.println(p.getWasRight());
+				String[][] score = p.getUserScore();
+				for(int i =0;i< score.length;i++){
+					System.out.println(score[i][0] + " " + score[i][1]);
+				}
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
 			

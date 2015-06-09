@@ -350,4 +350,24 @@ public class DBConnector {
 		}
 		
 	}
+	
+	public void setHighScore(Packet p) {
+		String debug = "select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID";
+		ResultSet resultSet;
+		try {
+			resultSet = connect.createStatement().executeQuery(debug);
+			while (resultSet.next()) {
+				String[] user = new String[2];
+				user[0] = resultSet.getString(1);
+				user[1] = resultSet.getString(2);
+				p.addUserScore(user);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+		
+	
 }
