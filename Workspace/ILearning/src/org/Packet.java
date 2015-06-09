@@ -25,6 +25,7 @@ public class Packet implements Serializable {
 	private ImageIcon image;
 	private int[] selectedAnswer;
 	private boolean wasRight;
+	private String mediaURL ="";
 	
 	private ArrayList<String[]> users;
 	private ArrayList<String[]> userScore;
@@ -368,10 +369,19 @@ public class Packet implements Serializable {
 		return eq_type;
 	}
 	
+	/**
+	 * clears the list of user Scores
+	 */
 	public void clearUserScore(){
-		userScore.clear();
+		if(userScore != null)
+			userScore.clear();
 	}
 	
+	
+	/**
+	 * adds one user score
+	 * @param user String[0] = username, [1] points
+	 */
 	public void addUserScore(String[] user)
 	{
 		if(userScore ==null)
@@ -379,7 +389,10 @@ public class Packet implements Serializable {
 		userScore.add(user);
 	}
 	
-	
+	/**
+	 * gets all the user scores 
+	 * @return String[][] [][0] = username, [][1] points
+	 */
 	public String[][] getUserScore(){
 		String[][] ret = new String[userScore.size()][2];
 		for(int i =0;i< userScore.size();i++){
@@ -387,6 +400,22 @@ public class Packet implements Serializable {
 		}		
 		return ret;
 		
+	}
+	
+	/**
+	 * gets the media URL
+	 * @return the URL
+	 */
+	public String getMediaURL(){
+		return mediaURL;
+	}
+	
+	/**
+	 * sets the media URL
+	 * @param url 
+	 */
+	public void setMediaURL(String url){
+		mediaURL = url;
 	}
 	
 }

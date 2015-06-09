@@ -59,8 +59,18 @@ public class EditQuestionPanel extends QuestionPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
-			}			
+				int[] ans =getAllSelectedAnswers();
+				boolean wasChecked = false;
+				for(int i=0;i<ans.length;i++){
+					if(ans[i] == 1){
+						wasChecked = true;
+					}
+				}
+				if(wasChecked){
+					if(questionID!=null)
+						listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+				}
+			}
 		});
 
 		JPanel pan = new JPanel();

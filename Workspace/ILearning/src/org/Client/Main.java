@@ -4,7 +4,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.Client.GUI.VideoFrame;
 
 /**
  * The main class starts the program

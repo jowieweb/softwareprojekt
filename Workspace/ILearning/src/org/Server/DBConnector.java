@@ -179,7 +179,7 @@ public class DBConnector {
 			ResultSet resultSet = connect
 					.createStatement()
 					.executeQuery(
-							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
+							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
 									+ packet.getSelectedTopic()
 									+ "' ORDER BY RAND()");
 			if (resultSet.next()) {
@@ -200,8 +200,14 @@ public class DBConnector {
 				if (imageurl.length() > 1) {
 					setImage(packet, imageurl);
 				} else {
-					setImage(packet, "url.jpg");
+					setImage(packet, "");
 				}
+				String videourl = resultSet.getString("video");
+				String audiourl = resultSet.getString("audio");
+				if(videourl.length()>0){
+					packet.setMediaURL(videourl);
+				} else { packet.setMediaURL(audiourl);}
+				
 			} else {
 				System.out.println("EMPTY");
 			}
@@ -221,11 +227,13 @@ public class DBConnector {
 	 * @param url the URL
 	 */
 	private void setImage(Packet packet, String url) {
-		try {
-			Image image = ImageIO.read(new File(url));
-			packet.setImage(image);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(url.length()>0){
+			try {
+				Image image = ImageIO.read(new File(url));
+				packet.setImage(image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -336,11 +344,22 @@ public class DBConnector {
 			return;
 		}
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String mediatype = "'";
+			if(p.getMediaURL().endsWith(".jpg")){
+				mediatype = "', image='" + p.getMediaURL()+ "'";
+			} else if(p.getMediaURL().endsWith(".mp4")){
+				mediatype = "', video='" + p.getMediaURL()+ "'";
+			}else if(p.getMediaURL().endsWith(".wav")){
+				mediatype = "', audio='" + p.getMediaURL() + "'";
+			}
+			
+			
 			String debug = "update `Question` set questiontext = '"
 					+ p.getQuestion() + "', answer1 ='" + p.getAnswers()[0]
 					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
 					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
-					+ "' where id = " + p.getQuestionID();
+					+ mediatype 
+					+ " where id = " + p.getQuestionID();
 		try{
 				connect.createStatement().execute(debug);	
 			

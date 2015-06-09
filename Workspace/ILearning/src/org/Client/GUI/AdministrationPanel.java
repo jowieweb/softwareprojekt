@@ -138,6 +138,7 @@ public class AdministrationPanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
+					@SuppressWarnings("unchecked")
 					JList<String> theList = (JList<String>) e.getSource();
 					try{
 					if (users.size() >= theList.getSelectedIndex()) {
@@ -167,6 +168,7 @@ public class AdministrationPanel extends JPanel {
 	 * @param password password to hash
 	 * @return hashed password
 	 */
+	@SuppressWarnings("unused")
 	private String getPasswordHash(char[] password) {
 		String hash = null;
 
@@ -244,6 +246,7 @@ public class AdministrationPanel extends JPanel {
 		});
 		submitButton.addActionListener(new ActionListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO submit
