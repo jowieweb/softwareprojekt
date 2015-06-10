@@ -58,17 +58,44 @@ public class DBConnector {
 								+ packet.getQuestion() + "'");
 				while (result.next()) {
 					String sol = result.getString("solution");
-					int intsol = Integer.parseInt(sol) - 1;
 					boolean right = false;
-					if (packet.getSelectedAnswers()[intsol] == 1) {
+					if(sol.length() > 1){
+						// more than 1 answer is correct
 						right = true;
-					}
+						String all[] = sol.split("");
+						int[] allselected = packet.getSelectedAnswers();
+						
+							for(int i = 0;i< all.length;i++)
+							{							
+								// db answers are based on 1, packets are based on 0
+								int index = Integer.parseInt(all[i]) -1;
+								if(allselected[index] == 0){
+									right = false;
+								} else{ 
+									allselected[index] = 0;
+								}
+							}
+							for(int i =0;i<allselected.length;i++) {
+								if(allselected[i] == 1)
+								{
+									right = false;
+								}
+							}
+						
+					}else {
+						// only 1 answer is correct
+						int intsol = Integer.parseInt(sol) - 1;						
+						if (packet.getSelectedAnswers()[intsol] == 1) {
+							right = true;
+						}
 
-					for (int i = 0; i < 4; i++) {
-						if (packet.getSelectedAnswers()[i] == 1 && i != intsol) {
-							right = false;
+						for (int i = 0; i < 4; i++) {
+							if (packet.getSelectedAnswers()[i] == 1 && i != intsol) {
+								right = false;
+							}
 						}
 					}
+					
 					updateCheckedAnswer(packet, right);
 					packet.setWasRight(right);
 				}
@@ -353,9 +380,17 @@ public class DBConnector {
 				mediatype = "', audio='" + p.getMediaURL() + "'";
 			}
 			
+			String solution = "";
+			for(int i = 0;i<p.getSelectedAnswers().length;i++)
+			{
+				if(p.getSelectedAnswers()[i]==1)
+				{
+					solution+=(i+1);					
+				}
+			}
 			
 			String debug = "update `Question` set questiontext = '"
-					+ p.getQuestion() + "', answer1 ='" + p.getAnswers()[0]
+					+ p.getQuestion() + "', solution ='" + solution + "', answer1 ='" + p.getAnswers()[0]
 					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
 					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
 					+ mediatype 
