@@ -422,6 +422,70 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	private void dump(){
+		// source: http://www.coderanch.com/t/480353/JDBC/databases/MySql-DB-backup-java
+		try {
+			ResultSet rs = connect.createStatement().executeQuery(
+					"SHOW FULL TABLES WHERE Table_type != 'VIEW'");
+			StringBuilder sb = new StringBuilder();
+			StringBuilder buff = new StringBuilder();
+			while (rs.next()) {
+				String tbl = rs.getString(1);
+
+				sb.append("\n");
+				sb.append("-- ----------------------------\n")
+						.append("-- Table structure for `").append(tbl)
+						.append("`\n-- ----------------------------\n");
+				sb.append("DROP TABLE IF EXISTS `").append(tbl).append("`;\n");
+				ResultSet rs2 = connect.createStatement().executeQuery(
+						"SHOW CREATE TABLE `" + tbl + "`");
+				rs2.next();
+				String crt = rs2.getString(2) + ";";
+				sb.append(crt).append("\n");
+				sb.append("\n");
+				sb.append("-- ----------------------------\n")
+						.append("-- Records for `").append(tbl)
+						.append("`\n-- ----------------------------\n");
+
+				ResultSet rss = connect.createStatement().executeQuery(
+						"SELECT * FROM " + tbl);
+				while (rss.next()) {
+					int colCount = rss.getMetaData().getColumnCount();
+					if (colCount > 0) {
+						sb.append("INSERT INTO ").append(tbl)
+								.append(" VALUES(");
+
+						for (int i = 0; i < colCount; i++) {
+							if (i > 0) {
+								sb.append(",");
+							}
+							String s = "";
+							try {
+								s += "'";
+								s += rss.getObject(i + 1).toString();
+								s += "'";
+							} catch (Exception e) {
+								s = "NULL";
+							}
+							sb.append(s);
+						}
+						sb.append(");\n");
+						buff.append(sb.toString());
+						sb = new StringBuilder();
+					}
+				}
+			}
+		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 		
 	
 }
