@@ -16,9 +16,9 @@ public class PacketBuilder {
 	}
 
 	/**
-	 *
-	 * @param querry
-	 * @return
+	 * receives a answer packet to a given querry
+	 * @param querry packet
+	 * @return the answer packet
 	 */
 	public  Packet getPacket(Packet querry) {
 		Packet answer = copyPacket(querry);

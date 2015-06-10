@@ -428,6 +428,9 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		showCategory.setVisible(false);
 	}
 
+	/**
+	 * callback for EditQuestionPanel
+	 */
 	@Override
 	public void updateQuestion(String id, String newQuestionText,
 			String[] newAnswers, int[] answersChecked, String newMediaURL) {

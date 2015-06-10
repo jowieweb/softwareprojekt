@@ -106,9 +106,9 @@ public class DBConnector {
 	}
 
 	/**
-	 *
-	 * @param packet
-	 * @param wasRight
+	 * Updates the user_data Table in DB
+	 * @param packet including all question data
+	 * @param wasRight answer was right
 	 */
 	public void updateCheckedAnswer(Packet packet, boolean wasRight) {
 		String debug = "";
@@ -325,6 +325,10 @@ public class DBConnector {
 		}
 	}
 	
+	/**
+	 * updates the user table in the DB
+	 * @param p
+	 */
 	public void changeUser(Packet p){
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
 			String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
@@ -349,6 +353,11 @@ public class DBConnector {
 			} catch(SQLException e){}
 		}
 	}
+	
+	/**
+	 * Creates a new user 
+	 * @param p
+	 */
 	public void addUser(Packet p)
 	{
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
@@ -366,6 +375,10 @@ public class DBConnector {
 		}
 	}
 	
+	/**
+	 * Updates a given question
+	 * @param p
+	 */
 	public void updateQuestion(Packet p){
 		if(p.getQuestionID().length()==0){
 			return;
@@ -405,6 +418,10 @@ public class DBConnector {
 		
 	}
 	
+	/**
+	 * addes the highscore to the packet
+	 * @param p
+	 */
 	public void setHighScore(Packet p) {
 		String debug = "select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID";
 		ResultSet resultSet;
@@ -425,7 +442,9 @@ public class DBConnector {
 	
 	
 	
-	
+	/**
+	 * dumps the whole DB
+	 */
 	private void dump(){
 		// source: http://www.coderanch.com/t/480353/JDBC/databases/MySql-DB-backup-java
 		try {
