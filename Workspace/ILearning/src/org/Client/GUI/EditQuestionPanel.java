@@ -32,7 +32,7 @@ public class EditQuestionPanel extends QuestionPanel {
 	 * The constructor creates the panel.
 	 * @param listener callback method object
 	 */
-	public EditQuestionPanel(QuestionPanelListener listener) {
+	public EditQuestionPanel(final QuestionPanelListener listener) {
 		super(listener);
 		this.questionTextField = new JTextField();
 		this.answerTextFields = new JTextField[4];

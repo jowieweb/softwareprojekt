@@ -38,7 +38,9 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private JMenuItem exitMenuItem;
 	private JMenuItem aboutMenuItem;
 	private JMenuItem userMenuItem;
-	private JMenuItem showCategory;
+	private JMenuItem showCategoryItem;
+	private JMenuItem editCategoryItem;
+	private JMenuItem quitEditModeItem;
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
@@ -62,24 +64,19 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 		createMenuItems();
 
-		exitMenuItem.setText("Beenden");
-		showCategory.setText("Categorie ausw�hlen");
-		editMenuItem.setText("Bearbeiten");
-		userMenuItem.setText("Nutzerverwaltung anzeigen");
-
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
 		fileMenu.add(exitMenuItem);
-		fileMenu.add(showCategory);
+		fileMenu.add(showCategoryItem);
 		editMenu.add(editMenuItem);
 		editMenu.add(userMenuItem);
+		editMenu.add(editCategoryItem);
+		editMenu.add(quitEditModeItem);
 		helpMenu.add(aboutMenuItem);
 
 		setJMenuBar(menuBar);
 
-		editMenuItem.setVisible(false);
-		userMenuItem.setVisible(false);
 		client = new TCPConnection(this, "127.0.0.1", 12345);
 		add(loginPanel);
 		pack();
@@ -92,7 +89,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * Is invoked when a packet is received.
 	 * @param p the received packet
 	 */
-	@Override
 	public void receiveClientData(Packet p) {
 		if (p == null) {
 			return;
@@ -113,6 +109,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			// enable user-edit-mode if user has admin rights
 			if (p.getLoginStatus() == Packet.Login.ADMIN) {
 				userMenuItem.setVisible(true);
+				editCategoryItem.setVisible(true);
 			}
 
 			int[] test = {1,2,3};	// TODO: remove after testing
@@ -144,7 +141,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			add(questionPanel);
 			editMenuItem.setVisible(true);
 
-			showCategory.setVisible(true);
+			showCategoryItem.setVisible(true);
 			questionPanel.setQuestionText(p.getQuestion());
 			
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
@@ -215,10 +212,42 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		}
 	}
 
-	@Override
-	public void categoryAdded(String newCategory) {
+	/**
+	 * Callback method invoked when a category is updated.
+	 * @param oldCategory the category to rename
+	 * @param newCategory the new category name
+	 */
+	public void categoryUpdated(String oldCategory, String newCategory) {
 		// TODO Auto-generated method stub
+		System.out.println("Updated: " + oldCategory);
+	}
 
+	/**
+	 * Callback method invoked when a category is removed.
+	 * @param oldCategory category to remove
+	 */
+	public void categoryRemoved(String oldCategory) {
+		System.out.println("Removed: " + oldCategory);
+		// TODO: Send packet to server
+	}
+
+	/**
+	 * Callback method invoked when a category is added.
+	 * @param newCategory category to add
+	 */
+	public void categoryAdded(String newCategory) {
+		System.out.println("Added: " + newCategory);
+		// TODO: Send packet to server
+	}
+	
+	/**
+	 * Callback method invoked to disable edit mode.
+	 */
+	public void disableEditMode() {
+		categoryPanel.setEditMode(false);
+		editCategoryItem.setVisible(true);
+		quitEditModeItem.setVisible(false);
+		pack();
 	}
 
 	/**
@@ -295,7 +324,11 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		}
 	}
 
-	@Override
+	/**
+	 * Callback method invoked when a question is added.
+	 * @param questionText question
+	 * @param answers answers
+	 */
 	public void questionAdded(String questionText, String[] answers,
 			String mediaURL) {
 		// TODO Auto-generated method stub
@@ -317,7 +350,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		add(questionPanel);
 		pack();
 
-		showCategory.setVisible(false);
+		showCategoryItem.setVisible(false);
 	}
 
 	/**
@@ -334,7 +367,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		add(questionPanel);
 		pack();
 
-		showCategory.setVisible(true);
+		showCategoryItem.setVisible(true);
 	}
 
 	/**
@@ -343,8 +376,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeQuestionPanelToCategoryPanel() {
 		remove(questionPanel);
 		questionPanel = null;
-		login(username,password);
-		showCategory.setVisible(false);
+		login(username, password);
+		showCategoryItem.setVisible(false);
 	}
 
 	/**
@@ -361,10 +394,11 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			remove(loginPanel);
 		}
 
-		userMenuItem.setVisible(false);
 		add(adminPanel);
 		pack();
-		showCategory.setVisible(false);
+		showCategoryItem.setVisible(false);
+		editCategoryItem.setVisible(false);
+		userMenuItem.setVisible(false);
 	}
 
 	/**
@@ -375,15 +409,15 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		add(categoryPanel);
 		userMenuItem.setVisible(true);
 		pack();
-		showCategory.setVisible(false);
+		showCategoryItem.setVisible(false);
 	}
 	
 	/**
 	 * Creates menu items.
 	 */
 	private void createMenuItems() {
-		aboutMenuItem = new JMenuItem("Über..");
-		userMenuItem = new JMenuItem(new AbstractAction() {
+		this.aboutMenuItem = new JMenuItem("Über..");
+		this.userMenuItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = -358338731196690668L;
 
 			@Override
@@ -398,7 +432,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				}
 			}
 		});
-		exitMenuItem = new JMenuItem(new AbstractAction() {
+		this.exitMenuItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = -2684501250646388101L;
 
 			@Override
@@ -406,7 +440,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				System.exit(NORMAL);
 			}
 		});
-		editMenuItem = new JMenuItem(new AbstractAction() {
+		this.editMenuItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -414,27 +448,54 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				changeQuestionPanelToEditMode();
 			}
 		});
-		showCategory = new JMenuItem(new AbstractAction(){
-
+		this.showCategoryItem = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				changeQuestionPanelToCategoryPanel();
 			}
-			
 		});
-		showCategory.setVisible(false);
+		this.editCategoryItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = -390527580915841884L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				categoryPanel.setEditMode(true);
+				editCategoryItem.setVisible(false);
+				quitEditModeItem.setVisible(true);
+				pack();
+			}
+		});
+		this.quitEditModeItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 6117109169911884912L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				disableEditMode();
+			}
+		});
+		
+		this.exitMenuItem.setText("Beenden");
+		this.showCategoryItem.setText("Kategorie auswählen");
+		this.editMenuItem.setText("Bearbeiten");
+		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
+		this.editCategoryItem.setText("Kategorien bearbeiten");
+		this.quitEditModeItem.setText("Bearbeiten beenden");
+		
+		this.showCategoryItem.setVisible(false);
+		this.editCategoryItem.setVisible(false);
+		this.editMenuItem.setVisible(false);
+		this.userMenuItem.setVisible(false);
+		this.quitEditModeItem.setVisible(false);
 	}
 
 	/**
 	 * callback for EditQuestionPanel
 	 */
-	@Override
 	public void updateQuestion(String id, String newQuestionText,
 			String[] newAnswers, int[] answersChecked, String newMediaURL) {
-		// TODO Auto-generated method stub
+
 		Packet p = new Packet(this.username, this.password);
 		p.setPacketType(Packet.Type.EDIT_QUESTION);
 		p.setEditQuestionType(Packet.Edit_Question_Type.UPDATE_QUESTION);
@@ -449,6 +510,5 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			e.printStackTrace();
 		}
 		changeQuestionPanelToAnswerMode();
-
 	}
 }
