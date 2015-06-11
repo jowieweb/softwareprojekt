@@ -2,13 +2,10 @@ package org.Client.GUI;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
-
 
 public class VideoFrame {
     private JFrame frame;
