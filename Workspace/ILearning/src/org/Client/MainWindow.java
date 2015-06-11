@@ -38,6 +38,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private JMenuItem exitMenuItem;
 	private JMenuItem aboutMenuItem;
 	private JMenuItem userMenuItem;
+	private JMenuItem showCategory;
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
@@ -62,6 +63,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		createMenuItems();
 
 		exitMenuItem.setText("Beenden");
+		showCategory.setText("Categorie auswählen");
 		editMenuItem.setText("Bearbeiten");
 		userMenuItem.setText("Nutzerverwaltung anzeigen");
 
@@ -69,6 +71,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
 		fileMenu.add(exitMenuItem);
+		fileMenu.add(showCategory);
 		editMenu.add(editMenuItem);
 		editMenu.add(userMenuItem);
 		helpMenu.add(aboutMenuItem);
@@ -83,7 +86,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//		setMinimumSize(getSize());
 	}
 
 	/**
@@ -132,14 +134,22 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
 
 				}
-
-				System.out.println(p.getWasRight());
+				String[][] score = p.getUserScore();
+				for(int i =0;i< score.length;i++){
+					System.out.println(score[i][0] + " " + score[i][1]);
+				}
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
+			
 			add(questionPanel);
 			editMenuItem.setVisible(true);
+
+			showCategory.setVisible(true);
 			questionPanel.setQuestionText(p.getQuestion());
+			
 			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
+			questionPanel.setQuestionID(p.getQuestionID());
+			((AnswerQuestionPanel)questionPanel).setVideo(p.getMediaURL());
 
 			break;
 		case  USER_MANAGEMENT:
@@ -155,7 +165,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		}
 
 		pack();
-		//		setMinimumSize(getSize());
 	}
 
 	/**
@@ -299,13 +308,16 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeQuestionPanelToEditMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
-
+		String id = questionPanel.getQuestionID();
 		remove(questionPanel);
 		questionPanel = new EditQuestionPanel(this);
 		questionPanel.setAnswerText(answers);
 		questionPanel.setQuestionText(question);
+		questionPanel.setQuestionID(id);
 		add(questionPanel);
 		pack();
+
+		showCategory.setVisible(false);
 	}
 
 	/**
@@ -314,12 +326,15 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeQuestionPanelToAnswerMode() {
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
-
+		String id = questionPanel.getQuestionID();
 		remove(questionPanel);
 		questionPanel = new AnswerQuestionPanel(this, answers);
 		questionPanel.setQuestionText(question);
+		questionPanel.setQuestionID(id);
 		add(questionPanel);
 		pack();
+
+		showCategory.setVisible(true);
 	}
 
 	/**
@@ -328,9 +343,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeQuestionPanelToCategoryPanel() {
 		remove(questionPanel);
 		questionPanel = null;
-		add(categoryPanel);
-		pack();
-		// TODO: Reload category list
+		login(username,password);
+		showCategory.setVisible(false);
 	}
 
 	/**
@@ -350,6 +364,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		userMenuItem.setVisible(false);
 		add(adminPanel);
 		pack();
+		showCategory.setVisible(false);
 	}
 
 	/**
@@ -358,7 +373,9 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	public void changeAdministrationPanelToCategoryPanel() {
 		remove(adminPanel);
 		add(categoryPanel);
+		userMenuItem.setVisible(true);
 		pack();
+		showCategory.setVisible(false);
 	}
 	
 	/**
@@ -397,5 +414,41 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				changeQuestionPanelToEditMode();
 			}
 		});
+		showCategory = new JMenuItem(new AbstractAction(){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				changeQuestionPanelToCategoryPanel();
+			}
+			
+		});
+		showCategory.setVisible(false);
+	}
+
+	/**
+	 * callback for EditQuestionPanel
+	 */
+	@Override
+	public void updateQuestion(String id, String newQuestionText,
+			String[] newAnswers, int[] answersChecked, String newMediaURL) {
+		// TODO Auto-generated method stub
+		Packet p = new Packet(this.username, this.password);
+		p.setPacketType(Packet.Type.EDIT_QUESTION);
+		p.setEditQuestionType(Packet.Edit_Question_Type.UPDATE_QUESTION);
+		p.setQuestionID(id);
+		p.setAnswers(newAnswers);
+		p.setQuestion(newQuestionText);
+		p.setSelectedAnswers(answersChecked);
+		p.setMediaURL(newMediaURL);
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
+		changeQuestionPanelToAnswerMode();
+
 	}
 }

@@ -23,10 +23,9 @@ public class NoteCardPrinter {
 	private String[] packetToArray(Packet p) {
 		// TODO: Convert Packet to String-Array!
 		log.severe("packetToArray not yet implemented!");
-		String[] testPacket = new String[] { "Titel der Testfrage?",
-				"Fragentext. Koennte auch ein bisschen laenger sein.",
-				"AntwortOption A", "AntwortOption B", "AntwortOption C,AntwortOption C,AntwortOption C,AntwortOption C,AntwortOption CAntwortOption C,AntwortOption CAntwortOption CAntwortOption CAntwortOption CAntwortOption CAntwortOption CAntwortOption CAntwortOption CAntwortOption C,AntwortOption C,AntwortOption C,AntwortOption C,",
-				"AntwortOption D", };
+		String[] testPacket = new String[] { "Question",
+				p.getQuestion(),
+				p.getAnswers()[0], p.getAnswers()[1], p.getAnswers()[2],p.getAnswers()[3]};
 		return testPacket;
 	}
 

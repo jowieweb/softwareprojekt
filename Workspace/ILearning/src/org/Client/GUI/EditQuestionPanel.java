@@ -53,6 +53,25 @@ public class EditQuestionPanel extends QuestionPanel {
 				abortButtonClicked();
 			}
 		});
+		
+		this.submitButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				int[] ans =getAllSelectedAnswers();
+				boolean wasChecked = false;
+				for(int i=0;i<ans.length;i++){
+					if(ans[i] == 1){
+						wasChecked = true;
+					}
+				}
+				if(wasChecked){
+					if(questionID!=null)
+						listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+				}
+			}
+		});
 
 		JPanel pan = new JPanel();
 		pan.setLayout(new BorderLayout());
@@ -149,6 +168,7 @@ public class EditQuestionPanel extends QuestionPanel {
 			}
 		}
 	}
+	
 
 	/**
 	 * Sets the question text.
@@ -184,4 +204,17 @@ public class EditQuestionPanel extends QuestionPanel {
 
 		return -1;
 	}
+	
+	/***
+	 * returns a boolean[4] showing the selected CBs.
+	 * @return boolean[4]
+	 */
+	private int[] getAllSelectedAnswers() {
+		int[] ans = new int[4];
+		for (int i = 0; i < 4; i++) {
+			ans[i] = (this.answerButton[i].isSelected())?1:0;
+		}
+		return ans;
+	}
+
 }

@@ -16,9 +16,9 @@ public class PacketBuilder {
 	}
 
 	/**
-	 *
-	 * @param querry
-	 * @return
+	 * receives a answer packet to a given querry
+	 * @param querry packet
+	 * @return the answer packet
 	 */
 	public  Packet getPacket(Packet querry) {
 		Packet answer = copyPacket(querry);
@@ -36,6 +36,7 @@ public class PacketBuilder {
 		case ANSWER_QUESTION:
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
+			dbc.setHighScore(answer);
 			break;
 		case USER_MANAGEMENT:
 			switch(querry.getManagementType()){
@@ -56,12 +57,22 @@ public class PacketBuilder {
 			default:
 				break;				
 			}
-			
 			dbc.addAllUsers(answer);
 			break;
+		case EDIT_QUESTION: 
+			switch(querry.getEditQuestionType()){
+			case UPDATE_QUESTION:
+				dbc.updateQuestion(querry);
+				break;
+			default:
+				break;
+			}
+			
+			
 		default:
 			break;
 		}
+
 
 		return answer;
 	}
@@ -80,6 +91,7 @@ public class PacketBuilder {
 		p.setSelectedAnswers(querry.getSelectedAnswers());
 		p.setQuestion(querry.getQuestion());
 		p.setWasRight(querry.getWasRight());
+		p.setQuestionID(querry.getQuestionID());
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
 		}

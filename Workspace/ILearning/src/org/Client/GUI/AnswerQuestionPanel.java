@@ -26,7 +26,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private ImagePanel picturePanel;
 	private JButton nextButton;
 	private JButton backButton;
-
+ 
 	/**
 	 * constructor builds JPanel.
 	 * @param listener callback method object
@@ -42,13 +42,13 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		this.backButton.setVisible(false);
 
 		this.picturePanel = new ImagePanel();
+		setAnswerText(answers);
 		buildPanels();
 
 		new MakeSound("haishort.wav").execute();
-		setAnswerText(answers);
 		addButtonActionListeners();
 		
-		setVideo("http://www.808.dk/vstreamer.asp?video=gizmo.mp4");
+//		setVideo("http://www.808.dk/vstreamer.asp?video=gizmo.mp4");
 	}
 
 
@@ -185,7 +185,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 * @param videoURL url
 	 */
 	public void setVideo(String videoURL) {
-		new VideoFrame(videoURL);
+		if(videoURL.length()> 5)
+			new VideoFrame(videoURL);
 	}
 	
 	/**

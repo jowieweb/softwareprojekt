@@ -4,12 +4,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 /**
  * The main class starts the program
  */
 public class Main {
 
 	public static void main(String[] args) {
+			
 		SwingUtilities.invokeLater(new Runnable(){
 
 			@Override
@@ -27,7 +29,6 @@ public class Main {
 				}
 
 				new MainWindow();
-
 			}
 		});
 	}

@@ -21,11 +21,14 @@ public class Packet implements Serializable {
 	private String selectedLevel="";
 	private String[] topics;
 	private String[] level;
+	private String questionID = "";
 	private ImageIcon image;
 	private int[] selectedAnswer;
 	private boolean wasRight;
+	private String mediaURL ="";
 	
 	private ArrayList<String[]> users;
+	private ArrayList<String[]> userScore;
 
 	/**
 	 * Type for specifying the packet type.
@@ -36,6 +39,10 @@ public class Packet implements Serializable {
 	
 	public enum Management_Type {
 		UNUSED, ADD_USER, REMOVE_USER, CHANGE_USER
+	}
+	
+	public enum Edit_Question_Type {
+		UNUSED, UPDATE_QUESTION, ADD_QUESTION, REMOVE_QUESTION
 	}
 	
 
@@ -49,6 +56,7 @@ public class Packet implements Serializable {
 	private Type type = Type.UNUSED;
 	private Login login = Login.FAIL;
 	private Management_Type m_type = Management_Type.UNUSED;
+	private Edit_Question_Type eq_type = Edit_Question_Type.UNUSED;
 
 	/**
 	 * Constructor builds new packet.
@@ -129,6 +137,25 @@ public class Packet implements Serializable {
 		if (question != null) {
 			this.question = question;
 		}
+	}
+	
+	/***
+	 * Sets the QuestionID
+	 * @param id the id of the question
+	 */
+	public void setQuestionID(String id){
+		if(id.length()>=1){
+			questionID = id;
+		}
+	}
+	
+	/***
+	 * returns the QuestionID
+	 * @return the QuestionID
+	 */
+	public String getQuestionID()
+	{
+		return questionID;
 	}
 	
 	/**
@@ -309,11 +336,86 @@ public class Packet implements Serializable {
 		return users;
 	}
 	
+	/**
+	 * sets what type of User Management will be done
+	 * @param mtype
+	 */
 	public void setManagemtType(Management_Type mtype){
 		m_type = mtype;
 	}
 	
+	/**
+	 * gets what type of user management will be done
+	 * @return
+	 */
 	public Management_Type getManagementType(){
 		return m_type;
 	}
+	
+	/**
+	 * sets what tye of Edit will be done to a question
+	 * @param eqt
+	 */
+	public void setEditQuestionType(Edit_Question_Type eqt){
+		eq_type = eqt;
+	}
+	
+	/**
+	 * gets what type of editing will be dine to a question
+	 * @return
+	 */
+	public Edit_Question_Type getEditQuestionType()
+	{
+		return eq_type;
+	}
+	
+	/**
+	 * clears the list of user Scores
+	 */
+	public void clearUserScore(){
+		if(userScore != null)
+			userScore.clear();
+	}
+	
+	
+	/**
+	 * adds one user score
+	 * @param user String[0] = username, [1] points
+	 */
+	public void addUserScore(String[] user)
+	{
+		if(userScore ==null)
+			userScore = new ArrayList<String[]>();
+		userScore.add(user);
+	}
+	
+	/**
+	 * gets all the user scores 
+	 * @return String[][] [][0] = username, [][1] points
+	 */
+	public String[][] getUserScore(){
+		String[][] ret = new String[userScore.size()][2];
+		for(int i =0;i< userScore.size();i++){
+			ret[i]=userScore.get(i);
+		}		
+		return ret;
+		
+	}
+	
+	/**
+	 * gets the media URL
+	 * @return the URL
+	 */
+	public String getMediaURL(){
+		return mediaURL;
+	}
+	
+	/**
+	 * sets the media URL
+	 * @param url 
+	 */
+	public void setMediaURL(String url){
+		mediaURL = url;
+	}
+	
 }
