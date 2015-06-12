@@ -12,6 +12,9 @@ import javax.imageio.ImageIO;
 
 import org.Packet;
 import org.Packet.Login;
+import org.SQLQuerries;
+
+import com.mysql.jdbc.PreparedStatement;
 
 /**
  * The DBConnector class retrieves data from the database.
@@ -53,9 +56,9 @@ public class DBConnector {
 	public void checkAnswers(Packet packet) {
 		if (packet.getSelectedAnswers() != null) {
 			try {
-				ResultSet result = connect.createStatement().executeQuery(
-						"select solution from Question where Question.questiontext ='"
-								+ packet.getQuestion() + "'");
+				PreparedStatement stm  =  SQLQuerries.getCheckAnswer(connect);
+				stm.setString(1, packet.getQuestion());
+				ResultSet result = stm.executeQuery();
 				while (result.next()) {
 					String sol = result.getString("solution");
 					boolean right = false;
@@ -118,36 +121,43 @@ public class DBConnector {
 		}
 
 		try {
-			debug = "select count(*) from Question_data where Question_data.QuestionID ="
-					+ " (select id from Question where questiontext = '"
-					+ packet.getQuestion()
-					+ "') and Question_data.UserID = (select `User`.id from"
-					+ " `User` where `User`.`name` = '"
-					+ packet.getUsername()
-					+ "')";
+			PreparedStatement stm = SQLQuerries.getCountForCheck(connect);
+//			debug = "select count(*) from Question_data where Question_data.QuestionID ="
+//					+ " (select id from Question where questiontext = '"
+//					+ packet.getQuestion()
+//					+ "') and Question_data.UserID = (select `User`.id from"
+//					+ " `User` where `User`.`name` = '"
+//					+ packet.getUsername()
+//					+ "')";
 
-			ResultSet result = connect.createStatement().executeQuery(debug);
+			stm.setString(1, packet.getQuestion());
+			stm.setString(2, packet.getUsername());
+			ResultSet result = stm.executeQuery();
 			int count = 0;
 			while (result.next()) {
 				count = result.getInt(1);
 			}
 
 			if (count == 1) {
-				debug = "update Question_data set falseCount= falsecount + "
-						+ incorrect
-						+ ", lastAnswered = now(), overallCount = overallCount +1"
-						+ " where Question_data.QuestionID = (select id from Question where questiontext = '"
-						+ packet.getQuestion()
-						+ "') and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = '"
-						+ packet.getUsername() + "')";
+				 stm = SQLQuerries.get1ForCheck(connect);
+				 stm.setString(1, incorrect);
+				 stm.setString(2, packet.getQuestion());
+				 stm.setString(3,packet.getUsername());
+				 
+				
 
 			} else if (count == 0) {
-				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
-						+ packet.getUsername()
-						+ "') , (select id from Question where questiontext = '"
-						+ packet.getQuestion() + "')," + incorrect + ",now(),1)";
+//				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
+//						+ packet.getUsername()
+//						+ "') , (select id from Question where questiontext = '"
+//						+ packet.getQuestion() + "')," + incorrect + ",now(),1)";
+				 stm = SQLQuerries.get2ForCheck(connect);
+				 stm.setString(1, packet.getUsername());
+				 stm.setString(2, packet.getQuestion());
+				 stm.setString(3, incorrect);
 			}
-			connect.createStatement().execute(debug);
+			stm.execute();
+			//connect.createStatement().execute(debug);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,8 +172,8 @@ public class DBConnector {
 	 */
 	public void addCategories(Packet packet) {
 		try {
-			ResultSet resultSet = connect.createStatement().executeQuery(
-					"select title from Topic");
+			PreparedStatement stm = SQLQuerries.addCategories(connect);
+			ResultSet resultSet = stm.executeQuery();
 			String categorys = "";
 			while (resultSet.next()) {
 				categorys += resultSet.getString("title") + ";";
@@ -183,8 +193,8 @@ public class DBConnector {
 	 */
 	public void addLevel(Packet packet) {
 		try {
-			ResultSet resultSet = connect.createStatement().executeQuery(
-					"SELECT title FROM Level");
+			PreparedStatement stm = SQLQuerries.addLevel(connect);
+			ResultSet resultSet = stm.executeQuery();
 			String level = "";
 			while (resultSet.next()) {
 				level += resultSet.getString("title") + ";";
@@ -203,12 +213,17 @@ public class DBConnector {
 	 */
 	public void setFrage(Packet packet) {
 		try {
-			ResultSet resultSet = connect
-					.createStatement()
-					.executeQuery(
-							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
-									+ packet.getSelectedTopic()
-									+ "' ORDER BY RAND()");
+			
+//			ResultSet resultSet = connect
+//					.createStatement()
+//					.executeQuery(
+//							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
+//									+ packet.getSelectedTopic()
+//									+ "' ORDER BY RAND()");
+			PreparedStatement stm = SQLQuerries.getFrage(connect);
+			stm.setString(1, packet.getSelectedTopic());
+			ResultSet resultSet = stm.executeQuery();
+			
 			if (resultSet.next()) {
 				packet.setQuestion(resultSet.getString("questiontext"));
 				
@@ -273,10 +288,14 @@ public class DBConnector {
 	 */
 	public Packet.Login checkLogin(String username, String password) {
 		try {
-			ResultSet resultSet = connect.createStatement().executeQuery(
-					"select name, admin from User where name = '" + username
-					+ "' and password = '" + password + "'");
+			PreparedStatement stm = SQLQuerries.getLogin(connect);
+			stm.setString(1, username);
+			stm.setString(2, password);
+//			ResultSet resultSet = connect.createStatement().executeQuery(
+//					"select name, admin from User where name = '" + username
+//					+ "' and password = '" + password + "'");
 
+			ResultSet resultSet = stm.executeQuery();
 			while (resultSet.next()) {
 				String user = resultSet.getString("name");
 				String admin = resultSet.getString("admin");
@@ -307,10 +326,10 @@ public class DBConnector {
 	 */
 	public void addAllUsers(Packet packet) {
 		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
-			String debug = "SELECT * from `User`";
+//			String debug = "SELECT * from `User`";
+			
 			try {
-				ResultSet resultSet = connect.createStatement().executeQuery(
-						debug);
+				ResultSet resultSet = SQLQuerries.addAllUsers(connect).executeQuery();
 				while (resultSet.next()) {
 					String toAdd[] = new String[3];
 					toAdd[0] = resultSet.getString("id");
@@ -331,9 +350,15 @@ public class DBConnector {
 	 */
 	public void changeUser(Packet p){
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
-			String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
+			//String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
+			
 			try{
-				connect.createStatement().execute(debug);	
+				PreparedStatement stm = SQLQuerries.changeUser(connect);
+				stm.setString(1, p.getAnswers()[1] );
+				stm.setString(2, p.getAnswers()[2] );
+				stm.setString(3, p.getAnswers()[0] );
+				
+				stm.execute();
 			
 			}catch(SQLException e){
 				e.printStackTrace();
@@ -347,8 +372,12 @@ public class DBConnector {
 	 */
 	public void removeUser(Packet packet){
 		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
-			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  packet.getQuestion() + "'));";
-			try{connect.createStatement().execute(debug);	
+//			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  packet.getQuestion() + "'));";
+			
+			try{
+				PreparedStatement stm = SQLQuerries.removeUser(connect);
+				stm.setString(1,  packet.getQuestion());
+				stm.execute();
 			
 			} catch(SQLException e){}
 		}
@@ -363,9 +392,12 @@ public class DBConnector {
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
 			if(p.getAnswers() != null && p.getAnswers().length == 2)
 			{
-				String debug = "Insert into `User`(name, password, surname, email) VALUES('" + p.getAnswers()[0] + "','" + p.getAnswers()[1] + "',' ',' ')";
+//				String debug = "Insert into `User`(name, password, surname, email) VALUES('" + p.getAnswers()[0] + "','" + p.getAnswers()[1] + "',' ',' ')";
 				try{
-					connect.createStatement().execute(debug);	
+					PreparedStatement stm = SQLQuerries.addUser(connect);
+					stm.setString(1,  p.getAnswers()[0]);
+					stm.setString(2,  p.getAnswers()[1]);
+					stm.execute();
 				
 				}catch(SQLException e){
 					e.printStackTrace();
@@ -384,13 +416,13 @@ public class DBConnector {
 			return;
 		}
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
-			String mediatype = "'";
+			String mediatype = "";
 			if(p.getMediaURL().endsWith(".jpg")){
-				mediatype = "', image='" + p.getMediaURL()+ "'";
+				mediatype = " image='" + p.getMediaURL()+ "'";
 			} else if(p.getMediaURL().endsWith(".mp4")){
-				mediatype = "', video='" + p.getMediaURL()+ "'";
+				mediatype = " video='" + p.getMediaURL()+ "'";
 			}else if(p.getMediaURL().endsWith(".wav")){
-				mediatype = "', audio='" + p.getMediaURL() + "'";
+				mediatype = " audio='" + p.getMediaURL() + "'";
 			}
 			
 			String solution = "";
@@ -402,14 +434,23 @@ public class DBConnector {
 				}
 			}
 			
-			String debug = "update `Question` set questiontext = '"
-					+ p.getQuestion() + "', solution ='" + solution + "', answer1 ='" + p.getAnswers()[0]
-					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
-					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
-					+ mediatype 
-					+ " where id = " + p.getQuestionID();
+//			String debug = "update `Question` set questiontext = '"
+//					+ p.getQuestion() + "', solution ='" + solution + "', answer1 ='" + p.getAnswers()[0]
+//					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
+//					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
+//					+ mediatype 
+//					+ " where id = " + p.getQuestionID();
 		try{
-				connect.createStatement().execute(debug);	
+			PreparedStatement stm = SQLQuerries.udpateQuestion(connect, mediatype);
+			stm.setString(1, p.getQuestion());
+			stm.setString(2, solution);
+			stm.setString(3,  p.getAnswers()[0]);
+			stm.setString(4,  p.getAnswers()[1]);
+			stm.setString(5,  p.getAnswers()[2]);
+			stm.setString(6,  p.getAnswers()[3]);
+			stm.setString(7,  p.getQuestionID());
+			
+			stm.execute();
 			
 			}catch(SQLException e){
 				e.printStackTrace();
@@ -423,10 +464,9 @@ public class DBConnector {
 	 * @param p
 	 */
 	public void setHighScore(Packet p) {
-		String debug = "select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID";
-		ResultSet resultSet;
+		//String debug = "select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID";
 		try {
-			resultSet = connect.createStatement().executeQuery(debug);
+			ResultSet resultSet = SQLQuerries.setHighScore(connect).executeQuery();
 			while (resultSet.next()) {
 				String[] user = new String[2];
 				user[0] = resultSet.getString(1);
