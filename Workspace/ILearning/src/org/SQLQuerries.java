@@ -1,10 +1,7 @@
 package org;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 
 public class SQLQuerries {
 
@@ -29,7 +26,15 @@ public class SQLQuerries {
 						+ " `User` where `User`.`name` = ?)");
 	}
 
-	public static PreparedStatement get1ForCheck(java.sql.Connection c) {
+	public static PreparedStatement get1ForCheck(java.sql.Connection c, boolean isLite) {
+		if(isLite){
+			return getPS(
+					c,
+					"update Question_data set falseCount= falsecount + ?, lastAnswered = date('now'), overallCount = overallCount +1"
+							+ " where Question_data.QuestionID = (select id from Question where questiontext = ? "
+							+ ") and Question_data.UserID = (select `User`.id from `User` where `User`.`name` = "
+							+ "?)");
+		}
 		return getPS(
 				c,
 				"update Question_data set falseCount= falsecount + ?, lastAnswered = now(), overallCount = overallCount +1"
@@ -39,7 +44,12 @@ public class SQLQuerries {
 
 	}
 
-	public static PreparedStatement get2ForCheck(java.sql.Connection c) {
+	public static PreparedStatement get2ForCheck(java.sql.Connection c, boolean isLite) {
+		if(isLite){
+			return getPS(
+					c,
+					"insert into Question_data(id,UserID,QuestionID,falseCount,lastAnswered,overallCount) values(?,(select `User`.id from `User` where `User`.`name` = ?) , (select id from Question where questiontext = ?), ? ,date('now'),1)");
+		}
 		return getPS(
 				c,
 				"insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = ?) , (select id from Question where questiontext = ?), ? ,now(),1)");
@@ -54,10 +64,12 @@ public class SQLQuerries {
 	}
 
 	public static PreparedStatement getFrage(java.sql.Connection c) {
+		
 		return getPS(
 				c,
 				"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = ?"
-						+ " ORDER BY RAND()");
+				//		+ " ORDER BY RAND()");
+				);
 	}
 
 	public static PreparedStatement getLogin(java.sql.Connection c) {

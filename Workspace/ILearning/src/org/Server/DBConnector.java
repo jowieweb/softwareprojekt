@@ -14,7 +14,7 @@ import org.Packet;
 import org.Packet.Login;
 import org.SQLQuerries;
 
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 
 /**
  * The DBConnector class retrieves data from the database.
@@ -122,14 +122,6 @@ public class DBConnector {
 
 		try {
 			PreparedStatement stm = SQLQuerries.getCountForCheck(connect);
-//			debug = "select count(*) from Question_data where Question_data.QuestionID ="
-//					+ " (select id from Question where questiontext = '"
-//					+ packet.getQuestion()
-//					+ "') and Question_data.UserID = (select `User`.id from"
-//					+ " `User` where `User`.`name` = '"
-//					+ packet.getUsername()
-//					+ "')";
-
 			stm.setString(1, packet.getQuestion());
 			stm.setString(2, packet.getUsername());
 			ResultSet result = stm.executeQuery();
@@ -139,7 +131,7 @@ public class DBConnector {
 			}
 
 			if (count == 1) {
-				 stm = SQLQuerries.get1ForCheck(connect);
+				 stm = SQLQuerries.get1ForCheck(connect,false);
 				 stm.setString(1, incorrect);
 				 stm.setString(2, packet.getQuestion());
 				 stm.setString(3,packet.getUsername());
@@ -147,18 +139,12 @@ public class DBConnector {
 				
 
 			} else if (count == 0) {
-//				debug = "insert into Question_data(UserID,QuestionID,falseCount,lastAnswered,overallCount) values((select `User`.id from `User` where `User`.`name` = '"
-//						+ packet.getUsername()
-//						+ "') , (select id from Question where questiontext = '"
-//						+ packet.getQuestion() + "')," + incorrect + ",now(),1)";
-				 stm = SQLQuerries.get2ForCheck(connect);
+				 stm = SQLQuerries.get2ForCheck(connect,false);
 				 stm.setString(1, packet.getUsername());
 				 stm.setString(2, packet.getQuestion());
 				 stm.setString(3, incorrect);
 			}
 			stm.execute();
-			//connect.createStatement().execute(debug);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
