@@ -45,7 +45,6 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		setAnswerText(answers);
 		buildPanels();
 
-		new MakeSound("haishort.wav").execute();
 		addButtonActionListeners();
 		
 //		setVideo("http://www.808.dk/vstreamer.asp?video=gizmo.mp4");

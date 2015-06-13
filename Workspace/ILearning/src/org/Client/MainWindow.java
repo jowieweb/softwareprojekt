@@ -18,6 +18,7 @@ import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.EditQuestionPanel;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
+import org.Client.GUI.MakeSound;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
 
@@ -50,6 +51,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	private String username;
 	private String password;
+	
+	private int questionCount = 0;
 
 	/**
 	 * constructor creates window.
@@ -133,11 +136,17 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
 
 				}
+				
 				String[][] score = p.getUserScore();
 				if(score != null){
 					for(int i =0;i< score.length;i++){
 						System.out.println(score[i][0] + " " + score[i][1]);
 					}
+				}
+				questionCount ++;
+				if(questionCount == 10){
+					questionCount =0;
+					new MakeSound("haishort.wav").execute();
 				}
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
