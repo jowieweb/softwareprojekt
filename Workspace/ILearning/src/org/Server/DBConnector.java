@@ -287,6 +287,7 @@ public class DBConnector {
 	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
 	 */
 	public Packet.Login checkLogin(String username, String password) {
+		dump();
 		try {
 			PreparedStatement stm = SQLQuerries.getLogin(connect);
 			stm.setString(1, username);
@@ -485,7 +486,7 @@ public class DBConnector {
 	/**
 	 * dumps the whole DB
 	 */
-	private void dump(){
+	public String dump(){
 		// source: http://www.coderanch.com/t/480353/JDBC/databases/MySql-DB-backup-java
 		try {
 			ResultSet rs = connect.createStatement().executeQuery(
@@ -495,20 +496,18 @@ public class DBConnector {
 			while (rs.next()) {
 				String tbl = rs.getString(1);
 
-				sb.append("\n");
-				sb.append("-- ----------------------------\n")
-						.append("-- Table structure for `").append(tbl)
-						.append("`\n-- ----------------------------\n");
+				
 				sb.append("DROP TABLE IF EXISTS `").append(tbl).append("`;\n");
 				ResultSet rs2 = connect.createStatement().executeQuery(
 						"SHOW CREATE TABLE `" + tbl + "`");
 				rs2.next();
 				String crt = rs2.getString(2) + ";";
-				sb.append(crt).append("\n");
+				crt = crt.replace("AUTO_INCREMENT", "");
+				crt = crt.substring(0,crt.lastIndexOf(")")+1);
+				crt = crt.substring(0, crt.indexOf(")", crt.lastIndexOf("PRIMARY KEY"))) + "));";
+				sb.append(crt).append(";\n");
 				sb.append("\n");
-				sb.append("-- ----------------------------\n")
-						.append("-- Records for `").append(tbl)
-						.append("`\n-- ----------------------------\n");
+				
 
 				ResultSet rss = connect.createStatement().executeQuery(
 						"SELECT * FROM " + tbl);
@@ -539,10 +538,13 @@ public class DBConnector {
 				}
 			}
 		
-
+			String end = buff.toString();
+			return end;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "";
+		
 
 	}
 		

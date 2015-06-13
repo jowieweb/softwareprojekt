@@ -67,7 +67,12 @@ public class PacketBuilder {
 			default:
 				break;
 			}
-			
+			break;
+		case DUMP_DB:
+			String dump = dbc.dump();
+			answer.setQuestion(dump);
+			answer.setPacketType(Packet.Type.DUMP_DB);
+			break;
 			
 		default:
 			break;

@@ -34,7 +34,7 @@ public class Packet implements Serializable {
 	 * Type for specifying the packet type.
 	 */
 	public enum Type {
-		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB
 	};
 	
 	public enum Management_Type {

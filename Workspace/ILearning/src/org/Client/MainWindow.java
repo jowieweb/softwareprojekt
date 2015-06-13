@@ -39,6 +39,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	private JMenuItem aboutMenuItem;
 	private JMenuItem userMenuItem;
 	private JMenuItem showCategoryItem;
+	private JMenuItem downloadDB;
 	private JMenuItem editCategoryItem;
 	private JMenuItem quitEditModeItem;
 	private JMenu editMenu;
@@ -67,8 +68,10 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(helpMenu);
-		fileMenu.add(exitMenuItem);
 		fileMenu.add(showCategoryItem);
+		fileMenu.add(downloadDB);
+		fileMenu.add(exitMenuItem);
+
 		editMenu.add(editMenuItem);
 		editMenu.add(userMenuItem);
 		editMenu.add(editCategoryItem);
@@ -77,7 +80,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 		setJMenuBar(menuBar);
 
-		client = new TCPConnection(this, "127.0.0.1", 12345);
 		add(loginPanel);
 		pack();
 		setVisible(true);
@@ -155,7 +157,13 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			adminPanel.addUsers(p);
 			System.out.println("asd");
 
-
+			break;
+		case DUMP_DB:
+			String dump = p.getQuestion();
+			if(dump.length() > 10){
+				LocalConnection asd = new LocalConnection(this);
+				asd.insert(p);				
+			}
 			break;
 		default:
 			break;
@@ -180,6 +188,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 */
 	@Override
 	public void login(String username, String password) {
+		client = new TCPConnection(this, "127.0.0.1", 12345);
+		this.downloadDB.setVisible(true);
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.CATEGORY);
 		
@@ -476,8 +486,26 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			}
 		});
 		
+		this.downloadDB = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Packet p = new Packet(username, password);
+				p.setPacketType(Packet.Type.DUMP_DB);
+				try {
+					client.sendPacket(p);
+				} catch (TCPClientException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
 		this.exitMenuItem.setText("Beenden");
 		this.showCategoryItem.setText("Kategorie auswählen");
+		this.downloadDB.setText("Download DB");
 		this.editMenuItem.setText("Bearbeiten");
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
@@ -488,6 +516,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		this.editMenuItem.setVisible(false);
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
+		this.downloadDB.setVisible(false);
 	}
 
 	/**
@@ -510,5 +539,11 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			e.printStackTrace();
 		}
 		changeQuestionPanelToAnswerMode();
+	}
+
+	@Override
+	public void useLocal() {
+		// TODO Auto-generated method stub
+		client = new LocalConnection(this);
 	}
 }
