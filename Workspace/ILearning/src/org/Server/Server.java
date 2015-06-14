@@ -15,7 +15,7 @@ public class Server implements TCPServerListener {
 	 * The constructor instantiates the PacketBuilder and TCPServer.
 	 */
 	public Server() {
-		builder = new PacketBuilder();
+		builder = new PacketBuilder(); 
 		new TCPServer(this);
 	}
 

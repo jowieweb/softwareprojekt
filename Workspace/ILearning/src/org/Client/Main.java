@@ -27,7 +27,6 @@ public class Main {
 				} catch (UnsupportedLookAndFeelException e) {
 					e.printStackTrace();
 				}
-
 				new MainWindow();
 			}
 		});

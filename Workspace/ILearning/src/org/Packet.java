@@ -34,7 +34,7 @@ public class Packet implements Serializable {
 	 * Type for specifying the packet type.
 	 */
 	public enum Type {
-		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB
 	};
 	
 	public enum Management_Type {
@@ -398,11 +398,14 @@ public class Packet implements Serializable {
 	 * @return String[][] [][0] = username, [][1] points
 	 */
 	public String[][] getUserScore(){
-		String[][] ret = new String[userScore.size()][2];
-		for(int i =0;i< userScore.size();i++){
-			ret[i]=userScore.get(i);
-		}		
-		return ret;
+		if (userScore != null) {
+			String[][] ret = new String[userScore.size()][2];
+			for (int i = 0; i < userScore.size(); i++) {
+				ret[i] = userScore.get(i);
+			}
+			return ret;
+		}
+		return null;
 		
 	}
 	
