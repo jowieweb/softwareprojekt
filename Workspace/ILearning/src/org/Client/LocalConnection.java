@@ -255,12 +255,33 @@ public class LocalConnection extends Client {
 
 	}
 	
+	public String getUserID(String username){
+		PreparedStatement stm = SQLQuerries.getUser(connect);
+		try {
+			stm.setString(1, username);
+			ResultSet resultSet = stm.executeQuery();
+			resultSet.next();
+			return resultSet.getString(1);
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+		
+	}
 	
 	public void setFrage(Packet packet) {
 		try {
 			String asd= "";
-			PreparedStatement stm = SQLQuerries.getFrage(connect);
+			String userid = getUserID(packet.getUsername());
+			PreparedStatement stm = SQLQuerries.getFrage(connect,true);
 			stm.setString(1, packet.getSelectedTopic());
+			stm.setString(2, userid);
+			stm.setString(3, userid);
+			
+			
 			ResultSet resultSet = stm.executeQuery();
 			
 			if (resultSet.next()) {

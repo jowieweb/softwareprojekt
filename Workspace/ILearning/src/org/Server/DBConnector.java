@@ -218,7 +218,7 @@ public class DBConnector {
 		try {
 			String userid = getUserID(packet.getUsername());
 			
-			PreparedStatement stm = SQLQuerries.getFrage(connect);
+			PreparedStatement stm = SQLQuerries.getFrage(connect, false);
 			stm.setString(1, packet.getSelectedTopic());
 			stm.setString(2, userid);
 			stm.setString(3, userid);

@@ -69,28 +69,28 @@ public class SQLQuerries {
 				c,"select id from `User` where name = ?");
 	}
 
-	public static PreparedStatement getFrage(java.sql.Connection c) {
-//		String querry = "select * from (select Question.id, Question.questiontext, Question.answer1, Question.answer2, Question.answer3, Question.answer4, (IFNULL(lastAnswered,0)) as realLast, image, video, audio  from Question " +
-//						"LEFT JOIN Question_data on Question.id = Question_data.QuestionID left join `User` on `User`.id = Question_data.UserID " + 
-//						"LEFT JOIN Topic on Question.TopicID = Topic.id " +
-//						"where Topic.title = ? " +
-//						"ORDER BY (falseCount / overallCount) DESC, lastAnswered) as asd  where " +
-//						"asd.realLast in (SELECT	lastAnswered FROM	Question_data	where lastAnswered <  DATE_SUB(NOW(), INTERVAL 2 MINUTE))";
-		
-		String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question " + 
-"LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "+
-"LEFT JOIN `User` ON `User`.id = Question_data.UserID " +
-"LEFT JOIN Topic ON Question.TopicID = Topic.id "+
-"WHERE 	Topic.title = ? " +
-"AND (IFNULL(UserID, ?)) = ? AND IFNULL(lastAnswered, 0) < DATE_SUB(NOW(), INTERVAL 3 MINUTE) " +
-"ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
-		
-		
-		return getPS(
-				c,querry
-//				"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = ?"
-//				//		+ " ORDER BY RAND()");
-				);
+	public static PreparedStatement getFrage(java.sql.Connection c, boolean isLite) {
+		if (!isLite) {
+			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question "
+					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
+					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
+					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
+					+ "WHERE 	Topic.title = ? "
+					+ "AND (IFNULL(UserID, ?)) = ? AND IFNULL(lastAnswered, 0) < DATE_SUB(NOW(), INTERVAL 3 MINUTE) "
+					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
+
+			return getPS(c, querry);
+		} else {
+			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question "
+					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
+					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
+					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
+					+ "WHERE 	Topic.title = ? "
+					+ "AND (ifnull(UserID, ?)) = ? AND ifnull(lastAnswered, 0) < datetime('now','-3 minutes') "
+					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
+
+			return getPS(c, querry);
+		}
 		
 		
 //		select * from (select Question.id, Question.questiontext, Question.answer1, Question.answer2, Question.answer3, Question.answer4, (IFNULL(lastAnswered,0)) as realLast from Question 
