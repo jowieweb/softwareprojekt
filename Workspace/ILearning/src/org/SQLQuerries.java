@@ -56,7 +56,7 @@ public class SQLQuerries {
 	}
 
 	public static PreparedStatement addCategories(java.sql.Connection c) {
-		return getPS(c, "select title from Topic");
+		return getPS(c, "select id, title from Topic");
 	}
 
 	public static PreparedStatement addLevel(java.sql.Connection c) {
@@ -137,5 +137,27 @@ public class SQLQuerries {
 				"select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID");
 	}
 	
+	public static PreparedStatement addCategory(java.sql.Connection c) {
+		if (c != null) {
+			return getPS(c, "INSERT INTO `Topic`(title, description) VALUES(?, ' ')");
+		} else {
+			return null;
+		}
+	}
 
+	public static PreparedStatement removeCategory(java.sql.Connection c) {
+		if (c != null) {
+			return getPS(c, "DELETE FROM `Topic` WHERE ((`title` = ?))");
+		} else {
+			return null;
+		}
+	}
+	
+	public static PreparedStatement updateCategory(java.sql.Connection c) {
+		if (c != null) {
+			return getPS(c, "UPDATE `Topic` SET title = ? WHERE id = ?");
+		} else {
+			return null;
+		}
+	}
 }

@@ -152,19 +152,25 @@ public class DBConnector {
 	}
 
 	/**
-	 * adds the category to the packet
+	 * Adds all available categories to the packet.
 	 *
 	 * @param packet
 	 */
 	public void addCategories(Packet packet) {
 		try {
+			ArrayList<String[]> categories = new ArrayList<String[]>();
 			PreparedStatement stm = SQLQuerries.addCategories(connect);
 			ResultSet resultSet = stm.executeQuery();
-			String categorys = "";
 			while (resultSet.next()) {
-				categorys += resultSet.getString("title") + ";";
+				String[] cat = new String[2];
+				cat[0] = resultSet.getString("id");
+				cat[1] = resultSet.getString("title");
+				System.out.println(cat[0] + ": " + cat[1]);
+				categories.add(cat);
+				//categorys += resultSet.getString("title") + ";";
 			}
-			packet.setTopics(categorys.split(";"));
+			//packet.setTopics(categorys.split(";"));
+			packet.setCategories(categories);
 			packet.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -390,11 +396,9 @@ public class DBConnector {
 	 * Creates a new user 
 	 * @param p
 	 */
-	public void addUser(Packet p)
-	{
+	public void addUser(Packet p) {
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
-			if(p.getAnswers() != null && p.getAnswers().length == 2)
-			{
+			if(p.getAnswers() != null && p.getAnswers().length == 2) {
 //				String debug = "Insert into `User`(name, password, surname, email) VALUES('" + p.getAnswers()[0] + "','" + p.getAnswers()[1] + "',' ',' ')";
 				try{
 					PreparedStatement stm = SQLQuerries.addUser(connect);
@@ -402,10 +406,9 @@ public class DBConnector {
 					stm.setString(2,  p.getAnswers()[1]);
 					stm.execute();
 				
-				}catch(SQLException e){
+				} catch(SQLException e){
 					e.printStackTrace();
 				}
-				
 			}
 		}
 	}
@@ -414,25 +417,23 @@ public class DBConnector {
 	 * Updates a given question
 	 * @param p
 	 */
-	public void updateQuestion(Packet p){
-		if(p.getQuestionID().length()==0){
+	public void updateQuestion(Packet p) {
+		if(p.getQuestionID().length() == 0) {
 			return;
 		}
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
 			String mediatype = "";
-			if(p.getMediaURL().endsWith(".jpg")){
+			if(p.getMediaURL().endsWith(".jpg")) {
 				mediatype = " image='" + p.getMediaURL()+ "'";
-			} else if(p.getMediaURL().endsWith(".mp4")){
+			} else if(p.getMediaURL().endsWith(".mp4")) {
 				mediatype = " video='" + p.getMediaURL()+ "'";
-			}else if(p.getMediaURL().endsWith(".wav")){
+			}else if(p.getMediaURL().endsWith(".wav")) {
 				mediatype = " audio='" + p.getMediaURL() + "'";
 			}
 			
 			String solution = "";
-			for(int i = 0;i<p.getSelectedAnswers().length;i++)
-			{
-				if(p.getSelectedAnswers()[i]==1)
-				{
+			for(int i = 0; i < p.getSelectedAnswers().length; i++) {
+				if(p.getSelectedAnswers()[i] == 1){
 					solution+=(i+1);					
 				}
 			}
@@ -459,11 +460,10 @@ public class DBConnector {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	/**
-	 * addes the highscore to the packet
+	 * Adds the highscore to the packet
 	 * @param p
 	 */
 	public void setHighScore(Packet p) {
@@ -478,12 +478,70 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Adds a category to the database.
+	 * @param packet
+	 */
+	public void addCategory (Packet packet) {
+		if (packet == null || packet.getQuestion() == null
+				|| packet.getEditCategoryType() != Packet.Edit_Category_Type.ADD_CATEGORY) {
+			return;
+		}
+
+		try {
+			PreparedStatement statement = SQLQuerries.addCategory(connect);
+			statement.setString(1, packet.getQuestion());
+			statement.execute();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	/**
+	 * Removes a category from the database.
+	 * @param packet
+	 */
+	public void removeCategory (Packet packet) {
+		if (packet == null || packet.getQuestion() == null
+				|| packet.getEditCategoryType() != Packet.Edit_Category_Type.REMOVE_CATEGORY) {
+			return;
+		}
+		
+		try {
+			PreparedStatement statement = SQLQuerries.removeCategory(connect);
+			statement.setString(1, packet.getQuestion());
+			statement.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Updates a category in the database.
+	 * @param packet
+	 */
+	public void updateCategory (Packet packet) {
+		if (packet == null || packet.getQuestion() == null
+				|| packet.getEditCategoryType() != Packet.Edit_Category_Type.UPDATE_CATEGORY) {
+			return;
+		}
+		
+		try {
+			PreparedStatement statement = SQLQuerries.updateCategory(connect);
+			statement.setString(1, packet.getQuestion());	// New category title
+			statement.setString(2, packet.getCategoryID());	// Id of category to be updated
+			statement.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * dumps the whole DB
@@ -546,9 +604,5 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 		return "";
-		
-
 	}
-		
-	
 }

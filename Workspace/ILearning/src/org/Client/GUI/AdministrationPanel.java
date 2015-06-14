@@ -252,9 +252,7 @@ public class AdministrationPanel extends JPanel {
 				// TODO submit
 				if(userList.getSelectedValue().equals("new User")){
 					listener.addUser(userTextField.getText(), passwordTextField.getText());
-				}
-				else
-				{
+				} else {
 					String[] act = users.get(userList.getSelectedIndex());
 					listener.updateUser(act[0], userTextField.getText(), passwordTextField.getText());
 				}

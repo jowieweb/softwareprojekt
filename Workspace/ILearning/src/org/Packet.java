@@ -19,9 +19,9 @@ public class Packet implements Serializable {
 	private String answer[];
 	private String selectedTopic="";
 	private String selectedLevel="";
-	private String[] topics;
 	private String[] level;
 	private String questionID = "";
+	private String categoryID = "";
 	private ImageIcon image;
 	private int[] selectedAnswer;
 	private boolean wasRight;
@@ -29,12 +29,13 @@ public class Packet implements Serializable {
 	
 	private ArrayList<String[]> users;
 	private ArrayList<String[]> userScore;
+	private ArrayList<String[]> categories;
 
 	/**
 	 * Type for specifying the packet type.
 	 */
 	public enum Type {
-		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB, EDIT_CATEGORY
 	};
 	
 	public enum Management_Type {
@@ -61,6 +62,7 @@ public class Packet implements Serializable {
 	private Login login = Login.FAIL;
 	private Management_Type m_type = Management_Type.UNUSED;
 	private Edit_Question_Type eq_type = Edit_Question_Type.UNUSED;
+	private Edit_Category_Type ec_type = Edit_Category_Type.UNUSED;
 
 	/**
 	 * Constructor builds new packet.
@@ -178,24 +180,6 @@ public class Packet implements Serializable {
 	 */
 	public String[] getAnswers() {
 		return answer;
-	}
-
-	/**
-	 * Sets the topics for a packet. Used by CategoryPanel.
-	 * @param topics topics available
-	 */
-	public void setTopics(String[] topics) {
-		if (topics != null) {
-			this.topics = topics;
-		}
-	}
-
-	/**
-	 * Returns all available topics.
-	 * @return topics
-	 */
-	public String[] getTopics() {
-		return this.topics;
 	}
 
 	/**
@@ -368,8 +352,7 @@ public class Packet implements Serializable {
 	 * gets what type of editing will be dine to a question
 	 * @return
 	 */
-	public Edit_Question_Type getEditQuestionType()
-	{
+	public Edit_Question_Type getEditQuestionType() {
 		return eq_type;
 	}
 	
@@ -419,10 +402,57 @@ public class Packet implements Serializable {
 	
 	/**
 	 * sets the media URL
-	 * @param url 
+	 * @param url url to set
 	 */
 	public void setMediaURL(String url){
 		mediaURL = url;
 	}
 	
+	/**
+	 * Returns the type of the edit category operation.
+	 * @return type of edit category operation
+	 */
+	public Edit_Category_Type getEditCategoryType() {
+		return ec_type;
+	}
+	
+	/**
+	 * Sets the type of the edit category operation.
+	 * @param type type of the operation
+	 */
+	public void setEditCategoryType(Edit_Category_Type type) {
+		ec_type = type;
+	}
+	
+	/**
+	 * Sets all available categories.
+	 * @param categories categories to be added
+	 */
+	public void setCategories(ArrayList<String[]> categories) {
+		this.categories = categories;
+	}
+	
+	/**
+	 * Returns all available categories.
+	 * @return categories
+	 */
+	public ArrayList<String[]> getCategories() {
+		return this.categories;
+	}
+	
+	/**
+	 * Sets the ID of the category.
+	 * @param id ID of a category
+	 */
+	public void setCategoryID(String id) {
+		categoryID = id;
+	}
+	
+	/**
+	 * Returns the ID of a category.
+	 * @return ID of category
+	 */
+	public String getCategoryID() {
+		return categoryID;
+	}
 }

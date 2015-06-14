@@ -20,7 +20,7 @@ public class PacketBuilder {
 	 * @param querry packet
 	 * @return the answer packet
 	 */
-	public  Packet getPacket(Packet querry) {
+	public Packet getPacket(Packet querry) {
 		Packet answer = copyPacket(querry);
 
 		answer.setLoginStatus(dbc.checkLogin(answer.getUsername(), answer.getPassword()));
@@ -67,6 +67,7 @@ public class PacketBuilder {
 			default:
 				break;
 			}
+			dbc.addCategories(answer);
 			break;
 		case DUMP_DB:
 			String dump = dbc.dump();
@@ -74,10 +75,25 @@ public class PacketBuilder {
 			answer.setPacketType(Packet.Type.DUMP_DB);
 			break;
 			
+		case EDIT_CATEGORY:
+			switch (querry.getEditCategoryType()) {
+			case ADD_CATEGORY:
+				dbc.addCategory(querry);
+				break;
+			case UPDATE_CATEGORY:
+				dbc.updateCategory(querry);
+				break;
+			case REMOVE_CATEGORY:
+				dbc.removeCategory(querry);
+				break;
+			default:
+					break;
+			}
+			break;
+			
 		default:
 			break;
 		}
-
 
 		return answer;
 	}

@@ -39,7 +39,7 @@ public class CategoryPanel extends JPanel {
 	private JLabel editCategoryLabel;
 	private JComboBox<String> levelComboBox;
 	private JComboBox<String> modusComboBox;
-	private ArrayList<String> categories;
+	private ArrayList<String[]> categories;
 	private boolean editMode;
 
 	/**
@@ -136,12 +136,24 @@ public class CategoryPanel extends JPanel {
 	 * @param level
 	 * @param modus
 	 */
-	public void setCategories(String[] categories, String[] level, int[] modus) {
-		for(String s:categories){
-			categoryListModel.addElement(s);
+	public void setCategories(ArrayList<String[]> categories, String[] level, int[] modus) {
+		if (categories == null || level == null || modus == null) {
+			return;
+		}
+		
+		if (categoryListModel.isEmpty() == false) {
+			categoryListModel.clear();
+		}
+		
+		this.categories = categories;
+
+		for(String[] s : categories) {
+			if (s != null && s.length > 1) {
+				categoryListModel.addElement(s[1]);
+			}
 		}
 
-		for(String s:level){
+		for(String s : level){
 			levelComboBox.addItem(s);
 		}
 	}
@@ -167,7 +179,7 @@ public class CategoryPanel extends JPanel {
 		String oldCategory = this.categoryListBox.getSelectedValue();
 		String newCategory = this.editCategoryTextField.getText();
 
-		if (oldCategory != null) {
+		if (oldCategory != null && this.categoryListBox.getSelectedIndex() != -1) {
 			if (newCategory != null && !newCategory.equals("")) {
 
 				// rename element in list
@@ -182,8 +194,15 @@ public class CategoryPanel extends JPanel {
 					
 					this.listener.categoryAdded(newCategory);
 				} else {
-	
-					this.listener.categoryUpdated(oldCategory, newCategory);
+					
+					// Search category id
+					for (String[] n : categories) {
+						if (n != null && n[1].equals(oldCategory)) {
+							
+							this.listener.categoryUpdated(n[0], oldCategory, newCategory);
+							return;
+						}
+					}
 				}
 			}
 		}

@@ -74,17 +74,22 @@ public class LocalConnection extends Client {
 	private void addCategries(Packet packet) {
 
 		try {
-			PreparedStatement statement = connect
-					.prepareStatement("");
+			//PreparedStatement statement = connect
+			//		.prepareStatement("");
 			PreparedStatement stm = (PreparedStatement) connect
 					.prepareStatement("select * from Topic");
 			// SQLQuerries.addCategories(connect);
 			ResultSet resultSet = stm.executeQuery();
-			String categorys = "";
+			ArrayList<String[]> categories = new ArrayList<String[]>();
+			//String categorys = "";
 			while (resultSet.next()) {
-				categorys += resultSet.getString("title") + ";";
+				String[] cat = new String[2];
+				cat[0] = resultSet.getString("id");
+				cat[1] = resultSet.getString("title");
+				//categorys += resultSet.getString("title") + ";";
 			}
-			packet.setTopics(categorys.split(";"));
+			//packet.setTopics(categorys.split(";"));
+			packet.setCategories(categories);
 			packet.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
 			e.printStackTrace();

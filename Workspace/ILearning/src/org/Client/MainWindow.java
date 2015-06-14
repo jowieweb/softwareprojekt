@@ -118,7 +118,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			}
 
 			int[] test = {1,2,3};	// TODO: remove after testing
-			categoryPanel.setCategories(p.getTopics(), p.getLevel(), test);
+			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
 		case ANSWER_QUESTION:
@@ -238,8 +238,22 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * @param oldCategory the category to rename
 	 * @param newCategory the new category name
 	 */
-	public void categoryUpdated(String oldCategory, String newCategory) {
-		System.out.println("Updated: " + oldCategory);
+	public void categoryUpdated(String id, String oldCategory, String newCategory) {
+		if (oldCategory == null) {
+			return;
+		}
+
+		Packet p = new Packet(this.username, password);
+		p.setPacketType(Packet.Type.EDIT_CATEGORY);
+		p.setEditCategoryType(Packet.Edit_Category_Type.UPDATE_CATEGORY);
+		p.setQuestion(newCategory);
+		p.setCategoryID(id);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -248,8 +262,20 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * @param oldCategory category to remove
 	 */
 	public void categoryRemoved(String oldCategory) {
-		System.out.println("Removed: " + oldCategory);
-		// TODO: Send packet to server
+		if (oldCategory == null) {
+			return;
+		}
+
+		Packet p = new Packet(this.username, password);
+		p.setPacketType(Packet.Type.EDIT_CATEGORY);
+		p.setEditCategoryType(Packet.Edit_Category_Type.REMOVE_CATEGORY);
+		p.setQuestion(oldCategory);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -257,8 +283,20 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * @param newCategory category to add
 	 */
 	public void categoryAdded(String newCategory) {
-		System.out.println("Added: " + newCategory);
-		// TODO: Send packet to server
+		if (newCategory == null) {
+			return;
+		}
+
+		Packet p = new Packet(this.username, password);
+		p.setPacketType(Packet.Type.EDIT_CATEGORY);
+		p.setEditCategoryType(Packet.Edit_Category_Type.ADD_CATEGORY);
+		p.setQuestion(newCategory);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -333,7 +371,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 		p.setQuestion(questionPanel.getQuestionText());
-		p.setTopics(lastPacket.getTopics());
+		//p.setTopics(lastPacket.getTopics());
+		p.setCategories(lastPacket.getCategories());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
 
@@ -554,7 +593,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	@Override
 	public void useLocal() {
-		// TODO Auto-generated method stub
 		client = new LocalConnection(this);
 		((LocalConnection)client).login();
 	}
