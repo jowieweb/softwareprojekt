@@ -218,8 +218,8 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	 * @param newCategory the new category name
 	 */
 	public void categoryUpdated(String oldCategory, String newCategory) {
-		// TODO Auto-generated method stub
 		System.out.println("Updated: " + oldCategory);
+		
 	}
 
 	/**

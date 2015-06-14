@@ -45,6 +45,10 @@ public class Packet implements Serializable {
 		UNUSED, UPDATE_QUESTION, ADD_QUESTION, REMOVE_QUESTION
 	}
 	
+	public enum Edit_Category_Type {
+		UNUSED, UPDATE_CATEGORY, ADD_CATEGORY, REMOVE_CATEGORY
+	}
+	
 
 	/**
 	 * Login status with permissions.

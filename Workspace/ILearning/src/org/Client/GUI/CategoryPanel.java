@@ -50,27 +50,7 @@ public class CategoryPanel extends JPanel {
 		this.listener = listener;
 		this.editMode = false;
 
-		this.categoryListModel = new DefaultListModel<String>();
-		this.categoryListBox = new JList<String>(categoryListModel);
-		
-		this.submitButton = new JButton("Absenden");
-		this.downloadButton = new JButton("Fragen herunterladen");
-		this.newCategoryButton = new JButton("Neue Kategorie anlegen");
-		this.quitEditModeButton = new JButton("Bearbeiten beenden");
-		this.deleteCategoryButton = new JButton("Kategorie entfernen");
-		this.printQuestionsButton = new JButton("Fragen ausdrucken");
-		this.editCategoryTextField = new JTextField();
-		this.editCategoryLabel = new JLabel("Kategorie bearbeiten:");
-		this.levelComboBox = new JComboBox<String>();
-		this.modusComboBox = new JComboBox<String>();
-		
-		this.newCategoryButton.setVisible(this.editMode);
-		this.deleteCategoryButton.setVisible(this.editMode);
-		this.editCategoryLabel.setVisible(this.editMode);
-		this.editCategoryTextField.setVisible(this.editMode);
-		this.quitEditModeButton.setVisible(this.editMode);
-
-		this.editCategoryTextField.setPreferredSize(new Dimension(180, 25));
+		createPanelContent();
 
 		JPanel pan = new JPanel();
 		JPanel buttonPanel = new JPanel();
@@ -247,5 +227,32 @@ public class CategoryPanel extends JPanel {
 				listener.disableEditMode();
 			}
 		});
+	}
+	
+	/**
+	 * Creates panel content.
+	 */
+	private void createPanelContent() {
+		this.categoryListModel = new DefaultListModel<String>();
+		this.categoryListBox = new JList<String>(categoryListModel);
+		
+		this.submitButton = new JButton("Absenden");
+		this.downloadButton = new JButton("Fragen herunterladen");
+		this.newCategoryButton = new JButton("Neue Kategorie anlegen");
+		this.quitEditModeButton = new JButton("Bearbeiten beenden");
+		this.deleteCategoryButton = new JButton("Kategorie entfernen");
+		this.printQuestionsButton = new JButton("Fragen ausdrucken");
+		this.editCategoryTextField = new JTextField();
+		this.editCategoryLabel = new JLabel("Kategorie bearbeiten:");
+		this.levelComboBox = new JComboBox<String>();
+		this.modusComboBox = new JComboBox<String>();
+		
+		this.newCategoryButton.setVisible(this.editMode);
+		this.deleteCategoryButton.setVisible(this.editMode);
+		this.editCategoryLabel.setVisible(this.editMode);
+		this.editCategoryTextField.setVisible(this.editMode);
+		this.quitEditModeButton.setVisible(this.editMode);
+		
+		this.editCategoryTextField.setPreferredSize(new Dimension(180, 25));
 	}
 }
