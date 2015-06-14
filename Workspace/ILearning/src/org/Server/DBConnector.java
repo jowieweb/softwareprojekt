@@ -191,6 +191,23 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 	}
+	
+	public String getUserID(String username){
+		PreparedStatement stm = SQLQuerries.getUser(connect);
+		try {
+			stm.setString(1, username);
+			ResultSet resultSet = stm.executeQuery();
+			resultSet.next();
+			return resultSet.getString(1);
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+		
+	}
 
 	/**
 	 * sets a question text to the packet.
@@ -199,16 +216,15 @@ public class DBConnector {
 	 */
 	public void setFrage(Packet packet) {
 		try {
+			String userid = getUserID(packet.getUsername());
 			
-//			ResultSet resultSet = connect
-//					.createStatement()
-//					.executeQuery(
-//							"select Question.id, questiontext, answer1, answer2, answer3, answer4, image, video, audio from Topic join Question on Question.TopicID = Topic.id where Topic.title = '"
-//									+ packet.getSelectedTopic()
-//									+ "' ORDER BY RAND()");
 			PreparedStatement stm = SQLQuerries.getFrage(connect);
 			stm.setString(1, packet.getSelectedTopic());
+			stm.setString(2, userid);
+			stm.setString(3, userid);
+			String asd ="";
 			ResultSet resultSet = stm.executeQuery();
+			
 			
 			if (resultSet.next()) {
 				packet.setQuestion(resultSet.getString("questiontext"));
@@ -273,7 +289,7 @@ public class DBConnector {
 	 * @return Login.FAIL = wrong, Login.USER = user, Login.ADMIN = admin
 	 */
 	public Packet.Login checkLogin(String username, String password) {
-		dump();
+//		dump();
 		try {
 			PreparedStatement stm = SQLQuerries.getLogin(connect);
 			stm.setString(1, username);
