@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.Packet;
 import org.Client.ClientListener;
 import org.Client.TCPClientException;
@@ -54,8 +56,7 @@ public class LoginTest {
 			@Override
 			public void receiveClientData(Packet p) {
 				// TODO Auto-generated method stub
-				//System.out.println(p.getCategories().get(0));
-				assertNull(p.getCategories());
+				assertNotNull(p.getCategories());
 			}
 
 			@Override
@@ -67,14 +68,16 @@ public class LoginTest {
 			}
 
 		}, "127.0.0.1", 12345);
-		sendPackage(new Packet("local", "local"), tcp);
+		Packet p = new Packet("local", "local");
+		p.setPacketType(Packet.Type.CATEGORY);
+		sendPackage(p, tcp);
 	}
 	
 	
 	public static void sendPackage(Packet p, TCPConnection tcp){
 		try {
 			tcp.sendPacket(p);
-			Thread.sleep(5000);
+			Thread.sleep(500);
 		} catch (TCPClientException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

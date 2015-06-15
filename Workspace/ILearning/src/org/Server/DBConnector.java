@@ -224,6 +224,7 @@ public class DBConnector {
 	 */
 	public void setFrage(Packet packet) {
 		try {
+			System.out.println();
 			String userid = getUserID(packet.getUsername());
 			PreparedStatement stm = null;
 			if(packet.getSelectedModus().equals("")){
