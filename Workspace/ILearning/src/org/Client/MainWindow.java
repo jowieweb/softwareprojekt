@@ -620,7 +620,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.exitMenuItem.setText("Beenden");
 		this.showCategoryItem.setText("Kategorie auswählen");
 		this.downloadDB.setText("Download DB");
-		this.editMenuItem.setText("Bearbeiten");
+		this.editMenuItem.setText("Frage bearbeiten");
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
 		this.quitEditModeItem.setText("Bearbeiten beenden");
