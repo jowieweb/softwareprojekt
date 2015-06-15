@@ -212,7 +212,6 @@ public class CategoryPanel extends JPanel {
 
 	/**
 	 * Adds ActionListeners to buttons.
-	 * @param listener
 	 */
 	private void addButtonActionListeners() {
 		this.submitButton.addActionListener(new ActionListener() {

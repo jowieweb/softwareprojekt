@@ -34,6 +34,7 @@ public class PacketBuilder {
 			dbc.addLevel(answer);
 			break;
 		case ANSWER_QUESTION:
+			dbc.addCategories(answer);
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
 			dbc.setHighScore(answer);
@@ -64,6 +65,8 @@ public class PacketBuilder {
 			case UPDATE_QUESTION:
 				dbc.updateQuestion(querry);
 				break;
+			case ADD_QUESTION:
+				dbc.insertQuestion(querry);
 			default:
 				break;
 			}
@@ -101,7 +104,7 @@ public class PacketBuilder {
 	/**
 	 * Copys an existing packet.
 	 * @param querry
-	 * @return
+	 * @return new packet
 	 */
 	private Packet copyPacket(Packet querry ) {
 		Packet p = new Packet(querry.getUsername(), querry.getPassword());
@@ -116,6 +119,7 @@ public class PacketBuilder {
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
 		}
+		p.setSelectedModus(querry.getSelectedModus());
 		return p;
 	}
 }

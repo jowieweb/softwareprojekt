@@ -18,7 +18,8 @@ public class NoteCardPrinter {
 	/**
 	 * builds a String Array containing QuestionText and Answers.
 	 *
-	 * @param p package
+	 * @param questionText
+	 * @param answerText
 	 */
 	private String[] buildTextArray(String questionText, String [] answerText) {
 		// TODO: Convert Packet to String-Array!
@@ -30,10 +31,10 @@ public class NoteCardPrinter {
 		return testPacket;
 	}
 
-
 	/**
 	 * prints a set of questions
-	 * @param p the package containing the questions
+	 * @param questionText
+	 * @param answerText
 	 */
 	public NoteCardPrinter(String questionText, String [] answerText) {
 		log.info("NoteCardPrinter initialized.");

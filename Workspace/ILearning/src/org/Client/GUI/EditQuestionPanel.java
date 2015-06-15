@@ -6,8 +6,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,8 +22,14 @@ public class EditQuestionPanel extends QuestionPanel {
 	private JTextField questionTextField;
 	private JTextField[] answerTextFields;
 	private JTextField mediaURLTextField;
+	private JComboBox<String> levelComboBox;
+	private JComboBox<String> categoryComboBox;
 	private JButton abortButton;
+	private JButton newQuestionButton;
 	private JLabel mediaURLLabel;
+	private JLabel levelLabel;
+	private JLabel categoryLabel;
+	private boolean newQuestion;
 
 	// Hold old question values so old question can be restored on abort
 	private String backupQuestionText;
@@ -37,13 +45,19 @@ public class EditQuestionPanel extends QuestionPanel {
 		this.questionTextField = new JTextField();
 		this.answerTextFields = new JTextField[4];
 		this.backupAnswersText = new String[4];
+		this.levelComboBox = new JComboBox<String>();
+		this.categoryComboBox = new JComboBox<String>();
+		this.levelLabel = new JLabel("Schwierigkeit:");
+		this.categoryLabel = new JLabel("Kategorie:");
+		
+		this.newQuestion = false;
 
 		for (int i = 0; i < 4; i++) {
 			answerTextFields[i] = new JTextField(50);
 		}
 
 		this.mediaURLTextField = new JTextField(40);
-		this.mediaURLLabel = new JLabel("Hier könnte Ihre URL stehen:");
+		this.mediaURLLabel = new JLabel("URL zu einem Bild oder Video:");
 
 		this.abortButton = new JButton("Abbrechen");
 		this.abortButton.addActionListener(new ActionListener() {
@@ -54,21 +68,42 @@ public class EditQuestionPanel extends QuestionPanel {
 			}
 		});
 		
+		this.newQuestionButton = new JButton("Neue Frage");
+		this.newQuestionButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				newQuestion = true;
+				questionTextField.setText("");
+				mediaURLTextField.setText("");
+				for (int i = 0; i < answerButton.length; i++) {
+					answerButton[i].setSelected(false);
+					answerTextFields[i].setText("");
+				}		
+			}
+		});
+		
 		this.submitButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				int[] ans =getAllSelectedAnswers();
-				boolean wasChecked = false;
-				for(int i=0;i<ans.length;i++){
-					if(ans[i] == 1){
-						wasChecked = true;
+				if (newQuestion == false) {
+					int[] ans = getAllSelectedAnswers();
+					boolean wasChecked = false;
+					for(int i = 0; i < ans.length; i++){
+						if(ans[i] == 1) {
+							wasChecked = true;
+						}
 					}
-				}
-				if(wasChecked){
-					if(questionID!=null)
-						listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+					if(wasChecked){
+						if(questionID != null) {
+							listener.updateQuestion(questionID, questionTextField.getText(),
+									getAnswerTexts(), getAllSelectedAnswers(),
+									mediaURLTextField.getText());
+						}
+					}
+				} else {
+					newQuestion();
 				}
 			}
 		});
@@ -81,16 +116,28 @@ public class EditQuestionPanel extends QuestionPanel {
 		JPanel north = new JPanel();
 		JPanel URLPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
+		JPanel selectPanel = new JPanel(new GridLayout(3, 1));
+		JPanel levelPanel = new JPanel();
+		JPanel categoryPanel = new JPanel();
 
 		URLPanel.add(mediaURLLabel);
 		URLPanel.add(mediaURLTextField);
 		buttonPanel.add(abortButton);
+		buttonPanel.add(newQuestionButton);
 		buttonPanel.add(submitButton);
+		levelPanel.add(levelLabel);
+		levelPanel.add(levelComboBox);
+		categoryPanel.add(categoryLabel);
+		categoryPanel.add(categoryComboBox);
+		selectPanel.add(levelPanel);
+		selectPanel.add(categoryPanel);
+		selectPanel.add(buttonPanel);
 
 		north.setLayout(new GridLayout(2, 1));
 		north.add(questionTextField);
 		north.add(URLPanel);
-		south.add(buttonPanel);
+		south.add(selectPanel);
+		//south.add(buttonPanel);
 
 		center.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -217,4 +264,56 @@ public class EditQuestionPanel extends QuestionPanel {
 		return ans;
 	}
 
+	/**
+	 * Invokes callback method with new question.
+	 */
+	private void newQuestion() {
+		String question = this.questionTextField.getText();
+		String url = this.mediaURLTextField.getText();
+		String[] answers = new String[4];
+		int[] right = getAllSelectedAnswers();
+		
+		
+		for (int i = 0; i < this.answerTextFields.length; i++) {
+			answers[i] = this.answerTextFields[i].getText();
+		}
+
+		this.listener.questionAdded(question, answers, url, right);
+	}
+	
+	/**
+	 * Adds all available categories to the category combo box.
+	 * @param categories
+	 */
+	public void setCategories(ArrayList<String[]> categories) {
+		if (categories == null) {
+			return;
+		}
+		
+		if (this.categoryComboBox.getItemCount() > 0) {
+			this.categoryComboBox.removeAllItems();
+		}
+		
+		for (int i = 0; i < categories.size(); i++) {
+			this.categoryComboBox.addItem(categories.get(i)[1]);
+		}
+	}
+	
+	/**
+	 * Adds all available levels to the level combo box.
+	 * @param level
+	 */
+	public void setLevels(String[] level) {
+		if (level == null) {
+			return;
+		}
+		
+		if (this.levelComboBox.getItemCount() > 0) {
+			this.levelComboBox.removeAllItems();
+		}
+		
+		for (int i = 0; i < level.length; i++) {
+			this.levelComboBox.addItem(level[i]);
+		}
+	}
 }

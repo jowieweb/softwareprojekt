@@ -69,7 +69,7 @@ public abstract class QuestionPanel extends JPanel {
 	}
 	
 	/**
-	 * sets the QuestionID
+	 * Sets the QuestionID
 	 * @param id the id
 	 */
 	public void setQuestionID(String id){
@@ -77,8 +77,8 @@ public abstract class QuestionPanel extends JPanel {
 	}
 	
 	/**
-	 * returns the QuestionID
-	 * @return
+	 * Returns the QuestionID
+	 * @return id of the question
 	 */
 	public String getQuestionID(){
 		return questionID;

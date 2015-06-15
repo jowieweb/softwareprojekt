@@ -125,25 +125,31 @@ public class MainWindow extends JFrame implements ClientListener,
 		
 		switch (p.getPacketType()) {
 		case CATEGORY:
-			System.out.println(p.getUsername());
-			System.out.println(p.getLoginStatus());
-			username = p.getUsername();
-			password = p.getPassword();
-
-			loginPanel.setVisible(false);
-			remove(loginPanel);
-			categoryPanel = new CategoryPanel(this);
-			add(categoryPanel);
-
-			// enable user-edit-mode if user has admin rights
-			if (p.getLoginStatus() == Packet.Login.ADMIN) {
-				editMenu.setEnabled(true);
-				userMenuItem.setVisible(true);
-				editCategoryItem.setVisible(true);
+			if (p.getLoginStatus() == Packet.Login.FAIL) {
+				JOptionPane.showMessageDialog(this, "Fehler beim Login!", "Login fehlgeschlagen",
+						JOptionPane.WARNING_MESSAGE);
+			} else {
+				this.showHighscoreItem.setVisible(true);
+				System.out.println(p.getUsername());
+				System.out.println(p.getLoginStatus());
+				username = p.getUsername();
+				password = p.getPassword();
+	
+				loginPanel.setVisible(false);
+				remove(loginPanel);
+				categoryPanel = new CategoryPanel(this);
+				add(categoryPanel);
+	
+				// enable user-edit-mode if user has admin rights
+				if (p.getLoginStatus() == Packet.Login.ADMIN) {
+					editMenu.setEnabled(true);
+					userMenuItem.setVisible(true);
+					editCategoryItem.setVisible(true);
+				}
+	
+				int[] test = { 1, 2, 3 };
+				categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			}
-
-			int[] test = { 1, 2, 3 };
-			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
 		case ANSWER_QUESTION:
@@ -193,7 +199,6 @@ public class MainWindow extends JFrame implements ClientListener,
 
 			changePanelToAdministrationPanel(p);
 			adminPanel.addUsers(p);
-			System.out.println("asd");
 
 			break;
 		case DUMP_DB:
@@ -261,7 +266,9 @@ public class MainWindow extends JFrame implements ClientListener,
 
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
+		p.setSelectedModus(selectedQuestionMode);
 		lastPacket = p;
+		
 
 		try {
 			client.sendPacket(p);
@@ -431,7 +438,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		p.setCategories(lastPacket.getCategories());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
-
+		p.setSelectedModus(selectedQuestionMode);
 		p.setSelectedAnswers(answer);
 		try {
 			client.sendPacket(p);
@@ -443,15 +450,30 @@ public class MainWindow extends JFrame implements ClientListener,
 	/**
 	 * Callback method invoked when a question is added.
 	 * 
-	 * @param questionText
-	 *            question
-	 * @param answers
-	 *            answers
+	 * @param questionText question
+	 * @param answers answers
+	 * @param mediaURL url
+	 * @param right right answers
 	 */
 	public void questionAdded(String questionText, String[] answers,
-			String mediaURL) {
-		// TODO Auto-generated method stub
+			String mediaURL, int[] right) {
+		if (questionText == null || answers == null || mediaURL == null || right == null) {
+			return;
+		}
 
+		Packet p = new Packet(username, password);
+		p.setPacketType(Packet.Type.EDIT_QUESTION);
+		p.setEditQuestionType(Packet.Edit_Question_Type.ADD_QUESTION);
+		p.setQuestion(questionText);
+		p.setMediaURL(mediaURL);
+		p.setAnswers(answers);
+		p.setSelectedAnswers(right);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -462,7 +484,12 @@ public class MainWindow extends JFrame implements ClientListener,
 		String question = questionPanel.getQuestionText();
 		String id = questionPanel.getQuestionID();
 		remove(questionPanel);
-		questionPanel = new EditQuestionPanel(this);
+		EditQuestionPanel panel = new EditQuestionPanel(this);
+		if (lastPacket != null) {
+			panel.setCategories(lastPacket.getCategories());
+			panel.setLevels(lastPacket.getLevel());
+		}
+		questionPanel = panel;
 		questionPanel.setAnswerText(answers);
 		questionPanel.setQuestionText(question);
 		questionPanel.setQuestionID(id);
@@ -620,7 +647,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.exitMenuItem.setText("Beenden");
 		this.showCategoryItem.setText("Kategorie auswählen");
 		this.downloadDB.setText("Download DB");
-		this.editMenuItem.setText("Bearbeiten");
+		this.editMenuItem.setText("Frage bearbeiten");
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
 		this.quitEditModeItem.setText("Bearbeiten beenden");
@@ -632,6 +659,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
 		this.downloadDB.setVisible(false);
+		this.showHighscoreItem.setVisible(false);
 		
 		String[] modes = new String[3];
 		String[] tooltips = new String[3];
@@ -648,6 +676,10 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Displays a highscore list.
 	 */
 	private void showHighscore() {
+		if (lastPacket == null) {
+			return;
+		}
+
 		String[][] highscore = lastPacket.getUserScore();
 		String scoreString = new String();
 
