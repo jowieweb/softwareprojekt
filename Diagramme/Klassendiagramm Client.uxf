@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>672</x>
+      <y>256</y>
+      <w>256</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>MainWindow
+--
+-lockComponents:List&lt;JComponent&gt;
+-menuBar:JMenuBar
+--
++registerLockComponent(JComponent)
++unregisterLockComponent(JComponent)
++lockComponents()
++unlockComponents()
++switchPanel(packet:Packet)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>16</y>
+      <w>272</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ClientListener
+--
+--
++receiveClientData(Packet)
++exceptionInClientData(TCPClientException)
++exceptionInClientData(DataBaseClientException)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>776</x>
+      <y>72</y>
+      <w>160</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>344</x>
+      <y>0</y>
+      <w>280</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>/Client/
+--
+--
+/+sendPacket(Packet p) throws TCPClientException/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>616</x>
+      <y>32</y>
+      <w>320</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=-listener 1</panel_attributes>
+    <additional_attributes>380.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>208</y>
+      <w>152</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>TCPConnection
+--
+-serverIP: String
+-port: int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>0</y>
+      <w>168</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Runnable
+--
+--
++run()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>112</y>
+      <w>24</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>56</y>
+      <w>24</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>392</y>
+      <w>144</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>DataBaseConnection
+--
+-address: String
+-param: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>56</y>
+      <w>24</w>
+      <h>352</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;420.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>112</y>
+      <w>128</w>
+      <h>368</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;440.0;140.0;440.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>480</x>
+      <y>296</y>
+      <w>160</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>TCPClientException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>296</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>296</y>
+      <w>56</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>488</x>
+      <y>408</y>
+      <w>160</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>DataBaseClientException</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>456</x>
+      <y>408</y>
+      <w>48</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>408</y>
+      <w>48</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>72</y>
+      <w>176</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>Packet
+--
+-client: Socket
+-username: String
+-password: String
+-frage: String
+-type: enum Type
+-login: enum Login
+-data: Data
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>200</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>200</y>
+      <w>208</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;240.0;70.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1272</x>
+      <y>328</y>
+      <w>208</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>/QuestionPanel/
+--
+#submitButton:JButton
+#answerButton:JRadioButton[4]
+--
++getSelectedAnswer():int
++setQuestionText(question:String)
++setAnswerText(answers:String[])
++getAnswerText():String[]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>968</x>
+      <y>264</y>
+      <w>176</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>LoginPanel
+--
+-nameLabel:JLabel
+-passwordLabel:JLabel
+-loginButton:JButton
+-useLocalButton:JButton
+-nameTextField:JTextField
+-passwordTextField:JTextField
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>968</x>
+      <y>640</y>
+      <w>216</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>AdministrationPanel
+--
+-userList:JListBox
+-userTextField:JTextField
+-passwordTextField:JTextField
+-submitButton:JButton
+-removeUserButton:JButton
+-descriptionLabel:JLabel
+--
++setUsers(users:String[][])</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>408</y>
+      <w>368</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>440.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>624</x>
+      <y>448</y>
+      <w>360</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>430.0;330.0;10.0;330.0;10.0;70.0;130.0;70.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1272</x>
+      <y>528</y>
+      <w>280</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>AnswerQuestionPanel
+--
+-answeredQuestions:int
+-questionLabel:JLabel
+-mediaPlayer:EmbeddedMediaPlayerComponent
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1536</x>
+      <y>328</y>
+      <w>184</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>EditQuestionPanel
+--
+-questionTextField:JTextField
+-answerTextField:JTextField[4]
+-mediaURLTextField:JTextField
+-mediaURLLabel:JLabel
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1472</x>
+      <y>392</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1352</x>
+      <y>464</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>968</x>
+      <y>152</y>
+      <w>248</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+LoginPanelListener
+--
+--
++login(username:String, password:String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>840</x>
+      <y>184</y>
+      <w>144</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>160.0;10.0;10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>312</y>
+      <w>64</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>232</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>976</x>
+      <y>424</y>
+      <w>272</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>CategoryPanel
+--
+-categoryList:JListBox
+-changeButton:JButton
+-editCategoryTextField:JTextField
+-editCategoryLabel:JLabel
+-submitButton:JButton
+-levelComboBox:JComboBox
+-modusComboBox:JComboBox
+-downloadButton:JButton
+-printQuestionsButton:JButton
+--
++setCategories(categories:String[], level:int[],
+   modus:int[])
++getCateories():String[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>848</x>
+      <y>448</y>
+      <w>144</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>160.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>536</y>
+      <w>312</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CategoryPanelListener
+--
+--
++categorySelected(category:int, level:int, modus:int)
++categoryAdded(newCategory:String)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>784</x>
+      <y>448</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>952</x>
+      <y>544</y>
+      <w>40</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1272</x>
+      <y>184</y>
+      <w>432</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+QuestionPanelListener
+--
+--
++answerSelected(answer:int)
++questionAdded(questionText:String, answers:String[], mediaURL:String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>232</y>
+      <w>368</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>440.0;10.0;400.0;10.0;400.0;210.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>272</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>656</x>
+      <y>800</y>
+      <w>296</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+AdministrationPanelListener
+--
+--
++removeUser(username:String)
++updateUser(username:String, password:string)
++addUser(username:String, password:String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>608</x>
+      <y>448</y>
+      <w>208</w>
+      <h>368</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>240.0;440.0;240.0;350.0;10.0;350.0;10.0;40.0;110.0;40.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>944</x>
+      <y>776</y>
+      <w>152</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;170.0;100.0;170.0;10.0</additional_attributes>
+  </element>
+</diagram>
