@@ -47,28 +47,28 @@ public class LoginTest {
 		
 	}
 	
-//	@Test
-//	public void getCategories(){
-//		TCPConnection tcp = new TCPConnection(new ClientListener() {
-//
-//			@Override
-//			public void receiveClientData(Packet p) {
-//				// TODO Auto-generated method stub
-//				System.out.println(p.getCategories().get(0));
-//				assertNotEquals(p.getCategories(), null);
-//			}
-//
-//			@Override
-//			public void exceptionInClientData(TCPClientException e) {
-//				// TODO Auto-generated method stub
-//				e.printStackTrace();
-//				fail();
-//
-//			}
-//
-//		}, "127.0.0.1", 12345);
-//		sendPackage(new Packet("local", "local"), tcp);
-//	}
+	@Test
+	public void getCategories(){
+		TCPConnection tcp = new TCPConnection(new ClientListener() {
+
+			@Override
+			public void receiveClientData(Packet p) {
+				// TODO Auto-generated method stub
+				//System.out.println(p.getCategories().get(0));
+				assertNull(p.getCategories());
+			}
+
+			@Override
+			public void exceptionInClientData(TCPClientException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				fail();
+
+			}
+
+		}, "127.0.0.1", 12345);
+		sendPackage(new Packet("local", "local"), tcp);
+	}
 	
 	
 	public static void sendPackage(Packet p, TCPConnection tcp){
