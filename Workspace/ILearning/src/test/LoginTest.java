@@ -50,6 +50,34 @@ public class LoginTest {
 		sendPackage(new Packet("local", "local"), tcp);
 		
 	}
+
+	/**
+	 * tests if login with the local,local user is possible
+	 */
+	@Test
+	public void loginFail() {		
+		TCPConnection tcp = new TCPConnection(new ClientListener() {
+
+			@Override
+			public void receiveClientData(Packet p) {
+				// TODO Auto-generated method stub
+				assertEquals(p.getLoginStatus(), Packet.Login.FAIL);
+				System.out.println(p.getLoginStatus().toString());
+			}
+
+			@Override
+			public void exceptionInClientData(TCPClientException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				fail();
+
+			}
+
+		}, "127.0.0.1", 12345);
+		sendPackage(new Packet("FOO", "BAR!"), tcp);
+		
+	}
+	
 	
 	/**
 	 * tests, if the server sets categories the the correct packet fields
