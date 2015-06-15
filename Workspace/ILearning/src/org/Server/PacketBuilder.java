@@ -34,6 +34,7 @@ public class PacketBuilder {
 			dbc.addLevel(answer);
 			break;
 		case ANSWER_QUESTION:
+			dbc.addCategories(answer);
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
 			dbc.setHighScore(answer);
