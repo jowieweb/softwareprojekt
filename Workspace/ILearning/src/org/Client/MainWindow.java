@@ -632,8 +632,21 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
 		this.downloadDB.setVisible(false);
+		
+		String[] modes = new String[3];
+		String[] tooltips = new String[3];
+		modes[0] = "Fragen nach Themengebiet";
+		tooltips[0] = "";
+		modes[1] = "Errormode";
+		tooltips[1] = "Alle falsch beantworteten Fragen";
+		modes[2] = "Mixmode";
+		tooltips[2] = "Zufällige Fragen aus allen Themengebieten";
+		setQuestionMode(modes, tooltips);
 	}
 	
+	/**
+	 * Displays a highscore list.
+	 */
 	private void showHighscore() {
 		String[][] highscore = lastPacket.getUserScore();
 		String scoreString = new String();
@@ -645,6 +658,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		for (int i = 0; i < highscore.length; i++) {
 			scoreString += highscore[i][0] + " : " + highscore[i][1] + "\n"; 
 		}
+
 		JOptionPane.showMessageDialog(this, scoreString, "Highscore", JOptionPane.PLAIN_MESSAGE);
 	}
 
@@ -703,7 +717,10 @@ public class MainWindow extends JFrame implements ClientListener,
 					selectedQuestionMode = ((JMenuItem)arg0.getSource()).getText();
 				}
 			});
-			mode.setToolTipText(tooltips[i]);
+			mode.setText(modes[i]);
+			if (!tooltips[i].equals("")) {
+				mode.setToolTipText(tooltips[i]);
+			}
 			this.questionModeMenu.add(mode);
 		}
 		
