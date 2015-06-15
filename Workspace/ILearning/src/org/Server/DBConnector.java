@@ -225,15 +225,35 @@ public class DBConnector {
 	public void setFrage(Packet packet) {
 		try {
 			String userid = getUserID(packet.getUsername());
+			PreparedStatement stm = null;
+			if(packet.getSelectedModus().equals("")){
+				stm = SQLQuerries.getFrage(connect, false);
+				stm.setString(1, packet.getSelectedTopic());
+				stm.setString(2, userid);
+				stm.setString(3, userid);
+			} else if(packet.getSelectedModus().equals("rand")){
+				stm = SQLQuerries.getFrageAllCategories(connect, false);
+			} else if(packet.getSelectedModus().equals("wrong") ){
+				stm = SQLQuerries.getFrageFromWrong(connect, false);
+				stm.setString(1, userid);
+			}
 			
-			PreparedStatement stm = SQLQuerries.getFrage(connect, false);
-			stm.setString(1, packet.getSelectedTopic());
-			stm.setString(2, userid);
-			stm.setString(3, userid);
+			
+			
 			ResultSet resultSet = stm.executeQuery();
-			
+			//if all questions are answerd within 3 minutes, a random will be selecetd
+			if(resultSet.next() == false){
+				stm = SQLQuerries.getRandomIfEmpty(connect,false);
+				stm.setString(1, packet.getSelectedTopic());
+				resultSet = stm.executeQuery();
+			}			
+			resultSet.beforeFirst();
 			
 			if (resultSet.next()) {
+				if(resultSet.getString("questiontext").equals("Definieren Sie den Begriff Computer !")){
+					System.out.println("");
+					
+				}
 				packet.setQuestion(resultSet.getString("questiontext"));
 				
 				packet.setQuestionID(resultSet.getString(1));
@@ -260,14 +280,14 @@ public class DBConnector {
 				} else { packet.setMediaURL(audiourl);}
 				
 			} else {
-				System.out.println("EMPTY");
+				System.out.println("empty again!");
 			}
 			resultSet.close();
 			packet.setPacketType(Packet.Type.ANSWER_QUESTION);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
+//			System.exit(0);
 		}
 	}
 
