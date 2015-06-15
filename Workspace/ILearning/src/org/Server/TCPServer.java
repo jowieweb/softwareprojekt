@@ -29,7 +29,7 @@ public class TCPServer {
 	public void listen() {
 		try {
 			ServerSocket serverSocket = new ServerSocket(12345);
-
+			System.out.println("listening");
 			while(true) {
 
 				Socket socket = serverSocket.accept();
