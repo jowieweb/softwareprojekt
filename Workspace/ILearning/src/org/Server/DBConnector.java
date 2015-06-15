@@ -613,4 +613,50 @@ public class DBConnector {
 		}
 		return "";
 	}
+	
+	public void insertQuestion(Packet p){
+		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
+			String video = "";
+			String image = "";
+			String audio = "";
+			if(p.getMediaURL().endsWith(".jpg")) {
+				image =  p.getMediaURL();
+			} else if(p.getMediaURL().endsWith(".mp4")) {
+				video = p.getMediaURL();
+			}else if(p.getMediaURL().endsWith(".wav")) {
+				audio = p.getMediaURL();
+			}
+			
+			String solution = "";
+			for(int i = 0; i < p.getSelectedAnswers().length; i++) {
+				if(p.getSelectedAnswers()[i] == 1){
+					solution += (i + 1);					
+				}
+			}
+			PreparedStatement statement = SQLQuerries.insertQuerry(connect);
+			try {
+				statement.setString(1, p.getCategoryID());
+				statement.setString(2, "1");
+				statement.setString(3, image);
+				statement.setString(4, video);
+				statement.setString(5, audio);
+				statement.setString(6, p.getQuestion());
+				statement.setString(7, p.getAnswers()[0]);
+				statement.setString(8, p.getAnswers()[1]);
+				statement.setString(9, p.getAnswers()[2]);
+				statement.setString(10, p.getAnswers()[3]);
+				statement.setString(11, solution);
+				statement.execute();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		}
+			
+		
+	}
 }

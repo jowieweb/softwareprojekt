@@ -64,6 +64,8 @@ public class PacketBuilder {
 			case UPDATE_QUESTION:
 				dbc.updateQuestion(querry);
 				break;
+			case ADD_QUESTION:
+				dbc.insertQuestion(querry);
 			default:
 				break;
 			}

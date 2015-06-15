@@ -193,4 +193,10 @@ public class SQLQuerries {
 		}
 		return null;
 	}
+	public static PreparedStatement insertQuerry(java.sql.Connection c){
+		if( c != null){
+			return getPS(c,"insert into Question(TopicId,level_value,image,video,audio,questiontext,answer1,answer2,answer3,answer4,solution) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+		}
+		return null;
+	}
 }
