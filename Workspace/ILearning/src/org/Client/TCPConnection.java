@@ -25,15 +25,24 @@ public class TCPConnection extends Client implements Runnable {
 	public TCPConnection(ClientListener listener, String ip, int port) {
 		super(listener);
 		
+		setInnerIP(ip);
+		
+		setInnerPort(port);
+	}
+
+	protected void setInnerPort(int port) {
+		if(port > 1024 && port < 64000) {  //!!!und, und nicht oder!!!
+			this.port = port;
+		}
+	}
+
+	protected void setInnerIP(String ip) {
+		if(ip==null)return;
 		if(ip.matches("((25[0-5]|(2[0-4]|1{0,1}"
 				+ "[0-9]){0,1}[0-9])\\.){3,3}"
 				+ "(25[0-5]|(2[0-4]|1{0,1}"
 				+ "[0-9]){0,1}[0-9])")) {
 			serverIP = ip;
-		}
-		
-		if(port > 1024 || port < 64000) {
-			this.port = port;
 		}
 	}
 	
@@ -44,8 +53,9 @@ public class TCPConnection extends Client implements Runnable {
 	public void sendPacket(Packet packet) throws TCPClientException{
 		if(serverIP == null || port == 0){
 			throw new TCPClientException("SERVER_IP or PORT wrong!!");
+		} else if(packet == null){
+			throw new TCPClientException("Packet is NULL");
 		}
-		
 		this.packet = packet;
 		Thread t = new Thread(this);
 		t.start();

@@ -295,7 +295,7 @@ public class LocalConnection extends Client {
 				stm.setString(1, packet.getSelectedTopic());
 				resultSet = stm.executeQuery();
 			}			
-			resultSet.beforeFirst();
+			//resultSet.beforeFirst();
 			
 			
 			
