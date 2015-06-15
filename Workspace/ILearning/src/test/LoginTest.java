@@ -2,13 +2,10 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.Packet;
 import org.Client.ClientListener;
 import org.Client.TCPClientException;
 import org.Client.TCPConnection;
-import org.Server.Server;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
