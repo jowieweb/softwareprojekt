@@ -23,7 +23,6 @@ import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
-import org.Client.GUI.VideoFrame;
 
 /**
  * The class MainWindow represents the main window, which display different
@@ -58,6 +57,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private String password;
 
 	private int questionCount = 0;
+	private String selectedQuestionMode;
 
 	/**
 	 * constructor creates window.
@@ -652,7 +652,11 @@ public class MainWindow extends JFrame implements ClientListener,
 		((LocalConnection) client).login();
 	}
 
-	@Override
+	/**
+	 * 
+	 * @param modes modes
+	 * @param tooltips tooltips with explanation 
+	 */
 	public void setQuestionMode(String[] modes, String[] tooltips) {
 		if (modes == null || tooltips == null) {
 			return;
@@ -665,7 +669,13 @@ public class MainWindow extends JFrame implements ClientListener,
 		
 		// Add new menu items.
 		for (int i = 0; i < modes.length; i++) {
-			JMenuItem mode = new JMenuItem(modes[i]);
+			JMenuItem mode = new JMenuItem(new AbstractAction() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					selectedQuestionMode = ((JMenuItem)arg0.getSource()).getText();
+				}
+			});
 			mode.setToolTipText(tooltips[i]);
 			this.questionModeMenu.add(mode);
 		}
