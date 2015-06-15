@@ -86,6 +86,7 @@ public class LocalConnection extends Client {
 				String[] cat = new String[2];
 				cat[0] = resultSet.getString("id");
 				cat[1] = resultSet.getString("title");
+				categories.add(cat);
 				//categorys += resultSet.getString("title") + ";";
 			}
 			//packet.setTopics(categorys.split(";"));
