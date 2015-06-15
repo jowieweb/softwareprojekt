@@ -97,10 +97,6 @@ public class TCPConnectionTest extends TCPConnection {
 		Packet rp = (Packet)in.readObject();
 	}
 	
-	public void testRunnable() {
-		
-	}
-	
 	
 
 	
