@@ -195,7 +195,7 @@ public class SQLQuerries {
 	}
 	public static PreparedStatement insertQuerry(java.sql.Connection c){
 		if( c != null){
-			return getPS(c,"insert into Question(TopicId,level_value,image,video,audio,questiontext,answer1,answer2,answer3,answer4,solution) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+			return getPS(c,"insert into Question(TopicId,level_value,image,video,audio,questiontext,answer1,answer2,answer3,answer4,solution) VALUES((select id from Topic where Topic.title = ?),?,?,?,?,?,?,?,?,?,?)");
 		}
 		return null;
 	}
