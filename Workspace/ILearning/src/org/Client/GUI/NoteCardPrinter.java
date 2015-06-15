@@ -16,16 +16,17 @@ public class NoteCardPrinter {
 	private Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
 	/**
-	 * converts a package into a string[]
+	 * builds a String Array containing QuestionText and Answers.
 	 *
 	 * @param p package
 	 */
-	private String[] packetToArray(Packet p) {
+	private String[] buildTextArray(String questionText, String [] answerText) {
 		// TODO: Convert Packet to String-Array!
-		log.severe("packetToArray not yet implemented!");
+		
+		//log.severe("packetToArray not yet implemented!");
 		String[] testPacket = new String[] { "Question",
-				p.getQuestion(),
-				p.getAnswers()[0], p.getAnswers()[1], p.getAnswers()[2],p.getAnswers()[3]};
+				questionText,
+				answerText[0], answerText[1], answerText[2],answerText[3]};
 		return testPacket;
 	}
 
@@ -34,10 +35,10 @@ public class NoteCardPrinter {
 	 * prints a set of questions
 	 * @param p the package containing the questions
 	 */
-	public NoteCardPrinter(Packet p) {
+	public NoteCardPrinter(String questionText, String [] answerText) {
 		log.info("NoteCardPrinter initialized.");
 		PrinterJob pj = PrinterJob.getPrinterJob();
-		pj.setPrintable(new PrintTemplate(packetToArray(null)));
+		pj.setPrintable(new PrintTemplate(buildTextArray(questionText,answerText)));
 		boolean doPrint = pj.printDialog();
 		long timestamp = 0;
 		boolean printed = false;
