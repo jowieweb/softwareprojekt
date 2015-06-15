@@ -2,20 +2,12 @@ package test;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 import java.net.Socket;
 
 import org.Packet;
-import org.Packet.Login;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.Server.PacketBuilder;
-import org.Server.Server;
 
 //import net.sourceforge.groboutils.junit.v1.*;
 /*
@@ -44,27 +36,15 @@ public class PacketTest extends Packet {
 		// TODO Auto-generated constructor stub
 	}
 
-//	private PacketTest pTest;
 	private Login logAdminTest;
-	private Login logFailTest;
-	private Login logUserTest;
-	private String pwd;
 	private String usr;
-	private Socket client;
-	private static Server server;
-
-//	@BeforeClass
-//	public static void startServer(){
-//		System.out.println("Server is running");
-//		server=new Server();
-//	}
 	
+	@SuppressWarnings("resource")
 	@Before
 	public void initli(){
 		logAdminTest=Login.ADMIN;
-		pwd="pan";
 		usr="Peter";
-		this.client = new Socket();
+		new Socket();
 	}
 
 	@Test
@@ -96,52 +76,4 @@ public class PacketTest extends Packet {
 		this.setLoginStatus(Login.ADMIN);
 		assertEquals(logAdminTest,this.getLoginStatus());
 	}
-	
-	
-//	@Test
-//	public void testSetLoginStatus() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetFrage() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetAnswers() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetTopics() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetLevel() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetSelectedTopic() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetSelectedLevel() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetPacketType() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetImage() {
-//		fail("Not yet implemented");
-//	}
-
-
 }

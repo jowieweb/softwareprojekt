@@ -12,7 +12,6 @@ import org.Packet;
 import org.Client.ClientListener;
 import org.Client.TCPClientException;
 import org.Client.TCPConnection;
-import org.junit.Before;
 import org.junit.Test;
 
 public class TCPConnectionTest extends TCPConnection {
@@ -87,27 +86,4 @@ public class TCPConnectionTest extends TCPConnection {
 		sendPacket(new Packet("klaus", "test"));
 	}
 	
-	public void testSocks() throws UnknownHostException, IOException, ClassNotFoundException{
-		serverIP = "127.0.0.1";
-		port = 3456;
-		Socket s = new Socket(serverIP, port);
-		ObjectOutputStream st = new ObjectOutputStream(s.getOutputStream());
-		st.writeObject(new Packet("sarah", "hatKeinPassword"));
-		ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-		Packet rp = (Packet)in.readObject();
-	}
-	
-	
-
-	
-//	@Test
-//	public void testRun() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testClient() {
-//		fail("Not yet implemented");
-//	}
-
 }

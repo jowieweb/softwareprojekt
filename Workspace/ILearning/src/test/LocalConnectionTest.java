@@ -20,10 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sqlite.SQLiteDataSource;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class LocalConnectionTest extends LocalConnection {
 
