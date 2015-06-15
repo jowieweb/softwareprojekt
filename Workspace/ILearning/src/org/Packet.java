@@ -14,7 +14,7 @@ public class Packet implements Serializable {
 	private static final long serialVersionUID = -5954611261930673901L;
 	private Socket socket;
 	private String username;
-	private String password;
+	protected String password;
 	private String question;
 	private String answer[];
 	private String selectedTopic="";

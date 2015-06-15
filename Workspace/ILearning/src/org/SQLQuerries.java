@@ -3,6 +3,9 @@ package org;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
+/**
+ * Class builds sql querys.
+ */
 public class SQLQuerries {
 
 	private static PreparedStatement getPS(java.sql.Connection c, String s) {

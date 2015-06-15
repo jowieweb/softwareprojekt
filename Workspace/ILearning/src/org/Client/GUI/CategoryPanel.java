@@ -157,15 +157,7 @@ public class CategoryPanel extends JPanel {
 			levelComboBox.addItem(s);
 		}
 		
-		String[] modes = new String[3];
-		String[] tooltips = new String[3];
-		modes[0] = "Fragen nach Themengebiet";
-		tooltips[0] = "";
-		modes[1] = "Errormode";
-		tooltips[1] = "Alle falsch beantworteten Fragen";
-		modes[2] = "Mixmode";
-		tooltips[2] = "Zufällige Fragen aus allen Themengebieten";
-		this.listener.setQuestionMode(modes, tooltips);
+		//this.listener.setQuestionMode(modes, tooltips);
 	}
 	
 	/**

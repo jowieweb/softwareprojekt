@@ -46,6 +46,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private JMenuItem downloadDB;
 	private JMenuItem editCategoryItem;
 	private JMenuItem quitEditModeItem;
+	private JMenuItem showHighscoreItem;
 	private JMenu questionModeMenu;
 	private JMenu editMenu;
 	private JMenu fileMenu;
@@ -57,7 +58,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private String password;
 
 	private int questionCount = 0;
-	private String selectedQuestionMode;
+	private String selectedQuestionMode = "";
 
 	/**
 	 * constructor creates window.
@@ -79,6 +80,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		menuBar.add(editMenu);
 		menuBar.add(questionModeMenu);
 		menuBar.add(helpMenu);
+		fileMenu.add(showHighscoreItem);
 		fileMenu.add(showCategoryItem);
 		fileMenu.add(downloadDB);
 		fileMenu.add(exitMenuItem);
@@ -103,7 +105,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		System.out.println("height: " + height);
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-		//new VideoFrame("http://olliswelt.de/rickroll.mp4");
+
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -119,6 +121,8 @@ public class MainWindow extends JFrame implements ClientListener,
 			return;
 		}
 
+		lastPacket = p;
+		
 		switch (p.getPacketType()) {
 		case CATEGORY:
 			System.out.println(p.getUsername());
@@ -138,7 +142,7 @@ public class MainWindow extends JFrame implements ClientListener,
 				editCategoryItem.setVisible(true);
 			}
 
-			int[] test = { 1, 2, 3 }; // TODO: remove after testing
+			int[] test = { 1, 2, 3 };
 			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
@@ -161,6 +165,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 				String[][] score = p.getUserScore();
 				if (score != null) {
+					
 					for (int i = 0; i < score.length; i++) {
 						System.out.println(score[i][0] + " " + score[i][1]);
 					}
@@ -589,7 +594,6 @@ public class MainWindow extends JFrame implements ClientListener,
 				disableEditMode();
 			}
 		});
-
 		this.downloadDB = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -600,9 +604,16 @@ public class MainWindow extends JFrame implements ClientListener,
 				try {
 					client.sendPacket(p);
 				} catch (TCPClientException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		});
+		this.showHighscoreItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				showHighscore();
 			}
 		});
 
@@ -613,6 +624,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
 		this.quitEditModeItem.setText("Bearbeiten beenden");
+		this.showHighscoreItem.setText("Highscore anzeigen");
 
 		this.showCategoryItem.setVisible(false);
 		this.editCategoryItem.setVisible(false);
@@ -620,6 +632,34 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
 		this.downloadDB.setVisible(false);
+		
+		String[] modes = new String[3];
+		String[] tooltips = new String[3];
+		modes[0] = "Fragen nach Themengebiet";
+		tooltips[0] = "";
+		modes[1] = "Errormode";
+		tooltips[1] = "Alle falsch beantworteten Fragen";
+		modes[2] = "Mixmode";
+		tooltips[2] = "Zufällige Fragen aus allen Themengebieten";
+		setQuestionMode(modes, tooltips);
+	}
+	
+	/**
+	 * Displays a highscore list.
+	 */
+	private void showHighscore() {
+		String[][] highscore = lastPacket.getUserScore();
+		String scoreString = new String();
+
+		if (highscore == null) {
+			return;
+		}
+		
+		for (int i = 0; i < highscore.length; i++) {
+			scoreString += highscore[i][0] + " : " + highscore[i][1] + "\n"; 
+		}
+
+		JOptionPane.showMessageDialog(this, scoreString, "Highscore", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/**
@@ -653,12 +693,12 @@ public class MainWindow extends JFrame implements ClientListener,
 	}
 
 	/**
-	 * 
-	 * @param modes modes
+	 * Sets all available question modes as menu items.
+	 * @param modes modes to set
 	 * @param tooltips tooltips with explanation 
 	 */
 	public void setQuestionMode(String[] modes, String[] tooltips) {
-		if (modes == null || tooltips == null) {
+		if (modes == null || tooltips == null || modes.length != tooltips.length) {
 			return;
 		}
 		
@@ -666,17 +706,21 @@ public class MainWindow extends JFrame implements ClientListener,
 		if (this.questionModeMenu.getItemCount() > 0) {
 			this.questionModeMenu.removeAll();
 		}
-		
+
 		// Add new menu items.
 		for (int i = 0; i < modes.length; i++) {
 			JMenuItem mode = new JMenuItem(new AbstractAction() {
+				private static final long serialVersionUID = -7300493209616319595L;
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					selectedQuestionMode = ((JMenuItem)arg0.getSource()).getText();
 				}
 			});
-			mode.setToolTipText(tooltips[i]);
+			mode.setText(modes[i]);
+			if (!tooltips[i].equals("")) {
+				mode.setToolTipText(tooltips[i]);
+			}
 			this.questionModeMenu.add(mode);
 		}
 		
