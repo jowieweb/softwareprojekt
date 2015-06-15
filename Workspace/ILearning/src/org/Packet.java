@@ -19,6 +19,7 @@ public class Packet implements Serializable {
 	private String answer[];
 	private String selectedTopic="";
 	private String selectedLevel="";
+	private String selectedModus="";
 	private String[] level;
 	private String questionID = "";
 	private String categoryID = "";
@@ -454,5 +455,21 @@ public class Packet implements Serializable {
 	 */
 	public String getCategoryID() {
 		return categoryID;
+	}
+	
+	/**
+	 * Sets selected question Modus
+	 * @param p the modus
+	 */
+	public void setSelectedModus(String p){
+		selectedModus = p;
+	}
+	
+	/**
+	 * Returns the selected Modus
+	 * @return the modus
+	 */
+	public String getSelectedModus(){
+		return selectedModus;	
 	}
 }

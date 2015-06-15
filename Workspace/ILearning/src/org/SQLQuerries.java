@@ -180,4 +180,14 @@ public class SQLQuerries {
 		}
 		return null;
 	}
+	
+	public static PreparedStatement getRandomIfEmpty(java.sql.Connection c, boolean isLight){
+		if( c != null){
+			if(isLight){
+				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY RANDOM() limit 1");
+			}
+			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY rand() limit 1"); 
+		}
+		return null;
+	}
 }
