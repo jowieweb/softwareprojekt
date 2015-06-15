@@ -9,21 +9,6 @@ import java.net.Socket;
 import org.Packet;
 import org.junit.Before;
 
-//import net.sourceforge.groboutils.junit.v1.*;
-/*
- * PacketTest erstmal ausgelassen, da getter und setter testen hier keinen Sinn macht
- * 
- *  Was ist wichtig?:
- * 				- server starten, mit packeten bewerfen und antwort angucken:
- *				- login - positiv, negativ
- * 				- userverwaltungspackete
- * 				- antwortspiele
- * 
- * Änderungen für mich festgehalten: (14.06.2015)
- * 									-pTest rausgenommen, da ich ja als Objekt fungiere
- * 
- * */
-
 public class PacketTest extends Packet {
 
 	/**

@@ -124,22 +124,21 @@ public class LocalConnectionTest extends LocalConnection {
 	}
 
 	/**
+	 * Test is to check if a wrong package is not sended!
+	 * @throws TCPClientException 
+	 * @throws SQLException 
 	 * 
 	 */
-	public void sendPacketTest() {
+	@Test
+	public void sendPacketTest() throws TCPClientException, SQLException {
+		con = new SQLiteDataSource();
+		con.setUrl("jdbc:sqlite:localdummy.db");
+		connect = con.getConnection();
 		listener = new ClientListener() {
 
 			@Override
 			public void receiveClientData(Packet p) {
-				assertEquals("Topic1", p.getCategories().get(0)[1]);
-				assertEquals("Topic2", p.getCategories().get(1)[1]);
-				assertEquals("Topic3", p.getCategories().get(2)[1]);
-				assertEquals("Topic4", p.getCategories().get(3)[1]);
-				assertEquals("1", p.getCategories().get(0)[0]);
-				assertEquals("2", p.getCategories().get(1)[0]);
-				assertEquals("3", p.getCategories().get(2)[0]);
-				assertEquals("4", p.getCategories().get(3)[0]);
-
+				fail("shoud not be sended!");
 			}
 
 			@Override
@@ -149,7 +148,11 @@ public class LocalConnectionTest extends LocalConnection {
 			}
 
 		};
-		// sendPacket(packet);
+		Packet p = new Packet("klaus", "local");
+		p.setQuestion("Frage");
+		p.setSelectedAnswers(new int[] { 1, 0, 0, 0 });
+		p.setPacketType(Packet.Type.CATEGORY);
+		sendPacket(p);
 	}
 
 	/**
@@ -174,6 +177,10 @@ public class LocalConnectionTest extends LocalConnection {
 		assertEquals("3", executeQuery.getString(1));
 	}
 
+	/**
+	 * Checks the update in the database when answer is wrong
+	 * @throws SQLException
+	 */
 	@Test
 	public void updateCheckedAnswerWrong() throws SQLException {
 		con = new SQLiteDataSource();
@@ -192,6 +199,10 @@ public class LocalConnectionTest extends LocalConnection {
 		assertEquals("4", executeQuery.getString(1));
 	}
 
+	/**
+	 * Check if the answer is tested by the connector the right way!
+	 * @throws SQLException
+	 */
 	@Test
 	public void checkAnswersTest() throws SQLException {
 		con = new SQLiteDataSource();
@@ -205,6 +216,9 @@ public class LocalConnectionTest extends LocalConnection {
 		assertTrue(p.getWasRight());
 	}
 
+	/**
+	 * simply calls the userid
+	 */
 	@Test
 	public void getUserIdTest() {
 		Packet p = new Packet("klaus", "local");
@@ -212,6 +226,10 @@ public class LocalConnectionTest extends LocalConnection {
 		assertEquals("1", userid);
 	}
 
+	/**
+	 * tests the setFrage if a right one is returned from the db
+	 * @throws SQLException
+	 */
 	@Test
 	public void setFrageTest() throws SQLException {
 		con = new SQLiteDataSource();
