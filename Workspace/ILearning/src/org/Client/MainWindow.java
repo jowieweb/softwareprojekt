@@ -125,6 +125,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		
 		switch (p.getPacketType()) {
 		case CATEGORY:
+			this.showHighscoreItem.setVisible(true);
 			System.out.println(p.getUsername());
 			System.out.println(p.getLoginStatus());
 			username = p.getUsername();
@@ -193,7 +194,6 @@ public class MainWindow extends JFrame implements ClientListener,
 
 			changePanelToAdministrationPanel(p);
 			adminPanel.addUsers(p);
-			System.out.println("asd");
 
 			break;
 		case DUMP_DB:
@@ -632,6 +632,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
 		this.downloadDB.setVisible(false);
+		this.showHighscoreItem.setVisible(false);
 		
 		String[] modes = new String[3];
 		String[] tooltips = new String[3];
@@ -648,6 +649,10 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Displays a highscore list.
 	 */
 	private void showHighscore() {
+		if (lastPacket == null) {
+			return;
+		}
+
 		String[][] highscore = lastPacket.getUserScore();
 		String scoreString = new String();
 
