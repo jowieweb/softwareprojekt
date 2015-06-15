@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>370</x>
-      <y>150</y>
+      <y>170</y>
       <w>280</w>
       <h>170</h>
     </coordinates>
@@ -24,38 +24,46 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>790</x>
-      <y>300</y>
+      <x>780</x>
+      <y>320</y>
       <w>270</w>
-      <h>310</h>
+      <h>420</h>
     </coordinates>
     <panel_attributes>Packet
 --
--client:Socket
+-socket:Socket
 -username:String
 -password:String
--frage:String
+-answer:String[]
+-selectedTopic:String
+-level String[]
+-questionID: String
+-categoryID:String
+-image: ImageIcon
+-selectedAnswer:int[]
+-wasRight:boolean
+-mediaURL: String
+-users: ArrayList&lt;String[]&gt;
+-userScore: ArrayList&lt;String[]&gt;
+-categories: ArrayList&lt;String[]&gt;
 -type:Type
 -login:Login
+-type:Type
+-login:Login
+-m_type:Managment_Type
+-eq_type: Edit_Question_Type
+-ec_type: Edit_Category_Type
 --
 +Packet(username:String, password:String,t:Type)
 +Packet(username:String, password:String,t:Type, l:Login)
-+setSocket(s:Socket)
-+getSocket():Socket
-+getUsername():String
-+setUsername(s:String)
-+getPassword():String
-+setPassword(s:String)
-+getLoginStatus():Logic
-+getFrage():String
-+setFrage(s:String)</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>380</x>
-      <y>440</y>
+      <x>340</x>
+      <y>10</y>
       <w>280</w>
       <h>110</h>
     </coordinates>
@@ -72,22 +80,23 @@
     <id>UMLClass</id>
     <coordinates>
       <x>390</x>
-      <y>640</y>
+      <y>480</y>
       <w>370</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>PacketBuilder
 --
 --
++PacketBuilder()
 +getPacket(query:Packet,dbAnswer:String):Packet
--copyPacket():Packet</panel_attributes>
+-copyPacket(querry:Packet):Packet</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>50</x>
-      <y>530</y>
+      <x>390</x>
+      <y>670</y>
       <w>210</w>
       <h>100</h>
     </coordinates>
@@ -104,29 +113,29 @@ DBConnector(l:DBConnector)
     <id>Relation</id>
     <coordinates>
       <x>640</x>
-      <y>260</y>
-      <w>200</w>
+      <y>280</y>
+      <w>190</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>180.0;40.0;180.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>170.0;40.0;170.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
-      <y>310</y>
+      <x>460</x>
+      <y>110</y>
       <w>30</w>
-      <h>150</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>40</x>
-      <y>220</y>
+      <y>180</y>
       <w>220</w>
       <h>70</h>
     </coordinates>
@@ -141,18 +150,18 @@ tcpreceive(Packet p):Boolean</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>750</x>
-      <y>600</y>
-      <w>190</w>
-      <h>100</h>
+      <y>510</y>
+      <w>50</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>170.0;10.0;170.0;80.0;10.0;80.0</additional_attributes>
+    <additional_attributes>30.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>250</x>
-      <y>240</y>
+      <y>200</y>
       <w>140</w>
       <h>30</h>
     </coordinates>
@@ -162,72 +171,79 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
+      <x>500</x>
+      <y>330</y>
+      <w>70</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+-builder</panel_attributes>
+    <additional_attributes>30.0;150.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
       <x>190</x>
-      <y>310</y>
-      <w>250</w>
-      <h>240</h>
+      <y>70</y>
+      <w>170</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;220.0;230.0;10.0</additional_attributes>
+    <additional_attributes>10.0;110.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>560</y>
+      <w>30</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>340</y>
-      <w>180</w>
-      <h>110</h>
+      <y>320</y>
+      <w>360</w>
+      <h>360</h>
     </coordinates>
-    <panel_attributes>&lt;interface&gt;
-DBConnectorListener
+    <panel_attributes>SQLQuerries
 --
 --
-+dbDataRecive(p:Packet)
-+loginFailed(p:Packet)</panel_attributes>
+_-getPS(c: Connection,s:String):PreparedStatement_
+_+getCheckAnswer(c: Connection): PreparedStatement_
+_+getCheckAsnwer(c: Connection):PreparedStatement_
+_+getCountForCheck(c: Connection):PreparedStatement_
+_+get1ForCheck(c: Connection):PreparedStatement_
+_+get2ForCheck(c: Connection):PreparedStatement_
+_+addCategories(c: Connection):PreparedStatement_
+_+addLevel(c: Connection):PreparedStatement_
+_+getUser(c: Connection):PreparedStatement_
+_+getFrage(c: Connection):PreparedStatement_
+_+getLoginAsnwer(c: Connection):PreparedStatement_
+_+addAllUsers(c: Connection):PreparedStatement_
+_+changeUser(c: Connection):PreparedStatement_
+_+removeUser(c: Connection):PreparedStatement_
+_+addUser(c: Connection):PreparedStatement_
+_+udpateQuestion(c: Connection):PreparedStatement_
+_+setHighScore(c: Connection):PreparedStatement_
+_+addCategory(c: Connection):PreparedStatement_
+_+removeCategory(c: Connection):PreparedStatement_
+_+updateCategory(c: Connection):PreparedStatement_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>170</x>
-      <y>280</y>
-      <w>220</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;200.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>250</x>
-      <y>280</y>
-      <w>150</w>
-      <h>180</h>
+      <x>270</x>
+      <y>670</y>
+      <w>140</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;160.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>120</x>
-      <y>440</y>
-      <w>60</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;40.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>250</x>
-      <y>560</y>
-      <w>330</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>310.0;80.0;310.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;120.0;40.0</additional_attributes>
   </element>
 </diagram>
