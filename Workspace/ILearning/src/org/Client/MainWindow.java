@@ -46,6 +46,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private JMenuItem downloadDB;
 	private JMenuItem editCategoryItem;
 	private JMenuItem quitEditModeItem;
+	private JMenu questionModeMenu;
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
@@ -65,14 +66,17 @@ public class MainWindow extends JFrame implements ClientListener,
 		adminPanel = new AdministrationPanel(this);
 		loginPanel = new LoginPanel(this);
 		menuBar = new JMenuBar();
+		questionModeMenu = new JMenu("Fragenmodus");
 		editMenu = new JMenu("Bearbeiten");
 		fileMenu = new JMenu("Datei");
 		helpMenu = new JMenu("Hilfe");
 
+		questionModeMenu.setVisible(false);
 		createMenuItems();
 
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
+		menuBar.add(questionModeMenu);
 		menuBar.add(helpMenu);
 		fileMenu.add(showCategoryItem);
 		fileMenu.add(downloadDB);
@@ -645,5 +649,26 @@ public class MainWindow extends JFrame implements ClientListener,
 	public void useLocal() {
 		client = new LocalConnection(this);
 		((LocalConnection) client).login();
+	}
+
+	@Override
+	public void setQuestionMode(String[] modes, String[] tooltips) {
+		if (modes == null || tooltips == null) {
+			return;
+		}
+		
+		// Remove all question mode items if there are any.
+		if (this.questionModeMenu.getItemCount() > 0) {
+			this.questionModeMenu.removeAll();
+		}
+		
+		// Add new menu items.
+		for (int i = 0; i < modes.length; i++) {
+			JMenuItem mode = new JMenuItem(modes[i]);
+			mode.setToolTipText(tooltips[i]);
+			this.questionModeMenu.add(mode);
+		}
+		
+		this.questionModeMenu.setVisible(true);
 	}
 }

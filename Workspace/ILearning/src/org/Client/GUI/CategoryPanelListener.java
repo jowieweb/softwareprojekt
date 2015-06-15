@@ -8,5 +8,6 @@ public interface CategoryPanelListener {
 	public void categoryUpdated(String id, String oldCategory, String newCategory);
 	public void categoryRemoved(String oldCategory);
 	public void categoryAdded(String newCategory);
+	public void setQuestionMode(String[] modes, String[] tooltips);
 	public void disableEditMode();
 }

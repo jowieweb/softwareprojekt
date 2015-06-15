@@ -147,15 +147,25 @@ public class CategoryPanel extends JPanel {
 		
 		this.categories = categories;
 
-		for(String[] s : categories) {
+		for (String[] s : categories) {
 			if (s != null && s.length > 1) {
 				categoryListModel.addElement(s[1]);
 			}
 		}
 
-		for(String s : level){
+		for (String s : level){
 			levelComboBox.addItem(s);
 		}
+		
+		String[] modes = new String[3];
+		String[] tooltips = new String[3];
+		modes[0] = "Fragen nach Themengebiet";
+		tooltips[0] = "";
+		modes[1] = "Errormode";
+		tooltips[1] = "Alle falsch beantworteten Fragen";
+		modes[2] = "Mixmode";
+		tooltips[2] = "Zufällige Fragen aus allen Themengebieten";
+		this.listener.setQuestionMode(modes, tooltips);
 	}
 	
 	/**
@@ -219,9 +229,12 @@ public class CategoryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (editMode) {
 					submitChanges();
-				} else {					
-					listener.categorySelected(categoryListBox.getSelectedValue().toString(),
+				} else {
+					String value = categoryListBox.getSelectedValue();
+					if (value != null && levelComboBox.getSelectedItem() != null) {
+						listener.categorySelected(value,
 							levelComboBox.getSelectedItem().toString(), 0);
+					}
 				}
 			}
 		});
