@@ -15,11 +15,15 @@ import org.Packet;
 import org.Client.ClientListener;
 import org.Client.LocalConnection;
 import org.Client.TCPClientException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sqlite.SQLiteDataSource;
 
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class LocalConnectionTest extends LocalConnection {
 
@@ -32,14 +36,19 @@ public class LocalConnectionTest extends LocalConnection {
 		File file = new File("localTestStart.db");
 		if (file.exists()) {
 			File file2 = new File("localdummy.db");
-			if (file2.exists())
-				file2.delete();
-			Files.copy(file.toPath(), file2.toPath());
-			System.out.println();
+			if (file2.exists()){
+				if(file2.delete())
+					Files.copy(file.toPath(), file2.toPath());
+			}
 		}
 		con = new SQLiteDataSource();
 		con.setUrl("jdbc:sqlite:localTest.db");
 		connect = con.getConnection();
+	}
+	
+	@After
+	public void tearDown() throws SQLException{
+		connect.close();
 	}
 
 	@Test
