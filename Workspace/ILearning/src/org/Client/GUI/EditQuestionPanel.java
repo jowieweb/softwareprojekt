@@ -21,7 +21,9 @@ public class EditQuestionPanel extends QuestionPanel {
 	private JTextField[] answerTextFields;
 	private JTextField mediaURLTextField;
 	private JButton abortButton;
+	private JButton newQuestionButton;
 	private JLabel mediaURLLabel;
+	private boolean newQuestion;
 
 	// Hold old question values so old question can be restored on abort
 	private String backupQuestionText;
@@ -43,7 +45,7 @@ public class EditQuestionPanel extends QuestionPanel {
 		}
 
 		this.mediaURLTextField = new JTextField(40);
-		this.mediaURLLabel = new JLabel("Hier könnte Ihre URL stehen:");
+		this.mediaURLLabel = new JLabel("URL zu einem Bild oder Video:");
 
 		this.abortButton = new JButton("Abbrechen");
 		this.abortButton.addActionListener(new ActionListener() {
@@ -54,21 +56,39 @@ public class EditQuestionPanel extends QuestionPanel {
 			}
 		});
 		
+		this.newQuestionButton = new JButton("Neue Frage");
+		this.newQuestionButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				newQuestion = true;
+				questionTextField.setText("");
+				mediaURLTextField.setText("");
+				for (int i = 0; i < answerButton.length; i++) {
+					answerButton[i].setSelected(false);
+					answerTextFields[i].setText("");
+				}		
+			}
+		});
+		
 		this.submitButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				int[] ans =getAllSelectedAnswers();
-				boolean wasChecked = false;
-				for(int i=0;i<ans.length;i++){
-					if(ans[i] == 1){
-						wasChecked = true;
+				if (newQuestion) {
+					int[] ans = getAllSelectedAnswers();
+					boolean wasChecked = false;
+					for(int i = 0;i < ans.length; i++){
+						if(ans[i] == 1){
+							wasChecked = true;
+						}
 					}
-				}
-				if(wasChecked){
-					if(questionID!=null)
-						listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+					if(wasChecked){
+						if(questionID!=null)
+							listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+					}
+				} else {
+					newQuestion();
 				}
 			}
 		});
@@ -85,6 +105,7 @@ public class EditQuestionPanel extends QuestionPanel {
 		URLPanel.add(mediaURLLabel);
 		URLPanel.add(mediaURLTextField);
 		buttonPanel.add(abortButton);
+		buttonPanel.add(newQuestionButton);
 		buttonPanel.add(submitButton);
 
 		north.setLayout(new GridLayout(2, 1));
@@ -217,4 +238,20 @@ public class EditQuestionPanel extends QuestionPanel {
 		return ans;
 	}
 
+	/**
+	 * Invokes callback method with new question.
+	 */
+	private void newQuestion() {
+		String question = this.questionTextField.getText();
+		String url = this.mediaURLTextField.getText();
+		String[] answers = new String[4];
+		int[] right = getAllSelectedAnswers();
+		
+		
+		for (int i = 0; i < this.answerTextFields.length; i++) {
+			answers[i] = this.answerTextFields[i].getText();
+		}
+
+		this.listener.questionAdded(question, answers, url, right);
+	}
 }
