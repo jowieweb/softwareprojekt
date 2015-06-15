@@ -77,7 +77,7 @@ public class EditQuestionPanel extends QuestionPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (newQuestion) {
+				if (newQuestion == false) {
 					int[] ans = getAllSelectedAnswers();
 					boolean wasChecked = false;
 					for(int i = 0; i < ans.length; i++){
