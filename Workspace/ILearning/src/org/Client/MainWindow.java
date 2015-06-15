@@ -57,7 +57,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private String password;
 
 	private int questionCount = 0;
-	private String selectedQuestionMode;
+	private String selectedQuestionMode = "";
 
 	/**
 	 * constructor creates window.
@@ -103,7 +103,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		System.out.println("height: " + height);
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-		//new VideoFrame("http://olliswelt.de/rickroll.mp4");
+
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -138,7 +138,7 @@ public class MainWindow extends JFrame implements ClientListener,
 				editCategoryItem.setVisible(true);
 			}
 
-			int[] test = { 1, 2, 3 }; // TODO: remove after testing
+			int[] test = { 1, 2, 3 };
 			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
@@ -600,7 +600,6 @@ public class MainWindow extends JFrame implements ClientListener,
 				try {
 					client.sendPacket(p);
 				} catch (TCPClientException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -653,12 +652,12 @@ public class MainWindow extends JFrame implements ClientListener,
 	}
 
 	/**
-	 * 
-	 * @param modes modes
+	 * Sets all available question modes as menu items.
+	 * @param modes modes to set
 	 * @param tooltips tooltips with explanation 
 	 */
 	public void setQuestionMode(String[] modes, String[] tooltips) {
-		if (modes == null || tooltips == null) {
+		if (modes == null || tooltips == null || modes.length != tooltips.length) {
 			return;
 		}
 		
@@ -666,10 +665,11 @@ public class MainWindow extends JFrame implements ClientListener,
 		if (this.questionModeMenu.getItemCount() > 0) {
 			this.questionModeMenu.removeAll();
 		}
-		
+
 		// Add new menu items.
 		for (int i = 0; i < modes.length; i++) {
 			JMenuItem mode = new JMenuItem(new AbstractAction() {
+				private static final long serialVersionUID = -7300493209616319595L;
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
