@@ -86,7 +86,7 @@ public class MakeSound extends SwingWorker<Integer, Integer>{
 	 */
 	protected Integer doInBackground() throws Exception {
 		playSound();
-		
+		System.out.println("DONE");
 		return null;
 	}
 	

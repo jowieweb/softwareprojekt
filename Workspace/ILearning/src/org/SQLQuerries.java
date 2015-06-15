@@ -78,7 +78,8 @@ public class SQLQuerries {
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
 					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
-					+ "WHERE 	Topic.title = ? and Question.level_value = ? "
+					+ "LEFT join `Level` on Question.level_value = `Level`.`value` "
+					+ "WHERE 	Topic.title = ? and `Level`.title = ?  "
 					+ "AND (IFNULL(UserID, ?)) = ? AND IFNULL(lastAnswered, 0) < DATE_SUB(NOW(), INTERVAL 3 MINUTE) "
 					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
 
@@ -87,8 +88,9 @@ public class SQLQuerries {
 			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question "
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
-					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
-					+ "WHERE 	Topic.title = ? and Question.level_value = ? "
+					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id " 
+					+ "LEFT join `Level` on Question.level_value = `Level`.`value` "
+					+ "WHERE 	Topic.title = ? and `Level`.title = ? "
 					+ "AND (ifnull(UserID, ?)) = ? AND ifnull(lastAnswered, 0) < datetime('now','-3 minutes') "
 					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
 
