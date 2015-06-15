@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker.StateValue;
 
 import org.Packet;
 import org.Client.GUI.AdministrationPanel;
@@ -51,6 +52,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private JMenu editMenu;
 	private JMenu fileMenu;
 	private JMenu helpMenu;
+	private MakeSound ms;
 
 	private Packet lastPacket;
 
@@ -183,7 +185,8 @@ public class MainWindow extends JFrame implements ClientListener,
 				questionCount++;
 				if (questionCount == 10) {
 					questionCount = 0;
-					new MakeSound("haishort.wav").execute();
+					ms = new MakeSound("haishort.wav");
+					ms.execute();
 				}
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
@@ -435,6 +438,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 *            the index of the selected answer
 	 */
 	public void answerSelected(int[] answer) {
+
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 		p.setQuestion(questionPanel.getQuestionText());
@@ -444,6 +448,17 @@ public class MainWindow extends JFrame implements ClientListener,
 		p.setLevel(p.getLevel());
 		p.setSelectedModus(selectedQuestionMode);
 		p.setSelectedAnswers(answer);
+		//check if CountDown round
+		if(ms!=null){
+			if(ms.getState() ==StateValue.DONE)
+			{
+				p.setSelectedAnswers(new int[4]);
+				System.out.println("TIMED OUT!");
+				ms = null;
+			}
+		}	
+		
+		
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
