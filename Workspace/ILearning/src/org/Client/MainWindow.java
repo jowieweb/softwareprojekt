@@ -285,7 +285,6 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -640,7 +639,9 @@ public class MainWindow extends JFrame implements ClientListener,
 		changeQuestionPanelToAnswerMode();
 	}
 
-	@Override
+	/**
+	 * Callback method invoked when 'use local' button is clicked.
+	 */
 	public void useLocal() {
 		client = new LocalConnection(this);
 		((LocalConnection) client).login();

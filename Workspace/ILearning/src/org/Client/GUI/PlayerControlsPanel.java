@@ -49,8 +49,10 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
+/**
+ * Displays control options for video playback.
+ */
 public class PlayerControlsPanel extends JPanel {
-
 	private static final long serialVersionUID = 1L;
 
 	private static final int SKIP_TIME_MS = 10 * 1000;
@@ -61,7 +63,7 @@ public class PlayerControlsPanel extends JPanel {
 	private final EmbeddedMediaPlayer mediaPlayer;
 
 	private JLabel timeLabel;
-	// private JProgressBar positionProgressBar;
+
 	private JSlider positionSlider;
 	private JLabel chapterLabel;
 
@@ -89,6 +91,10 @@ public class PlayerControlsPanel extends JPanel {
 
 	private boolean mousePressedPlaying = false;
 
+	/**
+	 * The constructor builds the user interface.
+	 * @param mediaPlayer media player plugin to use
+	 */
 	public PlayerControlsPanel(EmbeddedMediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
 
@@ -98,12 +104,18 @@ public class PlayerControlsPanel extends JPanel {
 				0L, 1L, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * Builds the UI.
+	 */
 	private void createUI() {
 		createControls();
 		layoutControls();
 		registerListeners();
 	}
 
+	/**
+	 * Builds the controls.
+	 */
 	private void createControls() {
 		timeLabel = new JLabel("hh:mm:ss");
 
@@ -193,6 +205,9 @@ public class PlayerControlsPanel extends JPanel {
 		subTitlesButton.setToolTipText("Cycle sub-titles");
 	}
 
+	/**
+	 * Sets the controls to the specific positions.
+	 */
 	private void layoutControls() {
 		setBorder(new EmptyBorder(4, 4, 4, 4));
 
@@ -254,6 +269,9 @@ public class PlayerControlsPanel extends JPanel {
 		mediaPlayer.setPosition(positionValue);
 	}
 
+	/**
+	 * Updates the UI state.
+	 */
 	private void updateUIState() {
 		if (!mediaPlayer.isPlaying()) {
 			// Resume play or play a few frames then pause to show current
@@ -278,6 +296,10 @@ public class PlayerControlsPanel extends JPanel {
 		updateChapter(chapter, chapterCount);
 	}
 
+	/**
+	 * Skips a bit.
+	 * @param skipTime time to skip
+	 */
 	private void skip(int skipTime) {
 		// Only skip time if can handle time setting
 		if (mediaPlayer.getLength() > 0) {
@@ -286,6 +308,9 @@ public class PlayerControlsPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Registers the listeners.
+	 */
 	private void registerListeners() {
 		mediaPlayer.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 			@Override
@@ -438,7 +463,6 @@ public class PlayerControlsPanel extends JPanel {
 	}
 
 	private final class UpdateRunnable implements Runnable {
-
 		private final MediaPlayer mediaPlayer;
 
 		private UpdateRunnable(MediaPlayer mediaPlayer) {
@@ -468,6 +492,10 @@ public class PlayerControlsPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Updates the timeLabel with the current playback time.
+	 * @param millis current playback time in milliseconds.
+	 */
 	private void updateTime(long millis) {
 		String s = String.format(
 				"%02d:%02d:%02d",
@@ -481,11 +509,20 @@ public class PlayerControlsPanel extends JPanel {
 		timeLabel.setText(s);
 	}
 
+	/**
+	 * Updates the  slider position.
+	 * @param value position
+	 */
 	private void updatePosition(int value) {
 		// positionProgressBar.setValue(value);
 		positionSlider.setValue(value);
 	}
 
+	/**
+	 * Updates the chapterLabel with the current chapter.
+	 * @param chapter current chapter
+	 * @param chapterCount available chapters
+	 */
 	private void updateChapter(int chapter, int chapterCount) {
 		String s = chapterCount != -1 ? (chapter + 1) + "/" + chapterCount
 				: "-";
@@ -493,5 +530,4 @@ public class PlayerControlsPanel extends JPanel {
 		chapterLabel.invalidate();
 		validate();
 	}
-
 }

@@ -198,6 +198,11 @@ public class DBConnector {
 		}
 	}
 	
+	/**
+	 * Returns the id of a user from the given username.
+	 * @param username username of the user
+	 * @return id of the user
+	 */
 	public String getUserID(String username){
 		PreparedStatement stm = SQLQuerries.getUser(connect);
 		try {
@@ -205,19 +210,16 @@ public class DBConnector {
 			ResultSet resultSet = stm.executeQuery();
 			resultSet.next();
 			return resultSet.getString(1);
-			
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return "";
-		
 	}
 
 	/**
-	 * sets a question text to the packet.
-	 *
+	 * Sets a question text to the packet.
 	 * @param packet
 	 */
 	public void setFrage(Packet packet) {
@@ -270,13 +272,13 @@ public class DBConnector {
 	}
 
 	/**
-	 * adds an image to the packet
+	 * Adds an image to the packet
 	 *
 	 * @param packet
 	 * @param url the URL
 	 */
 	private void setImage(Packet packet, String url) {
-		if(url.length()>0){
+		if(url.length() > 0){
 			try {
 				Image image = ImageIO.read(new File(url));
 				packet.setImage(image);
@@ -334,7 +336,6 @@ public class DBConnector {
 	 */
 	public void addAllUsers(Packet packet) {
 		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
-//			String debug = "SELECT * from `User`";
 			
 			try {
 				ResultSet resultSet = SQLQuerries.addAllUsers(connect).executeQuery();
@@ -356,11 +357,10 @@ public class DBConnector {
 	 * updates the user table in the DB
 	 * @param p
 	 */
-	public void changeUser(Packet p){
+	public void changeUser(Packet p) {
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
-			//String debug = "update `User` set name = '" + p.getAnswers()[1] + "', password ='" + p.getAnswers()[2] + "' where id = " + p.getAnswers()[0];
-			
-			try{
+
+			try {
 				PreparedStatement stm = SQLQuerries.changeUser(connect);
 				stm.setString(1, p.getAnswers()[1] );
 				stm.setString(2, p.getAnswers()[2] );
@@ -368,7 +368,7 @@ public class DBConnector {
 				
 				stm.execute();
 			
-			}catch(SQLException e){
+			} catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -378,16 +378,15 @@ public class DBConnector {
 	 * Removes a user from the database.
 	 * @param packet packet
 	 */
-	public void removeUser(Packet packet){
+	public void removeUser(Packet packet) {
 		if (checkLogin(packet.getUsername(), packet.getPassword()) == Login.ADMIN) {
-//			String debug = "DELETE FROM `User` WHERE ((`name` = '" +  packet.getQuestion() + "'));";
 			
-			try{
+			try {
 				PreparedStatement stm = SQLQuerries.removeUser(connect);
 				stm.setString(1,  packet.getQuestion());
 				stm.execute();
 			
-			} catch(SQLException e){}
+			} catch(SQLException e) {}
 		}
 	}
 	
@@ -398,7 +397,7 @@ public class DBConnector {
 	public void addUser(Packet p) {
 		if (checkLogin(p.getUsername(), p.getPassword()) == Login.ADMIN) {
 			if(p.getAnswers() != null && p.getAnswers().length == 2) {
-//				String debug = "Insert into `User`(name, password, surname, email) VALUES('" + p.getAnswers()[0] + "','" + p.getAnswers()[1] + "',' ',' ')";
+
 				try{
 					PreparedStatement stm = SQLQuerries.addUser(connect);
 					stm.setString(1,  p.getAnswers()[0]);
@@ -433,17 +432,11 @@ public class DBConnector {
 			String solution = "";
 			for(int i = 0; i < p.getSelectedAnswers().length; i++) {
 				if(p.getSelectedAnswers()[i] == 1){
-					solution+=(i+1);					
+					solution += (i + 1);					
 				}
 			}
 			
-//			String debug = "update `Question` set questiontext = '"
-//					+ p.getQuestion() + "', solution ='" + solution + "', answer1 ='" + p.getAnswers()[0]
-//					+ "', answer2 ='" + p.getAnswers()[1] + "', answer3 ='"
-//					+ p.getAnswers()[2] + "', answer4 ='" + p.getAnswers()[3]
-//					+ mediatype 
-//					+ " where id = " + p.getQuestionID();
-		try{
+		try {
 			PreparedStatement stm = SQLQuerries.udpateQuestion(connect, mediatype);
 			stm.setString(1, p.getQuestion());
 			stm.setString(2, solution);
@@ -455,7 +448,7 @@ public class DBConnector {
 			
 			stm.execute();
 			
-			}catch(SQLException e){
+			} catch(SQLException e) {
 				e.printStackTrace();
 			}
 		}

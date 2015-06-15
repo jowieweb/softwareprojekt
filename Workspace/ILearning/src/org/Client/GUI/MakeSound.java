@@ -11,8 +11,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.SwingWorker;
 
+/**
+ * Class to play a sound.
+ */
 public class MakeSound extends SwingWorker<Integer, Integer>{
-
 	private final int BUFFER_SIZE = 128000;
 	private File soundFile;
 	private AudioInputStream audioStream;
@@ -23,15 +25,14 @@ public class MakeSound extends SwingWorker<Integer, Integer>{
 	/**
 	 * @param filename the name of the file that is going to be played
 	 */
-	public MakeSound(String filename){
+	public MakeSound(String filename) {
 		strFilename = filename;
-
 	}
 
-	public void playSound(){
-
-
-
+	/**
+	 * Starts the playback of the sound.
+	 */
+	public void playSound() {
 		try {
 			soundFile = new File(strFilename);
 		} catch (Exception e) {
@@ -80,9 +81,10 @@ public class MakeSound extends SwingWorker<Integer, Integer>{
 		sourceLine.close();
 	}
 
-	@Override
+	/**
+	 * Lets the sound play in another thread.
+	 */
 	protected Integer doInBackground() throws Exception {
-		// TODO Auto-generated method stub
 		playSound();
 		return null;
 	}

@@ -56,7 +56,6 @@ public class LoginPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				login();
 			}
 
@@ -66,7 +65,6 @@ public class LoginPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				login();
 			}
 
@@ -76,7 +74,6 @@ public class LoginPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				listener.useLocal();
 			}
 		});
@@ -117,5 +114,4 @@ public class LoginPanel extends JPanel {
 					passwordtextField.getPassword()));
 		}
 	}
-
 }

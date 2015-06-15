@@ -11,14 +11,22 @@ import java.awt.print.PrinterException;
  * @author Lukas Stuckstette
  */
 public class PrintTemplate implements Printable {
-
 	private String[] data;
 
+	/**
+	 * The constructor sets the data to print.
+	 * @param data data to print
+	 */
 	public PrintTemplate(String[] data) {
 		this.data = data;
 	}
 
-	@Override
+	/**
+	 * Prints the data.
+	 * @param g
+	 * @param pf
+	 * @param page
+	 */
 	public int print(Graphics g, PageFormat pf, int page)
 			throws PrinterException {
 
