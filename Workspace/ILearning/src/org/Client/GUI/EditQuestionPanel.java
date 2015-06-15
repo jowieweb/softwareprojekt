@@ -39,6 +39,8 @@ public class EditQuestionPanel extends QuestionPanel {
 		this.questionTextField = new JTextField();
 		this.answerTextFields = new JTextField[4];
 		this.backupAnswersText = new String[4];
+		
+		this.newQuestion = false;
 
 		for (int i = 0; i < 4; i++) {
 			answerTextFields[i] = new JTextField(50);
@@ -78,14 +80,17 @@ public class EditQuestionPanel extends QuestionPanel {
 				if (newQuestion) {
 					int[] ans = getAllSelectedAnswers();
 					boolean wasChecked = false;
-					for(int i = 0;i < ans.length; i++){
+					for(int i = 0; i < ans.length; i++){
 						if(ans[i] == 1){
 							wasChecked = true;
 						}
 					}
 					if(wasChecked){
-						if(questionID!=null)
-							listener.updateQuestion(questionID, questionTextField.getText(), getAnswerTexts(), getAllSelectedAnswers(), mediaURLTextField.getText());
+						if(questionID != null) {
+							listener.updateQuestion(questionID, questionTextField.getText(),
+									getAnswerTexts(), getAllSelectedAnswers(),
+									mediaURLTextField.getText());
+						}
 					}
 				} else {
 					newQuestion();

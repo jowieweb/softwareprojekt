@@ -336,7 +336,7 @@ public class Packet implements Serializable {
 	
 	/**
 	 * gets what type of user management will be done
-	 * @return
+	 * @return management type
 	 */
 	public Management_Type getManagementType(){
 		return m_type;
@@ -352,7 +352,7 @@ public class Packet implements Serializable {
 	
 	/**
 	 * gets what type of editing will be dine to a question
-	 * @return
+	 * @return edit question type
 	 */
 	public Edit_Question_Type getEditQuestionType() {
 		return eq_type;
@@ -476,7 +476,7 @@ public class Packet implements Serializable {
 	
 	/**
 	 * Returns the QuestionLevel
-	 * @return
+	 * @return question level
 	 */
 	public String getQuestionLevel(){
 		return questionLevel;

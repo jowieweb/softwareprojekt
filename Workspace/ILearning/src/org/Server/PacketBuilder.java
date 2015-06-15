@@ -101,7 +101,7 @@ public class PacketBuilder {
 	/**
 	 * Copys an existing packet.
 	 * @param querry
-	 * @return
+	 * @return new packet
 	 */
 	private Packet copyPacket(Packet querry ) {
 		Packet p = new Packet(querry.getUsername(), querry.getPassword());
