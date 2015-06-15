@@ -1,5 +1,7 @@
 package org.Client;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -23,11 +25,12 @@ import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
 
 /**
- * The class MainWindow represents the main window, which display different panels
- * depending on the current state.
+ * The class MainWindow represents the main window, which display different
+ * panels depending on the current state.
  */
-public class MainWindow extends JFrame implements ClientListener, LoginPanelListener,
-CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
+public class MainWindow extends JFrame implements ClientListener,
+		LoginPanelListener, CategoryPanelListener, AdministrationPanelListener,
+		QuestionPanelListener {
 	private static final long serialVersionUID = 1L;
 	private Client client;
 	private LoginPanel loginPanel;
@@ -51,14 +54,14 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	private String username;
 	private String password;
-	
+
 	private int questionCount = 0;
 
 	/**
 	 * constructor creates window.
 	 */
-	public MainWindow(){
-		super("Frame");
+	public MainWindow() {
+		super("iLearning");
 		adminPanel = new AdministrationPanel(this);
 		loginPanel = new LoginPanel(this);
 		menuBar = new JMenuBar();
@@ -82,17 +85,27 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		helpMenu.add(aboutMenuItem);
 
 		setJMenuBar(menuBar);
-
 		add(loginPanel);
 		pack();
 		setVisible(true);
+
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screenSize.getWidth();
+		int height = (int) screenSize.getHeight();
+		System.out.println("width: " + width);
+		System.out.println("height: " + height);
+		this.setSize(width, height);
+		this.setPreferredSize(new Dimension(width, height));
+
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**
 	 * Is invoked when a packet is received.
-	 * @param p the received packet
+	 * 
+	 * @param p
+	 *            the received packet
 	 */
 	public void receiveClientData(Packet p) {
 		if (p == null) {
@@ -117,7 +130,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				editCategoryItem.setVisible(true);
 			}
 
-			int[] test = {1,2,3};	// TODO: remove after testing
+			int[] test = { 1, 2, 3 }; // TODO: remove after testing
 			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
@@ -127,42 +140,43 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				questionPanel.setVisible(false);
 				remove(questionPanel);
 
-				//TODO: lassen wir das so?
-				if(p.getWasRight()){
-					JOptionPane.showMessageDialog(this,"Die Frage wurde richtig beantwortet");
+				// TODO: lassen wir das so?
+				if (p.getWasRight()) {
+					JOptionPane.showMessageDialog(this,
+							"Die Frage wurde richtig beantwortet");
+
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Die Frage wurde FALSCH beantwortet");
 
 				}
-				else{
-					JOptionPane.showMessageDialog(this,"Die Frage wurde FALSCH beantwortet");
 
-				}
-				
 				String[][] score = p.getUserScore();
-				if(score != null){
-					for(int i =0;i< score.length;i++){
+				if (score != null) {
+					for (int i = 0; i < score.length; i++) {
 						System.out.println(score[i][0] + " " + score[i][1]);
 					}
 				}
-				questionCount ++;
-				if(questionCount == 10){
-					questionCount =0;
+				questionCount++;
+				if (questionCount == 10) {
+					questionCount = 0;
 					new MakeSound("haishort.wav").execute();
 				}
 			}
 			questionPanel = new AnswerQuestionPanel(this, p.getAnswers());
-			
+
 			add(questionPanel);
 			editMenuItem.setVisible(true);
 
 			showCategoryItem.setVisible(true);
 			questionPanel.setQuestionText(p.getQuestion());
-			
-			((AnswerQuestionPanel)questionPanel).setPicture(p.getImage());
+
+			((AnswerQuestionPanel) questionPanel).setPicture(p.getImage());
 			questionPanel.setQuestionID(p.getQuestionID());
-			((AnswerQuestionPanel)questionPanel).setVideo(p.getMediaURL());
+			((AnswerQuestionPanel) questionPanel).setVideo(p.getMediaURL());
 
 			break;
-		case  USER_MANAGEMENT:
+		case USER_MANAGEMENT:
 
 			changePanelToAdministrationPanel(p);
 			adminPanel.addUsers(p);
@@ -171,9 +185,9 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			break;
 		case DUMP_DB:
 			String dump = p.getQuestion();
-			if(dump.length() > 10){
+			if (dump.length() > 10) {
 				LocalConnection asd = new LocalConnection(this);
-				asd.insert(p);				
+				asd.insert(p);
 			}
 			break;
 		default:
@@ -185,17 +199,23 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method that is invoked by an exception.
-	 * @param e exception
+	 * 
+	 * @param e
+	 *            exception
 	 */
 	public void exceptionInClientData(TCPClientException e) {
-		JOptionPane.showMessageDialog(this, e.getMessage() + "\n" + e.getCause().getMessage());
+		JOptionPane.showMessageDialog(this, e.getMessage() + "\n"
+				+ e.getCause().getMessage());
 		loginPanel.enableLoginButton();
 	}
 
 	/**
 	 * Callback method invoked when submitButton on loginPanel is pressed.
-	 * @param username the username
-	 * @param password the user's password
+	 * 
+	 * @param username
+	 *            the username
+	 * @param password
+	 *            the user's password
 	 */
 	@Override
 	public void login(String username, String password) {
@@ -203,7 +223,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		this.downloadDB.setVisible(true);
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.CATEGORY);
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -213,19 +233,23 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method is invoked when submitButton on categoryPanel is pressed.
-	 * @param category the selected category
-	 * @param level the selected level
-	 * @param modus the selected modus
+	 * 
+	 * @param category
+	 *            the selected category
+	 * @param level
+	 *            the selected level
+	 * @param modus
+	 *            the selected modus
 	 */
 	@Override
 	public void categorySelected(String category, String level, int modus) {
-		Packet p = new Packet(username,password);
+		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
 		lastPacket = p;
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -235,10 +259,14 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked when a category is updated.
-	 * @param oldCategory the category to rename
-	 * @param newCategory the new category name
+	 * 
+	 * @param oldCategory
+	 *            the category to rename
+	 * @param newCategory
+	 *            the new category name
 	 */
-	public void categoryUpdated(String id, String oldCategory, String newCategory) {
+	public void categoryUpdated(String id, String oldCategory,
+			String newCategory) {
 		if (oldCategory == null) {
 			return;
 		}
@@ -248,18 +276,20 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		p.setEditCategoryType(Packet.Edit_Category_Type.UPDATE_CATEGORY);
 		p.setQuestion(newCategory);
 		p.setCategoryID(id);
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
 	 * Callback method invoked when a category is removed.
-	 * @param oldCategory category to remove
+	 * 
+	 * @param oldCategory
+	 *            category to remove
 	 */
 	public void categoryRemoved(String oldCategory) {
 		if (oldCategory == null) {
@@ -270,7 +300,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		p.setPacketType(Packet.Type.EDIT_CATEGORY);
 		p.setEditCategoryType(Packet.Edit_Category_Type.REMOVE_CATEGORY);
 		p.setQuestion(oldCategory);
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -280,7 +310,9 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked when a category is added.
-	 * @param newCategory category to add
+	 * 
+	 * @param newCategory
+	 *            category to add
 	 */
 	public void categoryAdded(String newCategory) {
 		if (newCategory == null) {
@@ -291,14 +323,14 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		p.setPacketType(Packet.Type.EDIT_CATEGORY);
 		p.setEditCategoryType(Packet.Edit_Category_Type.ADD_CATEGORY);
 		p.setQuestion(newCategory);
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Callback method invoked to disable edit mode.
 	 */
@@ -310,15 +342,18 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	}
 
 	/**
-	 * Callback method that is invoked by the AdministrationPanel when an user is removed.
-	 * @param username username of the user to be removed
+	 * Callback method that is invoked by the AdministrationPanel when an user
+	 * is removed.
+	 * 
+	 * @param username
+	 *            username of the user to be removed
 	 */
 	public void removeUser(String username) {
 		Packet p = new Packet(this.username, password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.REMOVE_USER);
 		p.setQuestion(username);
-		
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -328,16 +363,20 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked by AdministrationPanel when an user is updated.
-	 * @param id	the id of the user
-	 * @param username	the username of the user
-	 * @param password the password of the user
+	 * 
+	 * @param id
+	 *            the id of the user
+	 * @param username
+	 *            the username of the user
+	 * @param password
+	 *            the password of the user
 	 */
 	public void updateUser(String id, String username, String password) {
 		Packet p = new Packet(this.username, this.password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.CHANGE_USER);
-		p.setAnswers(new String[] {id,username,password});
-		
+		p.setAnswers(new String[] { id, username, password });
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -347,15 +386,18 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked by AdminstrationPanel when a user is added.
-	 * @param username the username of the new user
-	 * @param password the password of the new user
+	 * 
+	 * @param username
+	 *            the username of the new user
+	 * @param password
+	 *            the password of the new user
 	 */
 	public void addUser(String username, String password) {
 		Packet p = new Packet(this.username, this.password);
 		p.setPacketType(Packet.Type.USER_MANAGEMENT);
 		p.setManagemtType(Packet.Management_Type.ADD_USER);
-		p.setAnswers(new String[] {username,password});
-		
+		p.setAnswers(new String[] { username, password });
+
 		try {
 			client.sendPacket(p);
 		} catch (TCPClientException e) {
@@ -365,13 +407,15 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked when submitButton on questionPanel is pressed.
-	 * @param answer the index of the selected answer
+	 * 
+	 * @param answer
+	 *            the index of the selected answer
 	 */
 	public void answerSelected(int[] answer) {
 		Packet p = new Packet(username, password);
 		p.setPacketType(Packet.Type.ANSWER_QUESTION);
 		p.setQuestion(questionPanel.getQuestionText());
-		//p.setTopics(lastPacket.getTopics());
+		// p.setTopics(lastPacket.getTopics());
 		p.setCategories(lastPacket.getCategories());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
@@ -386,8 +430,11 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 
 	/**
 	 * Callback method invoked when a question is added.
-	 * @param questionText question
-	 * @param answers answers
+	 * 
+	 * @param questionText
+	 *            question
+	 * @param answers
+	 *            answers
 	 */
 	public void questionAdded(String questionText, String[] answers,
 			String mediaURL) {
@@ -471,7 +518,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		pack();
 		showCategoryItem.setVisible(false);
 	}
-	
+
 	/**
 	 * Creates menu items.
 	 */
@@ -484,7 +531,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 			public void actionPerformed(ActionEvent arg0) {
 				Packet p = new Packet(username, password);
 				p.setPacketType(Packet.Type.USER_MANAGEMENT);
-				
+
 				try {
 					client.sendPacket(p);
 				} catch (TCPClientException e) {
@@ -535,7 +582,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				disableEditMode();
 			}
 		});
-		
+
 		this.downloadDB = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -551,8 +598,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 				}
 			}
 		});
-		
-		
+
 		this.exitMenuItem.setText("Beenden");
 		this.showCategoryItem.setText("Kategorie auswählen");
 		this.downloadDB.setText("Download DB");
@@ -560,7 +606,7 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
 		this.quitEditModeItem.setText("Bearbeiten beenden");
-		
+
 		this.showCategoryItem.setVisible(false);
 		this.editCategoryItem.setVisible(false);
 		this.editMenuItem.setVisible(false);
@@ -594,6 +640,6 @@ CategoryPanelListener, AdministrationPanelListener, QuestionPanelListener {
 	@Override
 	public void useLocal() {
 		client = new LocalConnection(this);
-		((LocalConnection)client).login();
+		((LocalConnection) client).login();
 	}
 }
