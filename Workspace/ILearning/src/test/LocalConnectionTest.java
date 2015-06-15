@@ -22,12 +22,27 @@ import org.sqlite.SQLiteDataSource;
 
 import java.nio.file.Files;
 
+/**
+ * Tests the local connection class, only functionallity
+ * @author Steven Yeates
+ */
 public class LocalConnectionTest extends LocalConnection {
 
+	/**
+	 * Constructor simply calls the superConstructor null, because
+	 * testcases aren't able to supply with params
+	 * @throw SQLException
+	 */
 	public LocalConnectionTest() throws SQLException {
 		super(null);
 	}
 
+	/**
+	 * The before copies a givven version of the local
+	 * database to compare and opens the standard connection
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	@Before
 	public void davor() throws IOException, SQLException {
 		File file = new File("localTestStart.db");
@@ -43,11 +58,18 @@ public class LocalConnectionTest extends LocalConnection {
 		connect = con.getConnection();
 	}
 	
+	/**
+	 * closes the connection !! MUST BE DONE !!
+	 * @throws SQLException
+	 */
 	@After
 	public void tearDown() throws SQLException{
 		connect.close();
 	}
 
+	/**
+	 * Tests if the difficulty-levels will be returned
+	 */
 	@Test
 	public void testLoginLevels() {
 		listener = new ClientListener() {
@@ -71,6 +93,9 @@ public class LocalConnectionTest extends LocalConnection {
 		login();
 	}
 
+	/**
+	 * Test the return of the topics, locally!
+	 */
 	@Test
 	public void testAddCategories() {
 		listener = new ClientListener() {
@@ -98,6 +123,9 @@ public class LocalConnectionTest extends LocalConnection {
 		login();
 	}
 
+	/**
+	 * 
+	 */
 	public void sendPacketTest() {
 		listener = new ClientListener() {
 
@@ -124,6 +152,10 @@ public class LocalConnectionTest extends LocalConnection {
 		// sendPacket(packet);
 	}
 
+	/**
+	 * Checks the update in the database when answer is right
+	 * @throws SQLException
+	 */
 	@Test
 	public void updateCheckedAnswerRight() throws SQLException {
 		con = new SQLiteDataSource();
