@@ -1,13 +1,21 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import org.Packet;
 import org.Client.ClientListener;
 import org.Client.TCPClientException;
 import org.Client.TCPConnection;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TCPConnectionTest extends TCPConnection {
+public class TCPConnectionTest extends TCPConnection{
 
 	/**
 	 * construktor, calls super con.
@@ -15,6 +23,12 @@ public class TCPConnectionTest extends TCPConnection {
 	public TCPConnectionTest() {
 		super(null, "253:255.98.1", 12345);
 		// TODO Auto-generated constructor stub
+	}
+	
+	@BeforeClass
+	public static void setupTCP(){
+		InnerThread input = new InnerThread();
+		input.start();
 	}
 	
 	/**
@@ -101,6 +115,61 @@ public class TCPConnectionTest extends TCPConnection {
 		serverIP = "127.0.0.1";
 		port = 3456;
 		sendPacket(new Packet("klaus", "test"));
+	}
+	
+	/**
+	 * The Socket that was started replys and tests if the method is
+	 * invoking the callback 
+	 * @throws TCPClientException
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void testSendPacketSuccess() throws TCPClientException, InterruptedException{
+			listener = new ClientListener(){
+
+			@Override
+			public void receiveClientData(Packet p) {
+				System.out.println("recieve Interface");
+				assertEquals("Dummdidummdida", p.getUsername());
+				System.out.println("Assertion done!");
+			}
+
+			@Override
+			public void exceptionInClientData(TCPClientException e) {
+				fail();
+			}
+			
+		};
+		serverIP = "127.0.0.1";
+		port = 32154;
+		Packet p = new Packet("Dummdidummdida", "1");
+		p.setPacketType(Packet.Type.CATEGORY);
+
+		sendPacket(p);
+		Thread.sleep(500);
+	}
+	
+	private static class InnerThread extends Thread{
+		
+		public void run(){
+			try {
+				@SuppressWarnings("resource")
+				
+				ServerSocket serverTest = new ServerSocket(32154);
+				System.out.println("Socket->listen:");
+				Socket recieve = serverTest.accept();
+				System.out.println("input...");
+				ObjectInputStream ois = new ObjectInputStream(recieve.getInputStream());
+				String input = ((Packet)ois.readObject()).getUsername();
+				ObjectOutputStream st = new ObjectOutputStream(recieve.getOutputStream());
+				System.out.println("reply...");
+				st.writeObject(new Packet(input, "duudle"));
+				recieve.close();
+			} catch (IOException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }
