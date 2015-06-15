@@ -28,6 +28,7 @@ public class Packet implements Serializable {
 	private boolean wasRight;
 	private String mediaURL ="";
 	private String questionLevel = "";
+	private boolean gotRightQuestion = true;
 	
 	private ArrayList<String[]> users;
 	private ArrayList<String[]> userScore;
@@ -488,5 +489,22 @@ public class Packet implements Serializable {
 	 */
 	public void setQuestionLevel(String lvl){
 		questionLevel = lvl;
+	}
+	
+	/**
+	 * sets a flag that shows, if a question is selected by the user selection or by random
+	 * @param b = true: random
+	 */
+	public void setGotRightQuestion(boolean b)
+	{
+		gotRightQuestion = b;
+	}
+
+	/**
+	 * gets a flag that shows, if a question is selected by the user selection or by random
+	 * @return
+	 */
+	public boolean getGotRightQuestion(){
+		return gotRightQuestion;
 	}
 }

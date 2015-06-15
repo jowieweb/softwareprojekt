@@ -168,6 +168,9 @@ public class MainWindow extends JFrame implements ClientListener,
 							"Die Frage wurde FALSCH beantwortet");
 
 				}
+				if(!p.getGotRightQuestion()){
+					JOptionPane.showMessageDialog(this, "Es wurden alle Frage mit dieser Kategorie / schwierigkeit in den letzen 3 min benatwortet\n Die Fragen werden jetzt zufällig ausgewählt");
+				}
 
 				String[][] score = p.getUserScore();
 				if (score != null) {

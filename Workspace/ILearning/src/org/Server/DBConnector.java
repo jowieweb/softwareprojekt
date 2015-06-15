@@ -229,8 +229,9 @@ public class DBConnector {
 			if(packet.getSelectedModus().equals("")){
 				stm = SQLQuerries.getFrage(connect, false);
 				stm.setString(1, packet.getSelectedTopic());
-				stm.setString(2, userid);
+				stm.setString(2, packet.getSelectedLevel());
 				stm.setString(3, userid);
+				stm.setString(4, userid);
 			} else if(packet.getSelectedModus().equals("Mixmode")){
 				stm = SQLQuerries.getFrageAllCategories(connect, false);
 			} else if(packet.getSelectedModus().equals("Errormode") ){
@@ -246,7 +247,9 @@ public class DBConnector {
 				stm = SQLQuerries.getRandomIfEmpty(connect,false);
 				stm.setString(1, packet.getSelectedTopic());
 				resultSet = stm.executeQuery();
+				packet.setGotRightQuestion(false);
 			}			
+			
 			resultSet.beforeFirst();
 			
 			if (resultSet.next()) {

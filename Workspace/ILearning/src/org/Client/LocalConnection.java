@@ -45,6 +45,7 @@ public class LocalConnection extends Client {
 
 	public void login() {
 		Packet p = new Packet("local", "local");
+		p.setLoginStatus(Packet.Login.USER);
 		p.setPacketType(Packet.Type.CATEGORY);
 		addCategries(p);
 		addLevel(p);
@@ -284,8 +285,9 @@ public class LocalConnection extends Client {
 			String userid = getUserID(packet.getUsername());
 			PreparedStatement stm = SQLQuerries.getFrage(connect,true);
 			stm.setString(1, packet.getSelectedTopic());
-			stm.setString(2, userid);
+			stm.setString(2, packet.getSelectedLevel());
 			stm.setString(3, userid);
+			stm.setString(4, userid);
 			
 			
 			ResultSet resultSet = stm.executeQuery();
@@ -294,6 +296,7 @@ public class LocalConnection extends Client {
 				stm = SQLQuerries.getRandomIfEmpty(connect,true);
 				stm.setString(1, packet.getSelectedTopic());
 				resultSet = stm.executeQuery();
+				packet.setGotRightQuestion(false);
 			}			
 			//resultSet.beforeFirst();
 			

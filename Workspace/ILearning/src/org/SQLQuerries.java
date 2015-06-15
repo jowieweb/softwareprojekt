@@ -78,7 +78,7 @@ public class SQLQuerries {
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
 					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
-					+ "WHERE 	Topic.title = ? "
+					+ "WHERE 	Topic.title = ? and Question.level_value = ? "
 					+ "AND (IFNULL(UserID, ?)) = ? AND IFNULL(lastAnswered, 0) < DATE_SUB(NOW(), INTERVAL 3 MINUTE) "
 					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
 
@@ -88,20 +88,13 @@ public class SQLQuerries {
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
 					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
-					+ "WHERE 	Topic.title = ? "
+					+ "WHERE 	Topic.title = ? and Question.level_value = ? "
 					+ "AND (ifnull(UserID, ?)) = ? AND ifnull(lastAnswered, 0) < datetime('now','-3 minutes') "
 					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
 
 			return getPS(c, querry);
 		}
 		
-		
-//		select * from (select Question.id, Question.questiontext, Question.answer1, Question.answer2, Question.answer3, Question.answer4, (IFNULL(lastAnswered,0)) as realLast from Question 
-//		LEFT JOIN Question_data on Question.id = Question_data.QuestionID left join `User` on `User`.id = Question_data.UserID 
-//		LEFT JOIN Topic on Question.TopicID = Topic.id
-//		where Topic.title = ?
-//		ORDER BY (falseCount / overallCount) DESC, lastAnswered) as asd  where 
-//		 asd.realLast != (select max(lastAnswered) from Question_data)
 	}
 
 	public static PreparedStatement getLogin(java.sql.Connection c) {
