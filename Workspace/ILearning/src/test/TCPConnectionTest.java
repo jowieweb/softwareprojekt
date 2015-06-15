@@ -1,8 +1,6 @@
 package test;
 
 import static org.junit.Assert.*;
-
-
 import org.Packet;
 import org.Client.ClientListener;
 import org.Client.TCPClientException;
