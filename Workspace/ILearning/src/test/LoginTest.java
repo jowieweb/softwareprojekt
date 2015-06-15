@@ -70,6 +70,64 @@ public class LoginTest {
 		sendPackage(p, tcp);
 	}
 	
+	@Test
+	public void getFrage(){
+		TCPConnection tcp = new TCPConnection(new ClientListener() {
+
+			@Override
+			public void receiveClientData(Packet p) {
+				// TODO Auto-generated method stub
+				assertNotNull(p.getQuestion());
+				if(p.getQuestion().length()<=1)
+				{
+					fail("to small");
+				}
+			}
+
+			@Override
+			public void exceptionInClientData(TCPClientException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				fail();
+
+			}
+
+		}, "127.0.0.1", 12345);
+		Packet p = new Packet("local", "local");
+		p.setPacketType(Packet.Type.ANSWER_QUESTION);
+		p.setSelectedTopic("Einstiegsveranstaltung");
+		sendPackage(p, tcp);
+	}
+	
+	@Test
+	public void getFrageAntworten(){
+		TCPConnection tcp = new TCPConnection(new ClientListener() {
+
+			@Override
+			public void receiveClientData(Packet p) {
+				// TODO Auto-generated method stub
+				assertNotNull(p.getAnswers());
+				if(p.getAnswers()[0].length()<=1)
+				{
+					fail("to small");
+				}
+			}
+
+			@Override
+			public void exceptionInClientData(TCPClientException e) {
+				// TODO Auto-generated method stub
+				e.printStackTrace();
+				fail();
+
+			}
+
+		}, "127.0.0.1", 12345);
+		Packet p = new Packet("local", "local");
+		p.setPacketType(Packet.Type.ANSWER_QUESTION);
+		p.setSelectedTopic("Einstiegsveranstaltung");
+		sendPackage(p, tcp);
+	}
+	
 	
 	public static void sendPackage(Packet p, TCPConnection tcp){
 		try {
