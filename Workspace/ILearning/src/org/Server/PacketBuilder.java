@@ -34,6 +34,7 @@ public class PacketBuilder {
 			dbc.addLevel(answer);
 			break;
 		case ANSWER_QUESTION:
+			dbc.addCategories(answer);
 			dbc.checkAnswers(answer);
 			dbc.setFrage(answer);
 			dbc.setHighScore(answer);
@@ -118,6 +119,7 @@ public class PacketBuilder {
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
 		}
+		p.setSelectedModus(querry.getSelectedModus());
 		return p;
 	}
 }

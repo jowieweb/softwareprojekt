@@ -636,7 +636,7 @@ public class DBConnector {
 			PreparedStatement statement = SQLQuerries.insertQuerry(connect);
 			try {
 				statement.setString(1, p.getCategoryID());
-				statement.setString(2, "1");
+				statement.setString(2, "(select id from Topic where Topic.title = '" + p.getSelectedTopic() + "')");
 				statement.setString(3, image);
 				statement.setString(4, video);
 				statement.setString(5, audio);
