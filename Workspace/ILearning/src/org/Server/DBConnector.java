@@ -113,8 +113,8 @@ public class DBConnector {
 	 * @param packet including all question data
 	 * @param wasRight answer was right
 	 */
+	@SuppressWarnings("resource")
 	public void updateCheckedAnswer(Packet packet, boolean wasRight) {
-		String debug = "";
 		String incorrect = "1";
 		if (wasRight) {
 			incorrect = "0";
@@ -228,7 +228,6 @@ public class DBConnector {
 			stm.setString(1, packet.getSelectedTopic());
 			stm.setString(2, userid);
 			stm.setString(3, userid);
-			String asd ="";
 			ResultSet resultSet = stm.executeQuery();
 			
 			
