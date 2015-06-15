@@ -12,8 +12,8 @@ import org.Packet;
  * The class TCPConnection handles the network stuff.
  */
 public class TCPConnection extends Client implements Runnable {
-	private String serverIP;
-	private int port;
+	protected String serverIP;
+	protected int port;
 	private Packet packet;
 
 	/**
