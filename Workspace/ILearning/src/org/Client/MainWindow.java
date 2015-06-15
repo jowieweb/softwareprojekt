@@ -456,8 +456,9 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * @param right right answers
 	 */
 	public void questionAdded(String questionText, String[] answers,
-			String mediaURL, int[] right) {
-		if (questionText == null || answers == null || mediaURL == null || right == null) {
+			String mediaURL, int[] right, String category) {
+		if (questionText == null || answers == null || mediaURL == null || right == null
+				|| category == null) {
 			return;
 		}
 
@@ -468,6 +469,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		p.setMediaURL(mediaURL);
 		p.setAnswers(answers);
 		p.setSelectedAnswers(right);
+		p.setSelectedTopic(category);
 		
 		try {
 			client.sendPacket(p);

@@ -278,7 +278,7 @@ public class EditQuestionPanel extends QuestionPanel {
 			answers[i] = this.answerTextFields[i].getText();
 		}
 
-		this.listener.questionAdded(question, answers, url, right);
+		this.listener.questionAdded(question, answers, url, right, this.categoryComboBox.getSelectedItem().toString());
 	}
 	
 	/**
