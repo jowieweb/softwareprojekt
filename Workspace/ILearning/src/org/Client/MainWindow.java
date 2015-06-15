@@ -154,6 +154,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 		case ANSWER_QUESTION:
 			remove(categoryPanel);
+			editCategoryItem.setVisible(false);
 			if (questionPanel != null) {
 				questionPanel.setVisible(false);
 				remove(questionPanel);
@@ -485,6 +486,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
+		editCategoryItem.setVisible(false);
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 		String id = questionPanel.getQuestionID();
@@ -508,6 +510,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
 	public void changeQuestionPanelToAnswerMode() {
+		editCategoryItem.setVisible(false);
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
 		String id = questionPanel.getQuestionID();
@@ -525,6 +528,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces QuestionPanel with CategoryPanel.
 	 */
 	public void changeQuestionPanelToCategoryPanel() {
+		editCategoryItem.setVisible(true);
 		remove(questionPanel);
 		questionPanel = null;
 		login(username, password);
@@ -544,7 +548,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		if (loginPanel != null) {
 			remove(loginPanel);
 		}
-
+		editCategoryItem.setVisible(false);
 		add(adminPanel);
 		pack();
 		showCategoryItem.setVisible(false);
@@ -558,6 +562,8 @@ public class MainWindow extends JFrame implements ClientListener,
 	public void changeAdministrationPanelToCategoryPanel() {
 		remove(adminPanel);
 		add(categoryPanel);
+		editCategoryItem.setVisible(true);
+		editCategoryItem.setVisible(true);
 		userMenuItem.setVisible(true);
 		pack();
 		showCategoryItem.setVisible(false);
