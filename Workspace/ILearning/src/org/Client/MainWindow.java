@@ -23,6 +23,7 @@ import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
+import org.Client.GUI.VideoFrame;
 
 /**
  * The class MainWindow represents the main window, which display different
@@ -102,7 +103,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		System.out.println("height: " + height);
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-
+		//new VideoFrame("http://olliswelt.de/rickroll.mp4");
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}

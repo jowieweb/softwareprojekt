@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import org.Packet;
+
 
 /**
  * The class AnswerQuestionPanel represents a JPanel that displays a question
@@ -26,6 +28,8 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	private ImagePanel picturePanel;
 	private JButton nextButton;
 	private JButton backButton;
+	private JButton printButton;
+
  
 	/**
 	 * constructor builds JPanel.
@@ -35,9 +39,9 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	public AnswerQuestionPanel(QuestionPanelListener listener, String[] answers) {
 		super(listener);
 		this.questionLabel = new JLabel();
-
 		this.nextButton = new JButton("Nächste Frage");
 		this.backButton = new JButton("Zurück zur Kategorieauswahl");
+		this.printButton = new JButton("Drucken");
 		this.nextButton.setVisible(false);
 		this.backButton.setVisible(false);
 
@@ -83,6 +87,15 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	private void nextButtonClicked() {
 
+	}
+	/**
+	 * This method is invoked when printButton is clicked.
+	 * Print the current question.
+	 */
+	private void printButtonClicked() {
+		new NoteCardPrinter(this.getQuestionText(),this.getAnswerTexts());
+		
+		
 	}
 
 	/**
@@ -213,6 +226,14 @@ public class AnswerQuestionPanel extends QuestionPanel {
 				nextButtonClicked();
 			}
 		});
+		this.printButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				printButtonClicked();
+			}
+		});
+		
 	}
 	
 	/**
@@ -225,6 +246,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 		southPan.add(backButton);
 		southPan.add(submitButton);
 		southPan.add(nextButton);
+		southPan.add(printButton);
 		
 		JPanel center = new JPanel();
 		JPanel south = new JPanel();
