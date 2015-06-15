@@ -84,6 +84,8 @@ public class MainWindow extends JFrame implements ClientListener,
 		editMenu.add(quitEditModeItem);
 		helpMenu.add(aboutMenuItem);
 
+		editMenu.setEnabled(false);
+		
 		setJMenuBar(menuBar);
 		add(loginPanel);
 		pack();
@@ -126,6 +128,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 			// enable user-edit-mode if user has admin rights
 			if (p.getLoginStatus() == Packet.Login.ADMIN) {
+				editMenu.setEnabled(true);
 				userMenuItem.setVisible(true);
 				editCategoryItem.setVisible(true);
 			}
