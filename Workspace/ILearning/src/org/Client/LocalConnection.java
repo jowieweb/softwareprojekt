@@ -118,9 +118,9 @@ public class LocalConnection extends Client {
 	}
 	
 
-	public void insert(Packet p) {
+	public void insert(Packet packet) {
 
-		String[] all = p.getQuestion().split(";");
+		String[] all = packet.getQuestion().split(";");
 		for (String s : all) {
 			if (s.length() > 2) {
 				try {

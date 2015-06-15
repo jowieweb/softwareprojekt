@@ -12,7 +12,7 @@ import java.awt.print.PrinterException;
  */
 public class PrintTemplate implements Printable {
 
-	String[] data;
+	private String[] data;
 
 	public PrintTemplate(String[] data) {
 		this.data = data;
