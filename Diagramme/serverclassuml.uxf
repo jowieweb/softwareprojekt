@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>370</x>
-      <y>170</y>
+      <x>640</x>
+      <y>200</y>
       <w>280</w>
       <h>170</h>
     </coordinates>
@@ -24,8 +24,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>780</x>
-      <y>320</y>
+      <x>1050</x>
+      <y>350</y>
       <w>270</w>
       <h>420</h>
     </coordinates>
@@ -62,8 +62,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
-      <y>10</y>
+      <x>610</x>
+      <y>40</y>
       <w>280</w>
       <h>110</h>
     </coordinates>
@@ -79,8 +79,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>480</y>
+      <x>660</x>
+      <y>510</y>
       <w>370</w>
       <h>90</h>
     </coordinates>
@@ -95,8 +95,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>670</y>
+      <x>660</x>
+      <y>700</y>
       <w>210</w>
       <h>100</h>
     </coordinates>
@@ -112,8 +112,8 @@ DBConnector(l:DBConnector)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>280</y>
+      <x>910</x>
+      <y>310</y>
       <w>190</w>
       <h>60</h>
     </coordinates>
@@ -123,8 +123,8 @@ DBConnector(l:DBConnector)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
-      <y>110</y>
+      <x>730</x>
+      <y>140</y>
       <w>30</w>
       <h>80</h>
     </coordinates>
@@ -134,8 +134,8 @@ DBConnector(l:DBConnector)
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>40</x>
-      <y>180</y>
+      <x>310</x>
+      <y>210</y>
       <w>220</w>
       <h>70</h>
     </coordinates>
@@ -149,8 +149,8 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
-      <y>510</y>
+      <x>1020</x>
+      <y>540</y>
       <w>50</w>
       <h>30</h>
     </coordinates>
@@ -160,8 +160,8 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>250</x>
-      <y>200</y>
+      <x>520</x>
+      <y>230</y>
       <w>140</w>
       <h>30</h>
     </coordinates>
@@ -171,8 +171,8 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
-      <y>330</y>
+      <x>770</x>
+      <y>360</y>
       <w>70</w>
       <h>170</h>
     </coordinates>
@@ -183,8 +183,8 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>190</x>
-      <y>70</y>
+      <x>460</x>
+      <y>100</y>
       <w>170</w>
       <h>130</h>
     </coordinates>
@@ -194,8 +194,8 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>560</y>
+      <x>790</x>
+      <y>590</y>
       <w>30</w>
       <h>130</h>
     </coordinates>
@@ -205,10 +205,10 @@ tcpreceive(Packet p):Boolean</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>320</y>
-      <w>360</w>
-      <h>360</h>
+      <x>220</x>
+      <y>350</y>
+      <w>380</w>
+      <h>380</h>
     </coordinates>
     <panel_attributes>SQLQuerries
 --
@@ -232,18 +232,20 @@ _+udpateQuestion(c: Connection):PreparedStatement_
 _+setHighScore(c: Connection):PreparedStatement_
 _+addCategory(c: Connection):PreparedStatement_
 _+removeCategory(c: Connection):PreparedStatement_
-_+updateCategory(c: Connection):PreparedStatement_</panel_attributes>
+_+updateCategory(c: Connection):PreparedStatement_
+_+getFrageFromWrong(c: Connection):PreparedStatement_
+_+getFrageAllCategories(c: Connection):PreparedStatement_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>670</y>
-      <w>140</w>
+      <x>490</x>
+      <y>720</y>
+      <w>190</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0;120.0;40.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;170.0;40.0</additional_attributes>
   </element>
 </diagram>
