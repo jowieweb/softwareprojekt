@@ -118,6 +118,7 @@ public class PacketBuilder {
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
 		}
+		p.setSelectedModus(querry.getSelectedModus());
 		return p;
 	}
 }

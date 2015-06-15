@@ -261,7 +261,9 @@ public class MainWindow extends JFrame implements ClientListener,
 
 		p.setSelectedTopic(category);
 		p.setSelectedLevel(level);
+		p.setSelectedModus(selectedQuestionMode);
 		lastPacket = p;
+		
 
 		try {
 			client.sendPacket(p);
@@ -431,7 +433,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		p.setCategories(lastPacket.getCategories());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
 		p.setLevel(p.getLevel());
-
+		p.setSelectedModus(selectedQuestionMode);
 		p.setSelectedAnswers(answer);
 		try {
 			client.sendPacket(p);
