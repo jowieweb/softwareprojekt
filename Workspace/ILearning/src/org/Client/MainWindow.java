@@ -125,26 +125,31 @@ public class MainWindow extends JFrame implements ClientListener,
 		
 		switch (p.getPacketType()) {
 		case CATEGORY:
-			this.showHighscoreItem.setVisible(true);
-			System.out.println(p.getUsername());
-			System.out.println(p.getLoginStatus());
-			username = p.getUsername();
-			password = p.getPassword();
-
-			loginPanel.setVisible(false);
-			remove(loginPanel);
-			categoryPanel = new CategoryPanel(this);
-			add(categoryPanel);
-
-			// enable user-edit-mode if user has admin rights
-			if (p.getLoginStatus() == Packet.Login.ADMIN) {
-				editMenu.setEnabled(true);
-				userMenuItem.setVisible(true);
-				editCategoryItem.setVisible(true);
+			if (p.getLoginStatus() == Packet.Login.FAIL) {
+				JOptionPane.showMessageDialog(this, "Fehler beim Login!", "Login fehlgeschlagen",
+						JOptionPane.WARNING_MESSAGE);
+			} else {
+				this.showHighscoreItem.setVisible(true);
+				System.out.println(p.getUsername());
+				System.out.println(p.getLoginStatus());
+				username = p.getUsername();
+				password = p.getPassword();
+	
+				loginPanel.setVisible(false);
+				remove(loginPanel);
+				categoryPanel = new CategoryPanel(this);
+				add(categoryPanel);
+	
+				// enable user-edit-mode if user has admin rights
+				if (p.getLoginStatus() == Packet.Login.ADMIN) {
+					editMenu.setEnabled(true);
+					userMenuItem.setVisible(true);
+					editCategoryItem.setVisible(true);
+				}
+	
+				int[] test = { 1, 2, 3 };
+				categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			}
-
-			int[] test = { 1, 2, 3 };
-			categoryPanel.setCategories(p.getCategories(), p.getLevel(), test);
 			break;
 
 		case ANSWER_QUESTION:
@@ -477,7 +482,12 @@ public class MainWindow extends JFrame implements ClientListener,
 		String question = questionPanel.getQuestionText();
 		String id = questionPanel.getQuestionID();
 		remove(questionPanel);
-		questionPanel = new EditQuestionPanel(this);
+		EditQuestionPanel panel = new EditQuestionPanel(this);
+		if (lastPacket != null) {
+			panel.setCategories(lastPacket.getCategories());
+			panel.setLevels(lastPacket.getLevel());
+		}
+		questionPanel = panel;
 		questionPanel.setAnswerText(answers);
 		questionPanel.setQuestionText(question);
 		questionPanel.setQuestionID(id);

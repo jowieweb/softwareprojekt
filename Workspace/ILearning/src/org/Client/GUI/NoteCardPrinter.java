@@ -31,7 +31,6 @@ public class NoteCardPrinter {
 		return testPacket;
 	}
 
-
 	/**
 	 * prints a set of questions
 	 * @param questionText
