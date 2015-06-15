@@ -46,6 +46,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	private JMenuItem downloadDB;
 	private JMenuItem editCategoryItem;
 	private JMenuItem quitEditModeItem;
+	private JMenuItem showHighscoreItem;
 	private JMenu questionModeMenu;
 	private JMenu editMenu;
 	private JMenu fileMenu;
@@ -79,6 +80,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		menuBar.add(editMenu);
 		menuBar.add(questionModeMenu);
 		menuBar.add(helpMenu);
+		fileMenu.add(showHighscoreItem);
 		fileMenu.add(showCategoryItem);
 		fileMenu.add(downloadDB);
 		fileMenu.add(exitMenuItem);
@@ -119,6 +121,8 @@ public class MainWindow extends JFrame implements ClientListener,
 			return;
 		}
 
+		lastPacket = p;
+		
 		switch (p.getPacketType()) {
 		case CATEGORY:
 			System.out.println(p.getUsername());
@@ -161,6 +165,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 				String[][] score = p.getUserScore();
 				if (score != null) {
+					
 					for (int i = 0; i < score.length; i++) {
 						System.out.println(score[i][0] + " " + score[i][1]);
 					}
@@ -589,7 +594,6 @@ public class MainWindow extends JFrame implements ClientListener,
 				disableEditMode();
 			}
 		});
-
 		this.downloadDB = new JMenuItem(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 
@@ -604,6 +608,14 @@ public class MainWindow extends JFrame implements ClientListener,
 				}
 			}
 		});
+		this.showHighscoreItem = new JMenuItem(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				showHighscore();
+			}
+		});
 
 		this.exitMenuItem.setText("Beenden");
 		this.showCategoryItem.setText("Kategorie auswählen");
@@ -612,6 +624,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setText("Nutzerverwaltung anzeigen");
 		this.editCategoryItem.setText("Kategorien bearbeiten");
 		this.quitEditModeItem.setText("Bearbeiten beenden");
+		this.showHighscoreItem.setText("Highscore anzeigen");
 
 		this.showCategoryItem.setVisible(false);
 		this.editCategoryItem.setVisible(false);
@@ -619,6 +632,20 @@ public class MainWindow extends JFrame implements ClientListener,
 		this.userMenuItem.setVisible(false);
 		this.quitEditModeItem.setVisible(false);
 		this.downloadDB.setVisible(false);
+	}
+	
+	private void showHighscore() {
+		String[][] highscore = lastPacket.getUserScore();
+		String scoreString = new String();
+
+		if (highscore == null) {
+			return;
+		}
+		
+		for (int i = 0; i < highscore.length; i++) {
+			scoreString += highscore[i][0] + " : " + highscore[i][1] + "\n"; 
+		}
+		JOptionPane.showMessageDialog(this, scoreString, "Highscore", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/**
