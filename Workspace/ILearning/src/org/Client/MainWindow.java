@@ -443,15 +443,30 @@ public class MainWindow extends JFrame implements ClientListener,
 	/**
 	 * Callback method invoked when a question is added.
 	 * 
-	 * @param questionText
-	 *            question
-	 * @param answers
-	 *            answers
+	 * @param questionText question
+	 * @param answers answers
+	 * @param mediaURL url
+	 * @param right right answers
 	 */
 	public void questionAdded(String questionText, String[] answers,
-			String mediaURL) {
-		// TODO Auto-generated method stub
+			String mediaURL, int[] right) {
+		if (questionText == null || answers == null || mediaURL == null || right == null) {
+			return;
+		}
 
+		Packet p = new Packet(username, password);
+		p.setPacketType(Packet.Type.EDIT_QUESTION);
+		p.setEditQuestionType(Packet.Edit_Question_Type.ADD_QUESTION);
+		p.setQuestion(questionText);
+		p.setMediaURL(mediaURL);
+		p.setAnswers(answers);
+		p.setSelectedAnswers(right);
+		
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
