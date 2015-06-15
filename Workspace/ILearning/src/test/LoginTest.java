@@ -78,10 +78,7 @@ public class LoginTest {
 			public void receiveClientData(Packet p) {
 				// TODO Auto-generated method stub
 				assertNotNull(p.getQuestion());
-				if(p.getQuestion().length()<=1)
-				{
-					fail("to small");
-				}
+				assertTrue(p.getQuestion().length()>=1);
 			}
 
 			@Override
@@ -107,10 +104,7 @@ public class LoginTest {
 			public void receiveClientData(Packet p) {
 				// TODO Auto-generated method stub
 				assertNotNull(p.getAnswers());
-				if(p.getAnswers()[0].length()<=1)
-				{
-					fail("to small");
-				}
+				assertTrue(p.getAnswers()[0].length()>1);
 			}
 
 			@Override

@@ -4,8 +4,6 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.logging.Logger;
 
-import org.Packet;
-
 /**
  * NoteCardPrinter.
  * prints questions in card format

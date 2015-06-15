@@ -25,12 +25,11 @@ public class LocalConnection extends Client {
 
 	private void connect() {
 		try {
-			boolean initialize = SQLiteJDBCLoader.initialize();
+			SQLiteJDBCLoader.initialize();
 			// java.sql.Connection connect =
 			// DriverManager.getConnection("jdbc:sqlite:test.db");
 			con = new SQLiteDataSource();
 			con.setUrl("jdbc:sqlite:local.db");
-			int i = 1;
 
 			connect = con.getConnection();
 		} catch (ClassNotFoundException e) {
@@ -126,8 +125,7 @@ public class LocalConnection extends Client {
 		for (String s : all) {
 			if (s.length() > 2) {
 				try {
-					boolean b = connect.createStatement()
-							.execute(s);
+					connect.createStatement().execute(s);
 
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -213,8 +211,8 @@ public class LocalConnection extends Client {
 	 * @param packet including all question data
 	 * @param wasRight answer was right
 	 */
+	@SuppressWarnings("resource")
 	public void updateCheckedAnswer(Packet packet, boolean wasRight) {
-		String debug = "";
 		String incorrect = "1";
 		if (wasRight) {
 			incorrect = "0";
@@ -254,7 +252,6 @@ public class LocalConnection extends Client {
 				 stm.setString(3, packet.getQuestion());
 				 stm.setString(4, incorrect);
 			}
-			String s = stm.toString();
 			stm.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -281,7 +278,6 @@ public class LocalConnection extends Client {
 	
 	public void setFrage(Packet packet) {
 		try {
-			String asd= "";
 			String userid = getUserID(packet.getUsername());
 			PreparedStatement stm = SQLQuerries.getFrage(connect,true);
 			stm.setString(1, packet.getSelectedTopic());
