@@ -13,8 +13,8 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class LocalConnection extends Client {
-	private SQLiteDataSource con;
-	private Connection connect;
+	protected SQLiteDataSource con;
+	protected Connection connect;
 
 	// java.sql.Connection connect;
 	public LocalConnection(ClientListener listener) {
