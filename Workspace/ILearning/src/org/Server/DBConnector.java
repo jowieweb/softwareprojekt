@@ -231,9 +231,9 @@ public class DBConnector {
 				stm.setString(1, packet.getSelectedTopic());
 				stm.setString(2, userid);
 				stm.setString(3, userid);
-			} else if(packet.getSelectedModus().equals("rand")){
+			} else if(packet.getSelectedModus().equals("Mixmode")){
 				stm = SQLQuerries.getFrageAllCategories(connect, false);
-			} else if(packet.getSelectedModus().equals("wrong") ){
+			} else if(packet.getSelectedModus().equals("Errormode") ){
 				stm = SQLQuerries.getFrageFromWrong(connect, false);
 				stm.setString(1, userid);
 			}
@@ -250,10 +250,6 @@ public class DBConnector {
 			resultSet.beforeFirst();
 			
 			if (resultSet.next()) {
-				if(resultSet.getString("questiontext").equals("Definieren Sie den Begriff Computer !")){
-					System.out.println("");
-					
-				}
 				packet.setQuestion(resultSet.getString("questiontext"));
 				
 				packet.setQuestionID(resultSet.getString(1));

@@ -288,6 +288,15 @@ public class LocalConnection extends Client {
 			
 			
 			ResultSet resultSet = stm.executeQuery();
+			//if all questions are answerd within 3 minutes, a random will be selecetd
+			if(resultSet.next() == false){
+				stm = SQLQuerries.getRandomIfEmpty(connect,false);
+				stm.setString(1, packet.getSelectedTopic());
+				resultSet = stm.executeQuery();
+			}			
+			resultSet.beforeFirst();
+			
+			
 			
 			if (resultSet.next()) {
 				packet.setQuestion(resultSet.getString("questiontext"));

@@ -71,7 +71,7 @@ public class SQLQuerries {
 
 	public static PreparedStatement getFrage(java.sql.Connection c, boolean isLite) {
 		if (!isLite) {
-			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question "
+			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question "
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
 					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
@@ -81,7 +81,7 @@ public class SQLQuerries {
 
 			return getPS(c, querry);
 		} else {
-			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question "
+			String querry = "SELECT	Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question "
 					+ "LEFT JOIN Question_data ON Question.id = Question_data.QuestionID "
 					+ "LEFT JOIN `User` ON `User`.id = Question_data.UserID "
 					+ "LEFT JOIN Topic ON Question.TopicID = Topic.id "
@@ -134,7 +134,7 @@ public class SQLQuerries {
 	public static PreparedStatement setHighScore(java.sql.Connection c) {
 		return getPS(
 				c,
-				"select (sum(overallCount) - sum(falseCount))* level_value, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID");
+				"select (sum(overallCount) - sum(falseCount))* level_value as blub, User.`name` from Question_data join Question on QuestionID = Question.id join `User` on `User`.id = Question_data.UserID GROUP BY UserID order by blub DESC");
 	}
 	
 	public static PreparedStatement addCategory(java.sql.Connection c) {
@@ -163,9 +163,9 @@ public class SQLQuerries {
 	public static PreparedStatement getFrageAllCategories(java.sql.Connection c, boolean isLight){
 		if( c != null){
 			if(isLight){
-				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question  ORDER BY RANDOM() limit 1");
+				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question  ORDER BY RANDOM() limit 1");
 			}
-			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question  ORDER BY rand() limit 1"); 
+			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question  ORDER BY rand() limit 1"); 
 		}
 		return null;
 	}
@@ -174,9 +174,9 @@ public class SQLQuerries {
 	public static PreparedStatement getFrageFromWrong(java.sql.Connection c, boolean isLight){
 		if( c != null){
 			if(isLight){
-				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Question_data on Question.id = Question_data.QuestionID where UserID = ? and falseCount > 0 ORDER BY RANDOM() limit 1");
+				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question join Question_data on Question.id = Question_data.QuestionID where UserID = ? and falseCount > 0 ORDER BY RANDOM() limit 1");
 			}
-			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Question_data on Question.id = Question_data.QuestionID where UserID = ? and falseCount > 0 ORDER BY RAND() limit 1"); 
+			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question join Question_data on Question.id = Question_data.QuestionID where UserID = ? and falseCount > 0 ORDER BY RAND() limit 1"); 
 		}
 		return null;
 	}
@@ -184,9 +184,9 @@ public class SQLQuerries {
 	public static PreparedStatement getRandomIfEmpty(java.sql.Connection c, boolean isLight){
 		if( c != null){
 			if(isLight){
-				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY RANDOM() limit 1");
+				return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY RANDOM() limit 1");
 			}
-			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY rand() limit 1"); 
+			return getPS(c,"select Question.id, Question.questiontext, Question.answer1,	Question.answer2,	Question.answer3,	Question.answer4,	image,	video,	audio, level_value FROM	Question join Topic on Question.TopicID = Topic.id where Topic.title = ? ORDER BY rand() limit 1"); 
 		}
 		return null;
 	}

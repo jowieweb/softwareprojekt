@@ -27,6 +27,7 @@ public class Packet implements Serializable {
 	private int[] selectedAnswer;
 	private boolean wasRight;
 	private String mediaURL ="";
+	private String questionLevel = "";
 	
 	private ArrayList<String[]> users;
 	private ArrayList<String[]> userScore;
@@ -471,5 +472,21 @@ public class Packet implements Serializable {
 	 */
 	public String getSelectedModus(){
 		return selectedModus;	
+	}
+	
+	/**
+	 * Returns the QuestionLevel
+	 * @return
+	 */
+	public String getQuestionLevel(){
+		return questionLevel;
+	}
+	
+	/**
+	 * sets the Question Level
+	 * @param lvl
+	 */
+	public void setQuestionLevel(String lvl){
+		questionLevel = lvl;
 	}
 }
