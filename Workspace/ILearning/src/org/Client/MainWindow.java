@@ -24,7 +24,6 @@ import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
-import org.Client.GUI.VideoFrame;
 
 /**
  * The class MainWindow represents the main window, which display different
@@ -101,8 +100,6 @@ public class MainWindow extends JFrame implements ClientListener,
 		pack();
 		setVisible(true);
 
-		new VideoFrame("http://olliswelt.de/rickroll.mp4");
-		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int) screenSize.getWidth();
 		int height = (int) screenSize.getHeight();
