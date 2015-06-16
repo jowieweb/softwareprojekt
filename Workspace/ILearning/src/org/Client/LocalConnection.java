@@ -279,7 +279,7 @@ public class LocalConnection extends Client {
 	public void setFrage(Packet packet) {
 		try {
 			String userid = getUserID(packet.getUsername());
-			PreparedStatement stm = SQLQuerries.getFrage(connect,true);
+			PreparedStatement stm = SQLQuerries.getQuestion(connect,true);
 			stm.setString(1, packet.getSelectedTopic());
 			stm.setString(2, packet.getSelectedLevel());
 			stm.setString(3, userid);
