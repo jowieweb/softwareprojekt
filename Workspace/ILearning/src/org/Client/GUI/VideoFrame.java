@@ -59,16 +59,17 @@ public class VideoFrame {
                 if(isWindows()){
                 	NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
     	                "C:\\Program Files\\VideoLAN\\VLC");
-                	/*Mac Code*/
-                    NativeLibrary.addSearchPath(
-                    	    RuntimeUtil.getLibVlcLibraryName(), "/Applications/VLC.app/Contents/MacOS/lib"
-                    	    );
-                    	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-                	/*Ende Mac Code*/
                 	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
                 }
                 else if(isMac()){
-                	
+                	uk.co.caprica.vlcj.binding.LibC.INSTANCE.setenv("VLC_PLUGIN_PATH",
+                			"/Applications/VLC.app/Contents/MacOS/plugins/",0);
+
+               	 NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
+                  		"/Applications/VLC.app/Contents/MacOS/lib/");
+//               	NativeLibrary.addSearchPath(RuntimeUtil.getPluginsDirectoryName(),
+//                  		"/Applications/VLC.app/Contents/MacOS/plugins");
+                  	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);	
                 }
 
         		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
