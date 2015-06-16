@@ -31,6 +31,10 @@ public class VideoFrame {
 		return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
 	}
     
+    public static boolean isMac() {
+    	return (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0);
+    }
+    
     /**
      * Constructor builds the window.
      * @param url the url to the video to display.
@@ -54,6 +58,9 @@ public class VideoFrame {
                 	NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
     	                "C:\\Program Files\\VideoLAN\\VLC");
                 	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+                }
+                else if(isMac()){
+                	
                 }
 
         		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
