@@ -1,5 +1,6 @@
 package org.Client;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,55 +13,76 @@ import org.sqlite.SQLiteJDBCLoader;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+/**
+ * This class handles the connection to the local database.
+ */
 public class LocalConnection extends Client {
 	protected SQLiteDataSource con;
 	protected Connection connect;
+	protected boolean isConnected;
 
-	// java.sql.Connection connect;
+	/**
+	 * The constructor establishes the connection to the database.
+	 * @param listener
+	 */
 	public LocalConnection(ClientListener listener) {
 		super(listener);
+		this.isConnected = false;
 		connect();
-		// TODO Auto-generated constructor stub
 	}
-
+	/**
+	 * Connects to the SQLite-database.
+	 */
 	private void connect() {
 		try {
 			SQLiteJDBCLoader.initialize();
-			// java.sql.Connection connect =
-			// DriverManager.getConnection("jdbc:sqlite:test.db");
-			con = new SQLiteDataSource();
-			con.setUrl("jdbc:sqlite:local.db");
+			if ((new File("local.db")).exists()) {
+				con = new SQLiteDataSource();
+				con.setUrl("jdbc:sqlite:local.db");
 
-			connect = con.getConnection();
+				connect = con.getConnection();
+				this.isConnected = true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Es gibt keine lokale Datenbank!",
+						"Fehler", JOptionPane.WARNING_MESSAGE);
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Executes a login with the local database.
+	 */
 	public void login() {
-		Packet p = new Packet("local", "local");
-		p.setLoginStatus(Packet.Login.USER);
-		p.setPacketType(Packet.Type.CATEGORY);
-		addCategries(p);
-		addLevel(p);
-		listener.receiveClientData(p);
+		if (this.isConnected) {
+			Packet p = new Packet("local", "local");
+			p.setLoginStatus(Packet.Login.USER);
+			p.setPacketType(Packet.Type.CATEGORY);
+			addCategries(p);
+			addLevel(p);
+			listener.receiveClientData(p);
+		}
 	}
 
-	@Override
+	/**
+	 * Sends a packet.
+	 */
 	public void sendPacket(Packet packet) throws TCPClientException {
-		// TODO Auto-generated method stub
 		switch (packet.getPacketType()) {
 		case CATEGORY:
 			
 			break;
 		case ANSWER_QUESTION:
 			checkAnswers(packet);
-			setFrage(packet);
+			setQuestion(packet);
 			
 			listener.receiveClientData(packet);
 			break;
@@ -71,31 +93,29 @@ public class LocalConnection extends Client {
 
 	}
 
+	/**
+	 * Adds categories to a packet.
+	 * @param packet
+	 */
 	private void addCategries(Packet packet) {
 
 		try {
-			//PreparedStatement statement = connect
-			//		.prepareStatement("");
 			PreparedStatement stm = (PreparedStatement) connect
 					.prepareStatement("select * from Topic");
-			// SQLQuerries.addCategories(connect);
 			ResultSet resultSet = stm.executeQuery();
 			ArrayList<String[]> categories = new ArrayList<String[]>();
-			//String categorys = "";
+
 			while (resultSet.next()) {
 				String[] cat = new String[2];
 				cat[0] = resultSet.getString("id");
 				cat[1] = resultSet.getString("title");
 				categories.add(cat);
-				//categorys += resultSet.getString("title") + ";";
 			}
-			//packet.setTopics(categorys.split(";"));
 			packet.setCategories(categories);
 			packet.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	/**
@@ -118,9 +138,11 @@ public class LocalConnection extends Client {
 		}
 	}
 	
-
-	public void insert(Packet packet) {
-
+	/**
+	 * Build the local database.
+	 * @param packet
+	 */
+	public void createLocalDatabase(Packet packet) {
 		String[] all = packet.getQuestion().split(";");
 		for (String s : all) {
 			if (s.length() > 2) {
@@ -128,7 +150,6 @@ public class LocalConnection extends Client {
 					connect.createStatement().execute(s);
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -140,7 +161,7 @@ public class LocalConnection extends Client {
 				System.out.println(executeQuery.getString(1));
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 	
@@ -206,6 +227,7 @@ public class LocalConnection extends Client {
 			}
 		}
 	}
+
 	/**
 	 * Updates the user_data Table in DB
 	 * @param packet including all question data
@@ -259,6 +281,11 @@ public class LocalConnection extends Client {
 
 	}
 	
+	/**
+	 * Gets the id to a user specified by an username.
+	 * @param username
+	 * @return id
+	 */
 	public String getUserID(String username){
 		PreparedStatement stm = SQLQuerries.getUser(connect);
 		try {
@@ -269,14 +296,16 @@ public class LocalConnection extends Client {
 			
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "";
-		
 	}
 	
-	public void setFrage(Packet packet) {
+	/**
+	 * Sets the question in a packet.
+	 * @param packet
+	 */
+	public void setQuestion(Packet packet) {
 		try {
 			String userid = getUserID(packet.getUsername());
 			PreparedStatement stm = SQLQuerries.getQuestion(connect,true);
@@ -285,7 +314,6 @@ public class LocalConnection extends Client {
 			stm.setString(3, userid);
 			stm.setString(4, userid);
 			
-			
 			ResultSet resultSet = stm.executeQuery();
 			//if all questions are answerd within 3 minutes, a random will be selecetd
 			if(resultSet.next() == false){
@@ -293,10 +321,7 @@ public class LocalConnection extends Client {
 				stm.setString(1, packet.getSelectedTopic());
 				resultSet = stm.executeQuery();
 				packet.setGotRightQuestion(false);
-			}			
-			//resultSet.beforeFirst();
-			
-			
+			}
 			
 			if (resultSet.next()) {
 				packet.setQuestion(resultSet.getString("questiontext"));
@@ -324,5 +349,4 @@ public class LocalConnection extends Client {
 			System.exit(0);
 		}
 	}
-
 }

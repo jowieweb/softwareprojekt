@@ -172,7 +172,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 				}
 				if(!p.getGotRightQuestion()){
-					JOptionPane.showMessageDialog(this, "Es wurden alle Frage mit dieser Kategorie / schwierigkeit in den letzen 3 min benatwortet\n Die Fragen werden jetzt zufällig ausgewählt");
+					JOptionPane.showMessageDialog(this, "Es wurden alle Frage mit dieser Kategorie / schwierigkeit in den letzen 3 min benatwortet\n Die Fragen werden jetzt zufï¿½llig ausgewï¿½hlt");
 				}
 
 				String[][] score = p.getUserScore();
@@ -212,7 +212,7 @@ public class MainWindow extends JFrame implements ClientListener,
 			String dump = p.getQuestion();
 			if (dump.length() > 10) {
 				LocalConnection asd = new LocalConnection(this);
-				asd.insert(p);
+				asd.createLocalDatabase(p);
 			}
 			break;
 		default:

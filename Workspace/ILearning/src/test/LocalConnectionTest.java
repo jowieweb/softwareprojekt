@@ -238,7 +238,7 @@ public class LocalConnectionTest extends LocalConnection {
 
 		Packet p = new Packet("klaus", "local");
 		p.setSelectedTopic("Topic1");
-		setFrage(p);
+		setQuestion(p);
 
 		assertEquals("Frage", p.getQuestion());
 	}
