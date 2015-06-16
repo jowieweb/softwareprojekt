@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -14,6 +15,7 @@ import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import uk.co.caprica.vlcj.version.LibVlcVersion;
 
 /**
  * Defines a Window which displays a video.
@@ -53,6 +55,12 @@ public class VideoFrame {
                 if(isWindows()){
                 	NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
     	                "C:\\Program Files\\VideoLAN\\VLC");
+                	/*Mac Code*/
+                    NativeLibrary.addSearchPath(
+                    	    RuntimeUtil.getLibVlcLibraryName(), "/Applications/VLC.app/Contents/MacOS/lib"
+                    	    );
+                    	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+                	/*Ende Mac Code*/
                 	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
                 }
 

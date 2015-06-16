@@ -24,6 +24,7 @@ import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
+import org.Client.GUI.VideoFrame;
 
 /**
  * The class MainWindow represents the main window, which display different
@@ -110,6 +111,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		new VideoFrame("http://olliswelt.de/rickroll.mp4");
 	}
 
 	/**
@@ -172,7 +174,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 				}
 				if(!p.getGotRightQuestion()){
-					JOptionPane.showMessageDialog(this, "Es wurden alle Frage mit dieser Kategorie / schwierigkeit in den letzen 3 min benatwortet\n Die Fragen werden jetzt zufällig ausgewählt");
+					JOptionPane.showMessageDialog(this, "Es wurden alle Frage mit dieser Kategorie / schwierigkeit in den letzen 3 min benatwortet\n Die Fragen werden jetzt zufï¿½llig ausgewï¿½hlt");
 				}
 
 				String[][] score = p.getUserScore();
