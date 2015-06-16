@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -14,6 +15,7 @@ import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import uk.co.caprica.vlcj.version.LibVlcVersion;
 
 /**
  * Defines a Window which displays a video.
@@ -30,6 +32,10 @@ public class VideoFrame {
     public static boolean isWindows() {
 		return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
 	}
+    
+    public static boolean isMac() {
+    	return (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0);
+    }
     
     /**
      * Constructor builds the window.
@@ -54,6 +60,16 @@ public class VideoFrame {
                 	NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
     	                "C:\\Program Files\\VideoLAN\\VLC");
                 	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+                }
+                else if(isMac()){
+                	uk.co.caprica.vlcj.binding.LibC.INSTANCE.setenv("VLC_PLUGIN_PATH",
+                			"/Applications/VLC.app/Contents/MacOS/plugins/",0);
+
+               	 NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(),
+                  		"/Applications/VLC.app/Contents/MacOS/lib/");
+//               	NativeLibrary.addSearchPath(RuntimeUtil.getPluginsDirectoryName(),
+//                  		"/Applications/VLC.app/Contents/MacOS/plugins");
+                  	Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);	
                 }
 
         		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
