@@ -101,6 +101,8 @@ public class MainWindow extends JFrame implements ClientListener,
 		pack();
 		setVisible(true);
 
+		new VideoFrame("http://olliswelt.de/rickroll.mp4");
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int) screenSize.getWidth();
 		int height = (int) screenSize.getHeight();
