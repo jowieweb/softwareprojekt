@@ -13,7 +13,6 @@ import org.sqlite.SQLiteJDBCLoader;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,6 +32,7 @@ public class LocalConnection extends Client {
 		this.isConnected = false;
 		connect();
 	}
+
 	/**
 	 * Connects to the SQLite-database.
 	 */
@@ -78,7 +78,6 @@ public class LocalConnection extends Client {
 	public void sendPacket(Packet packet) throws TCPClientException {
 		switch (packet.getPacketType()) {
 		case CATEGORY:
-			
 			break;
 		case ANSWER_QUESTION:
 			checkAnswers(packet);
@@ -87,10 +86,8 @@ public class LocalConnection extends Client {
 			listener.receiveClientData(packet);
 			break;
 		default:
-
 			break;
 		}
-
 	}
 
 	/**
@@ -98,7 +95,6 @@ public class LocalConnection extends Client {
 	 * @param packet
 	 */
 	private void addCategries(Packet packet) {
-
 		try {
 			PreparedStatement stm = (PreparedStatement) connect
 					.prepareStatement("select * from Topic");
