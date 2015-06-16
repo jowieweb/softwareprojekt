@@ -228,15 +228,15 @@ public class DBConnector {
 			String userid = getUserID(packet.getUsername());
 			PreparedStatement stm = null;
 			if(packet.getSelectedModus().equals("")){
-				stm = SQLQuerries.getFrage(connect, false);
+				stm = SQLQuerries.getQuestion(connect, false);
 				stm.setString(1, packet.getSelectedTopic());
 				stm.setString(2, packet.getSelectedLevel());
 				stm.setString(3, userid);
 				stm.setString(4, userid);
 			} else if(packet.getSelectedModus().equals("Mixmode")){
-				stm = SQLQuerries.getFrageAllCategories(connect, false);
+				stm = SQLQuerries.getQuestionAllCategories(connect, false);
 			} else if(packet.getSelectedModus().equals("Errormode") ){
-				stm = SQLQuerries.getFrageFromWrong(connect, false);
+				stm = SQLQuerries.getWrongQuestion(connect, false);
 				stm.setString(1, userid);
 			}
 			
@@ -637,7 +637,7 @@ public class DBConnector {
 					solution += (i + 1);					
 				}
 			}
-			PreparedStatement statement = SQLQuerries.insertQuerry(connect);
+			PreparedStatement statement = SQLQuerries.insertQuestion(connect);
 			try {
 				statement.setString(1,  p.getSelectedTopic() );
 				statement.setString(2, "1");
