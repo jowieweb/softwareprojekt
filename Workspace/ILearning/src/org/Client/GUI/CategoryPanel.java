@@ -279,7 +279,7 @@ public class CategoryPanel extends JPanel {
 		
 		this.submitButton = new JButton("Absenden");
 		this.downloadButton = new JButton("Fragen herunterladen");
-		this.printButton = new JButton("Category Drucken");
+		this.printButton = new JButton("Categorie Drucken");
 		this.newCategoryButton = new JButton("Neue Kategorie anlegen");
 		this.quitEditModeButton = new JButton("Bearbeiten beenden");
 		this.deleteCategoryButton = new JButton("Kategorie entfernen");

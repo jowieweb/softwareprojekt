@@ -50,6 +50,10 @@ public class EditQuestionPanel extends QuestionPanel {
 		this.levelLabel = new JLabel("Schwierigkeit:");
 		this.categoryLabel = new JLabel("Kategorie:");
 		
+		levelComboBox.addItem("1");
+		levelComboBox.addItem("2");
+		levelComboBox.addItem("3");
+		
 		this.newQuestion = false;
 
 		for (int i = 0; i < 4; i++) {
