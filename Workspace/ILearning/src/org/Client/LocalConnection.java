@@ -85,6 +85,10 @@ public class LocalConnection extends Client {
 			
 			listener.receiveClientData(packet);
 			break;
+		case PRINT:
+			setAllQuestionsFromTopicForPrinting(packet);
+			listener.receiveClientData(packet);
+			break;
 		default:
 			break;
 		}
@@ -214,7 +218,7 @@ public class LocalConnection extends Client {
 							}
 						}
 					}
-					
+					packet.setLink(result.getString("link"));
 					updateCheckedAnswer(packet, right);
 					packet.setWasRight(right);
 				}
@@ -343,6 +347,42 @@ public class LocalConnection extends Client {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);
+		}
+	}
+	
+	public void setAllQuestionsFromTopicForPrinting(Packet p){
+		PreparedStatement ps = SQLQuerries.getAllQuestions(connect);
+		try {
+			ps.setString(1, p.getSelectedTopic());
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Packet> al = new ArrayList<Packet>();			
+			while(rs.next()){
+				Packet tmp = new Packet("","");
+				tmp.setQuestion(rs.getString("questiontext"));
+				
+				tmp.setQuestionID(rs.getString(1));
+				
+				ArrayList<String> answers = new ArrayList<String>();
+				for (int i = 1; i < 5; i++) {
+					answers.add(rs.getString(("answer" + i)).toString());
+				}
+
+				String[] stockArr = new String[answers.size()];
+				stockArr = answers.toArray(stockArr);
+
+				tmp.setAnswers(stockArr);
+				al.add(tmp);
+				
+			}
+			Packet[] fin =new Packet[al.size()];
+			for(int i =0;i< al.size();i++){
+				fin[i] = al.get(i);
+			}
+			p.setAllPackets(fin);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

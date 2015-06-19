@@ -10,4 +10,5 @@ public interface CategoryPanelListener {
 	public void categoryAdded(String newCategory);
 	public void setQuestionMode(String[] modes, String[] tooltips);
 	public void disableEditMode();
+	public void print(String category);
 }

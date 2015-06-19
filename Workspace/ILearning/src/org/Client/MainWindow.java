@@ -22,9 +22,9 @@ import org.Client.GUI.EditQuestionPanel;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
+import org.Client.GUI.NoteCardPrinter;
 import org.Client.GUI.QuestionPanel;
 import org.Client.GUI.QuestionPanelListener;
-import org.Client.GUI.VideoFrame;
 
 /**
  * The class MainWindow represents the main window, which display different
@@ -111,7 +111,7 @@ public class MainWindow extends JFrame implements ClientListener,
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		new VideoFrame("http://olliswelt.de/rickroll.mp4");
+		//new VideoFrame("http://olliswelt.de/rickroll.mp4");
 	}
 
 	/**
@@ -163,14 +163,15 @@ public class MainWindow extends JFrame implements ClientListener,
 				questionPanel.setVisible(false);
 				remove(questionPanel);
 
-				// TODO: lassen wir das so?
 				if (p.getWasRight()) {
 					JOptionPane.showMessageDialog(this,
 							"Die Frage wurde richtig beantwortet");
 
 				} else {
+				
+					
 					JOptionPane.showMessageDialog(this,
-							"Die Frage wurde FALSCH beantwortet");
+							"Die Frage wurde FALSCH beantwortet\n" +p.getLink());
 
 				}
 				if(!p.getGotRightQuestion()){
@@ -215,6 +216,13 @@ public class MainWindow extends JFrame implements ClientListener,
 			if (dump.length() > 10) {
 				LocalConnection asd = new LocalConnection(this);
 				asd.createLocalDatabase(p);
+			}
+			break;
+		case PRINT:
+			Packet[] all = p.getAllPackets();
+			for(int i = 0;i<all.length;i++){
+				@SuppressWarnings("unused")
+				NoteCardPrinter ncp = new NoteCardPrinter(all[i].getQuestion(), all[i].getAnswers());				
 			}
 			break;
 		default:
@@ -367,6 +375,21 @@ public class MainWindow extends JFrame implements ClientListener,
 		editCategoryItem.setVisible(true);
 		quitEditModeItem.setVisible(false);
 		pack();
+	}
+	
+	
+	/**
+	 * Callback method invoked to print a Category.
+	 */
+	public void print(String category){
+		Packet p = new Packet(this.username, password);
+		p.setSelectedTopic(category);
+		p.setPacketType(Packet.Type.PRINT);
+		try {
+			client.sendPacket(p);
+		} catch (TCPClientException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

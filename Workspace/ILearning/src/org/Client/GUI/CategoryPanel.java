@@ -35,6 +35,7 @@ public class CategoryPanel extends JPanel {
 	private JButton newCategoryButton;
 	private JButton downloadButton;
 	private JButton submitButton;
+	private JButton printButton;
 	private JTextField editCategoryTextField;
 	private JLabel editCategoryLabel;
 	private JComboBox<String> levelComboBox;
@@ -61,6 +62,9 @@ public class CategoryPanel extends JPanel {
 		
 		buttonPanel.add(quitEditModeButton);
 		buttonPanel.add(submitButton);
+		
+		buttonPanel.add(printButton);
+		
 		editPanel.add(editCategoryLabel);
 		editPanel.add(editCategoryTextField);
 
@@ -250,6 +254,20 @@ public class CategoryPanel extends JPanel {
 				listener.disableEditMode();
 			}
 		});
+		
+		this.printButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String value = categoryListBox.getSelectedValue();
+				if(value != null){
+					if(value.length() > 1){
+						listener.print(value);						
+					}
+				}
+				
+			}
+		});
 	}
 	
 	/**
@@ -261,6 +279,7 @@ public class CategoryPanel extends JPanel {
 		
 		this.submitButton = new JButton("Absenden");
 		this.downloadButton = new JButton("Fragen herunterladen");
+		this.printButton = new JButton("Category Drucken");
 		this.newCategoryButton = new JButton("Neue Kategorie anlegen");
 		this.quitEditModeButton = new JButton("Bearbeiten beenden");
 		this.deleteCategoryButton = new JButton("Kategorie entfernen");

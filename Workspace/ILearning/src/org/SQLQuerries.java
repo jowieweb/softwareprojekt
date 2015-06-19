@@ -29,7 +29,7 @@ public class SQLQuerries {
 	 */
 	public static PreparedStatement getCheckAnswer(java.sql.Connection c) {
 		return getPS(c,
-				"select solution from Question where Question.questiontext =?");
+				"select solution, link from Question join Topic on Topic.id = Question.TopicID  where Question.questiontext =?");
 	}
 
 	/**
@@ -314,6 +314,14 @@ public class SQLQuerries {
 	public static PreparedStatement insertQuestion(java.sql.Connection c){
 		if( c != null){
 			return getPS(c,"insert into Question(TopicId,level_value,image,video,audio,questiontext,answer1,answer2,answer3,answer4,solution) VALUES((select id from Topic where Topic.title = ?),?,?,?,?,?,?,?,?,?,?)");
+		}
+		return null;
+	}
+	
+	
+	public static PreparedStatement getAllQuestions(java.sql.Connection c){
+		if(c != null){
+			return getPS(c, "select * from Question join Topic on Question.TopicID = Topic.id  where title = ?");
 		}
 		return null;
 	}
