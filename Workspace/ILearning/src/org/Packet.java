@@ -28,7 +28,9 @@ public class Packet implements Serializable {
 	private boolean wasRight;
 	private String mediaURL ="";
 	private String questionLevel = "";
+	private String link= "";
 	private boolean gotRightQuestion = true;
+	private Packet[] allQuestions;
 	
 	private ArrayList<String[]> users;
 	private ArrayList<String[]> userScore;
@@ -38,7 +40,7 @@ public class Packet implements Serializable {
 	 * Type for specifying the packet type.
 	 */
 	public enum Type {
-		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB, EDIT_CATEGORY
+		UNUSED, CATEGORY, EDIT_QUESTION, ANSWER_QUESTION, USER_MANAGEMENT, DUMP_DB, EDIT_CATEGORY, PRINT
 	};
 	
 	public enum Management_Type {
@@ -506,5 +508,37 @@ public class Packet implements Serializable {
 	 */
 	public boolean getGotRightQuestion(){
 		return gotRightQuestion;
+	}
+	
+	/**
+	 * sets a link
+	 * @param l
+	 */
+	public void setLink(String l ){
+		link = l;
+	}
+	
+	/**
+	 * gets the link
+	 * @return the link
+	 */
+	public String getLink(){
+		return link;
+	}
+	
+	/**
+	 * gets all Packets for Printing
+	 * @return all packets
+	 */
+	public Packet[] getAllPackets(){
+		return allQuestions;
+	}
+	
+	/**
+	 * sets all Packets for printing
+	 * @param p packet
+	 */
+	public void setAllPackets(Packet[] p){
+		allQuestions = p;
 	}
 }

@@ -94,6 +94,9 @@ public class PacketBuilder {
 			}
 			break;
 			
+		case PRINT:
+			dbc.setAllQuestionsFromTopicForPrinting(answer);
+			break;
 		default:
 			break;
 		}

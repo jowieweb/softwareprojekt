@@ -8,6 +8,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
@@ -15,8 +18,9 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.ComponentIdVideoSurface;
 import uk.co.caprica.vlcj.player.embedded.videosurface.mac.MacVideoSurfaceAdapter;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
+
+
+
 
 /**
  * Defines a Window which displays a video.

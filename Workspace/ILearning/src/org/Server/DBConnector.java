@@ -61,6 +61,7 @@ public class DBConnector {
 				ResultSet result = stm.executeQuery();
 				while (result.next()) {
 					String sol = result.getString("solution");
+					String link = result.getString("link");
 					boolean right = false;
 					if(sol.length() > 1){
 						// more than 1 answer is correct
@@ -98,7 +99,7 @@ public class DBConnector {
 							}
 						}
 					}
-					
+					packet.setLink(link);
 					updateCheckedAnswer(packet, right);
 					packet.setWasRight(right);
 				}
@@ -307,6 +308,7 @@ public class DBConnector {
 			}
 		}
 	}
+	
 
 	/**
 	 * checks the login, if wrong Login.FAIL
@@ -657,10 +659,44 @@ public class DBConnector {
 				e.printStackTrace();
 			}
 			
-			
-			
 		}
+		
+	}
+	
+	public void setAllQuestionsFromTopicForPrinting(Packet p){
+		PreparedStatement ps = SQLQuerries.getAllQuestions(connect);
+		try {
+			ps.setString(1, p.getSelectedTopic());
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Packet> al = new ArrayList<Packet>();			
+			while(rs.next()){
+				Packet tmp = new Packet("","");
+				tmp.setQuestion(rs.getString("questiontext"));
+				
+				tmp.setQuestionID(rs.getString(1));
+				
+				ArrayList<String> answers = new ArrayList<String>();
+				for (int i = 1; i < 5; i++) {
+					answers.add(rs.getString(("answer" + i)).toString());
+				}
+
+				String[] stockArr = new String[answers.size()];
+				stockArr = answers.toArray(stockArr);
+
+				tmp.setAnswers(stockArr);
+				al.add(tmp);
+				
+			}
+			Packet[] fin =new Packet[al.size()];
+			for(int i =0;i< al.size();i++){
+				fin[i] = al.get(i);
+			}
+			p.setAllPackets(fin);
 			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }
