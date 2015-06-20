@@ -161,9 +161,9 @@ public class HTMLVideoFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		
-		 new HTMLVideoFrame("http://olliswelt.de/rickroll.mp4");
-	}
+//	public static void main(String[] args) {
+//		
+//		 new HTMLVideoFrame("http://olliswelt.de/rickroll.mp4");
+//	}
 
 }
