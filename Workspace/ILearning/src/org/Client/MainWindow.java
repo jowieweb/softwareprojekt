@@ -19,6 +19,7 @@ import org.Client.GUI.AnswerQuestionPanel;
 import org.Client.GUI.CategoryPanel;
 import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.EditQuestionPanel;
+import org.Client.GUI.HTMLVideoFrame;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
@@ -108,10 +109,11 @@ public class MainWindow extends JFrame implements ClientListener,
 		System.out.println("height: " + height);
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-
+		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//new VideoFrame("http://olliswelt.de/rickroll.mp4");
+		new HTMLVideoFrame("http://olliswelt.de/rickroll.mp4");
+		//new HTMLVideoFrame("http://www1.wdr.de/radio/digitalradio/webradio142_v-TeaserAufmacher.jpg");
 	}
 
 	/**

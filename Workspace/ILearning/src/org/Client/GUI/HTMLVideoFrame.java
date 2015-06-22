@@ -4,6 +4,8 @@ import static javafx.concurrent.Worker.State.FAILED;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -48,6 +50,57 @@ public class HTMLVideoFrame {
 
 			public void run() {
 				JFrame htmlFrame = new JFrame();
+				htmlFrame.addWindowListener(new WindowListener(){
+
+					@Override
+					public void windowActivated(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowClosed(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowClosing(WindowEvent arg0) {
+						System.out.println("exit!");
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+						engine.load(null);
+							}});
+						
+					}
+
+					@Override
+					public void windowDeactivated(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowDeiconified(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowIconified(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowOpened(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
 				initComponents(htmlFrame);
 				loadURL(mediaURL);
 				htmlFrame.setVisible(true);
@@ -82,7 +135,6 @@ public class HTMLVideoFrame {
 		htmlFrame.getContentPane().add(panel);
 
 		htmlFrame.setPreferredSize(new Dimension(500, 500));
-		htmlFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		htmlFrame.pack();
 
 	}
@@ -110,21 +162,7 @@ public class HTMLVideoFrame {
 					}
 				});
 
-				engine.getLoadWorker().exceptionProperty().addListener(new ChangeListener<Throwable>() {
 
-					public void changed(ObservableValue<? extends Throwable> o, Throwable old, final Throwable value) {
-						if (engine.getLoadWorker().getState() == FAILED) {
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {
-									JOptionPane.showMessageDialog(panel, (value != null) ? engine.getLocation() + "\n"
-											+ value.getMessage() : engine.getLocation() + "\nUnexpected error.",
-											"Loading error...", JOptionPane.ERROR_MESSAGE);
-								}
-							});
-						}
-					}
-				});
 
 				jfxPanel.setScene(new Scene(view));
 			}
