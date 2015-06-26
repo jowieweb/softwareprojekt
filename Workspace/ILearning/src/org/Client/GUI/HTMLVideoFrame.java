@@ -1,7 +1,5 @@
 package org.Client.GUI;
 
-import static javafx.concurrent.Worker.State.FAILED;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
@@ -20,7 +18,6 @@ import javafx.scene.web.WebView;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;

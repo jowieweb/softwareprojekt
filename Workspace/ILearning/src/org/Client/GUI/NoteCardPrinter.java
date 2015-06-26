@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 public class NoteCardPrinter {
 
 	private Logger log = Logger.getLogger(this.getClass().getSimpleName());
-
+	private PrinterJob pj = PrinterJob.getPrinterJob();
+	private boolean doPrint =false;
 	/**
 	 * builds a String Array containing QuestionText and Answers.
 	 *
@@ -36,9 +37,17 @@ public class NoteCardPrinter {
 	 */
 	public NoteCardPrinter(String questionText, String [] answerText) {
 		log.info("NoteCardPrinter initialized.");
-		PrinterJob pj = PrinterJob.getPrinterJob();
+		
 		pj.setPrintable(new PrintTemplate(buildTextArray(questionText,answerText)));
-		boolean doPrint = pj.printDialog();
+		doPrint = pj.printDialog();
+		print();
+		
+	}
+	public NoteCardPrinter(){
+		doPrint = pj.printDialog();		
+	}
+	
+	private void print(){
 		long timestamp = 0;
 		boolean printed = false;
 		if (doPrint) {
@@ -59,5 +68,10 @@ public class NoteCardPrinter {
 		} else {
 			log.info("Printer: done.");
 		}
+	}
+	
+	public void print(String questionText, String[] answerText){
+		pj.setPrintable(new PrintTemplate(buildTextArray(questionText,answerText)));
+		print();
 	}
 }

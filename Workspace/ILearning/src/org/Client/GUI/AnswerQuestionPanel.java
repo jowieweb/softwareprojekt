@@ -197,7 +197,7 @@ public class AnswerQuestionPanel extends QuestionPanel {
 	 */
 	public void setVideo(String videoURL) {
 		if(videoURL.length()> 5)
-			new VideoFrame(videoURL);
+			new HTMLVideoFrame(videoURL);
 	}
 	
 	/**

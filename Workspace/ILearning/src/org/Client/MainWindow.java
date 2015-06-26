@@ -19,7 +19,6 @@ import org.Client.GUI.AnswerQuestionPanel;
 import org.Client.GUI.CategoryPanel;
 import org.Client.GUI.CategoryPanelListener;
 import org.Client.GUI.EditQuestionPanel;
-import org.Client.GUI.HTMLVideoFrame;
 import org.Client.GUI.LoginPanel;
 import org.Client.GUI.LoginPanelListener;
 import org.Client.GUI.MakeSound;
@@ -112,7 +111,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		new HTMLVideoFrame("http://olliswelt.de/rickroll.mp4");
+		//new HTMLVideoFrame("http://olliswelt.de/rickroll.mp4");
 		//new HTMLVideoFrame("http://www1.wdr.de/radio/digitalradio/webradio142_v-TeaserAufmacher.jpg");
 	}
 
@@ -222,9 +221,9 @@ public class MainWindow extends JFrame implements ClientListener,
 			break;
 		case PRINT:
 			Packet[] all = p.getAllPackets();
+			NoteCardPrinter ncp = new NoteCardPrinter();
 			for(int i = 0;i<all.length;i++){
-				@SuppressWarnings("unused")
-				NoteCardPrinter ncp = new NoteCardPrinter(all[i].getQuestion(), all[i].getAnswers());				
+				ncp.print(all[i].getQuestion(), all[i].getAnswers());				
 			}
 			break;
 		default:
