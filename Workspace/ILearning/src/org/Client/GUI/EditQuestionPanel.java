@@ -104,6 +104,7 @@ public class EditQuestionPanel extends QuestionPanel {
 							listener.updateQuestion(questionID, questionTextField.getText(),
 									getAnswerTexts(), getAllSelectedAnswers(),
 									mediaURLTextField.getText());
+							repaint();
 						}
 					}
 				} else {
@@ -282,7 +283,18 @@ public class EditQuestionPanel extends QuestionPanel {
 			answers[i] = this.answerTextFields[i].getText();
 		}
 
-		this.listener.questionAdded(question, answers, url, right, this.categoryComboBox.getSelectedItem().toString());
+		boolean wasChecked = false;
+		for(int i = 0; i < right.length; i++){
+			if(right[i] == 1) {
+				wasChecked = true;
+			}
+		}
+		if(wasChecked){		
+			this.listener.questionAdded(question, answers, url, right, this.categoryComboBox.getSelectedItem().toString());
+		}
+		
+		
+		
 	}
 	
 	/**

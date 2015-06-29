@@ -43,10 +43,17 @@ public class NoteCardPrinter {
 		print();
 		
 	}
+	
+	/**
+	 * Bachprinter
+	 */
 	public NoteCardPrinter(){
 		doPrint = pj.printDialog();		
 	}
 	
+	/**
+	 * prints a set Question
+	 */
 	private void print(){
 		long timestamp = 0;
 		boolean printed = false;
@@ -70,6 +77,11 @@ public class NoteCardPrinter {
 		}
 	}
 	
+	/**
+	 * prints a given question
+	 * @param questionText the question
+	 * @param answerText the answers
+	 */
 	public void print(String questionText, String[] answerText){
 		pj.setPrintable(new PrintTemplate(buildTextArray(questionText,answerText)));
 		print();

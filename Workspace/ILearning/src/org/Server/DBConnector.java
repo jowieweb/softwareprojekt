@@ -99,6 +99,7 @@ public class DBConnector {
 							}
 						}
 					}
+					//result.close();
 					packet.setLink(link);
 					updateCheckedAnswer(packet, right);
 					packet.setWasRight(right);
@@ -130,7 +131,7 @@ public class DBConnector {
 			while (result.next()) {
 				count = result.getInt(1);
 			}
-
+			//result.close();
 			if (count == 1) {
 				 stm = SQLQuerries.get1ForCheck(connect,false);
 				 stm.setString(1, incorrect);
@@ -171,6 +172,7 @@ public class DBConnector {
 				//categorys += resultSet.getString("title") + ";";
 			}
 			//packet.setTopics(categorys.split(";"));
+			//resultSet.close();
 			packet.setCategories(categories);
 			packet.setPacketType(Packet.Type.CATEGORY);
 		} catch (SQLException e) {
@@ -193,7 +195,7 @@ public class DBConnector {
 				level += resultSet.getString("title") + ";";
 			}
 			packet.setLevel(level.split(";"));
-			resultSet.close();
+			//resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -210,7 +212,9 @@ public class DBConnector {
 			stm.setString(1, username);
 			ResultSet resultSet = stm.executeQuery();
 			resultSet.next();
-			return resultSet.getString(1);
+			String a =  resultSet.getString(1);
+			//resultSet.close();
+			return a;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -230,6 +234,9 @@ public class DBConnector {
 			PreparedStatement stm = null;
 			if(packet.getSelectedModus().equals("")){
 				stm = SQLQuerries.getQuestion(connect, false);
+				System.out.println(packet.getSelectedTopic());
+				System.out.println(packet.getSelectedLevel());
+				System.out.println(userid);
 				stm.setString(1, packet.getSelectedTopic());
 				stm.setString(2, packet.getSelectedLevel());
 				stm.setString(3, userid);
@@ -244,13 +251,32 @@ public class DBConnector {
 			
 			
 			ResultSet resultSet = stm.executeQuery();
-			//if all questions are answerd within 3 minutes, a random will be selecetd
-			if(resultSet.next() == false){
+			
+			resultSet.beforeFirst();
+			boolean empty = false;
+			//if all questions are answered within 3 minutes, a random will be selecetd
+			//check, if the result set contains valid information, if not empty will set to TRUE
+			try{
+				resultSet.first();
+				String tmp = resultSet.getString("questiontext");
+				if(tmp == null | tmp.length() == 0){		
+					empty = true;
+				}
+			}catch(Exception e){
+				empty = true;
+			}
+			
+			
+			// a random question will be selected.
+			// also the gotRightQuestion boolean will set to false to show the user that all questions are answered within 3 min.
+			if(empty)
+			{
 				stm = SQLQuerries.getRandomIfEmpty(connect,false);
 				stm.setString(1, packet.getSelectedTopic());
 				resultSet = stm.executeQuery();
 				packet.setGotRightQuestion(false);
-			}			
+			}
+					
 			
 			resultSet.beforeFirst();
 			
@@ -269,21 +295,29 @@ public class DBConnector {
 
 				packet.setAnswers(stockArr);
 				String imageurl = resultSet.getString("image");
-				if (imageurl.length() > 1) {
-					setImage(packet, imageurl);
-				} else {
-					setImage(packet, "");
+				if(imageurl != null){
+					if (imageurl.length() > 1) {
+						setImage(packet, imageurl);
+					} else {
+						setImage(packet, "");
+					}
 				}
 				String videourl = resultSet.getString("video");
 				String audiourl = resultSet.getString("audio");
-				if(videourl.length()>0){
-					packet.setMediaURL(videourl);
-				} else { packet.setMediaURL(audiourl);}
+				if(videourl != null){
+					if(videourl.length()>0){
+						packet.setMediaURL(videourl);
+					} else { 
+						if(audiourl != null){
+							packet.setMediaURL(audiourl);
+						}
+					}
+				}
 				
 			} else {
 				System.out.println("empty again!");
 			}
-			resultSet.close();
+			//resultSet.close();
 			packet.setPacketType(Packet.Type.ANSWER_QUESTION);
 
 		} catch (Exception e) {
@@ -339,6 +373,7 @@ public class DBConnector {
 					return Packet.Login.USER;
 				}
 			}
+			//resultSet.close();
 
 		} catch (SQLException e) {
 			connect();
@@ -490,6 +525,7 @@ public class DBConnector {
 				user[1] = resultSet.getString(2);
 				p.addUserScore(user);
 			}
+			//resultSet.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -691,6 +727,7 @@ public class DBConnector {
 			for(int i =0;i< al.size();i++){
 				fin[i] = al.get(i);
 			}
+			//rs.close();
 			p.setAllPackets(fin);
 			
 		} catch (SQLException e) {

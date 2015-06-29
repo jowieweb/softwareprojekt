@@ -67,6 +67,8 @@ public class PacketBuilder {
 				break;
 			case ADD_QUESTION:
 				dbc.insertQuestion(querry);
+				dbc.addCategories(answer);
+				dbc.addLevel(answer);
 			default:
 				break;
 			}
@@ -119,6 +121,7 @@ public class PacketBuilder {
 		p.setQuestion(querry.getQuestion());
 		p.setWasRight(querry.getWasRight());
 		p.setQuestionID(querry.getQuestionID());
+		p.setSelectedLevel(querry.getSelectedLevel());
 		if(querry.getImage() != null) {
 			p.setImage(querry.getImage());
 		}

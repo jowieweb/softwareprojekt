@@ -142,6 +142,15 @@ public class MainWindow extends JFrame implements ClientListener,
 	
 				loginPanel.setVisible(false);
 				remove(loginPanel);
+				if (questionPanel != null) {
+					remove(questionPanel);
+				}
+				if (categoryPanel != null) {
+					remove(categoryPanel);
+				}
+				if (loginPanel != null) {
+					remove(loginPanel);
+				}
 				categoryPanel = new CategoryPanel(this);
 				add(categoryPanel);
 	
@@ -475,7 +484,8 @@ public class MainWindow extends JFrame implements ClientListener,
 		// p.setTopics(lastPacket.getTopics());
 		p.setCategories(lastPacket.getCategories());
 		p.setSelectedTopic(lastPacket.getSelectedTopic());
-		p.setLevel(p.getLevel());
+		System.out.println(lastPacket.getLevel());
+		p.setSelectedLevel(lastPacket.getSelectedLevel());
 		p.setSelectedModus(selectedQuestionMode);
 		p.setSelectedAnswers(answer);
 		//check if CountDown round
@@ -526,13 +536,15 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
-		repaint();
+		//changeQuestionPanelToAnswerMode();
+		//repaint();
 	}
 
 	/**
 	 * Replaces AnswerQuestionPanel with EditQuestionPanel.
 	 */
 	public void changeQuestionPanelToEditMode() {
+		System.out.println("changeQuestionPanelToEditMode");
 		editCategoryItem.setVisible(false);
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
@@ -558,6 +570,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces EditQuestionPanel with AnswerQuestionPanel.
 	 */
 	public void changeQuestionPanelToAnswerMode() {
+		System.out.println("changeQuestionPanelToAnswerMode");
 		editCategoryItem.setVisible(false);
 		String[] answers = questionPanel.getAnswerTexts();
 		String question = questionPanel.getQuestionText();
@@ -570,13 +583,14 @@ public class MainWindow extends JFrame implements ClientListener,
 		pack();
 
 		showCategoryItem.setVisible(true);
-		repaint();
+		//repaint();
 	}
 
 	/**
 	 * Replaces QuestionPanel with CategoryPanel.
 	 */
 	public void changeQuestionPanelToCategoryPanel() {
+		System.out.println("changeQuestionPanelToCategoryPanel");
 		editCategoryItem.setVisible(true);
 		remove(questionPanel);
 		questionPanel = null;
@@ -589,6 +603,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces current panel with adminPanel.
 	 */
 	private void changePanelToAdministrationPanel(Packet p) {
+		System.out.println("changePanelToAdministrationPanel");
 		if (questionPanel != null) {
 			remove(questionPanel);
 		}
@@ -611,6 +626,7 @@ public class MainWindow extends JFrame implements ClientListener,
 	 * Replaces currently displayed AdministrationPanel with CategoryPanel.
 	 */
 	public void changeAdministrationPanelToCategoryPanel() {
+		System.out.println("changeAdministrationPanelToCategoryPanel");
 		remove(adminPanel);
 		add(categoryPanel);
 		editCategoryItem.setVisible(true);

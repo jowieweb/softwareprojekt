@@ -129,7 +129,7 @@ public class SQLQuerries {
 					+ "LEFT join `Level` on Question.level_value = `Level`.`value` "
 					+ "WHERE 	Topic.title = ? and `Level`.title = ?  "
 					+ "AND (IFNULL(UserID, ?)) = ? AND IFNULL(lastAnswered, 0) < DATE_SUB(NOW(), INTERVAL 3 MINUTE) "
-					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
+					+ "ORDER BY IFNULL((falseCount / overallCount),1) DESC,	lastAnswered";
 
 			return getPS(c, querry);
 		} else {
@@ -140,7 +140,7 @@ public class SQLQuerries {
 					+ "LEFT join `Level` on Question.level_value = `Level`.`value` "
 					+ "WHERE 	Topic.title = ? and `Level`.title = ? "
 					+ "AND (ifnull(UserID, ?)) = ? AND ifnull(lastAnswered, 0) < datetime('now','-3 minutes') "
-					+ "ORDER BY (falseCount / overallCount) DESC,	lastAnswered";
+					+ "ORDER BY (ifnull((falseCount / overallCount),1)) DESC,	lastAnswered";
 
 			return getPS(c, querry);
 		}
