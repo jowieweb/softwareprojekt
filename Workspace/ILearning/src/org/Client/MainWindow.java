@@ -320,6 +320,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	}
 
 	/**
@@ -343,6 +344,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	}
 
 	/**
@@ -366,6 +368,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	}
 
 	/**
@@ -376,6 +379,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		editCategoryItem.setVisible(true);
 		quitEditModeItem.setVisible(false);
 		pack();
+		repaint();
 	}
 	
 	
@@ -490,6 +494,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	}
 
 	/**
@@ -521,6 +526,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		} catch (TCPClientException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	}
 
 	/**
@@ -545,6 +551,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		pack();
 
 		showCategoryItem.setVisible(false);
+		repaint();
 	}
 
 	/**
@@ -563,6 +570,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		pack();
 
 		showCategoryItem.setVisible(true);
+		repaint();
 	}
 
 	/**
@@ -574,6 +582,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		questionPanel = null;
 		login(username, password);
 		showCategoryItem.setVisible(false);
+		repaint();
 	}
 
 	/**
@@ -595,6 +604,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		showCategoryItem.setVisible(false);
 		editCategoryItem.setVisible(false);
 		userMenuItem.setVisible(false);
+		repaint();
 	}
 
 	/**
@@ -608,6 +618,7 @@ public class MainWindow extends JFrame implements ClientListener,
 		userMenuItem.setVisible(true);
 		pack();
 		showCategoryItem.setVisible(false);
+		repaint();
 	}
 
 	/**
@@ -766,6 +777,7 @@ public class MainWindow extends JFrame implements ClientListener,
 			e.printStackTrace();
 		}
 		changeQuestionPanelToAnswerMode();
+		repaint();
 	}
 
 	/**
