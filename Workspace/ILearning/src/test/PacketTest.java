@@ -35,7 +35,6 @@ public class PacketTest extends Packet {
 	public void initli(){
 		logAdminTest=Login.ADMIN;
 		usr="Peter";
-		new Socket();
 	}
 
 	/**
