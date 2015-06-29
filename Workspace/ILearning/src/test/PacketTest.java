@@ -30,7 +30,6 @@ public class PacketTest extends Packet {
 	/**
 	 * cleaning up...
 	 */
-	@SuppressWarnings("resource")
 	@Before
 	public void initli(){
 		logAdminTest=Login.ADMIN;
