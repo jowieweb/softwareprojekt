@@ -99,6 +99,9 @@ public class CategoryPanel extends JPanel {
 	 * If he answers yes, the category is removed by invoking the callback method.
 	 */
 	private void removeCategory() {
+		if (this.categoryListBox.getSelectedValue() == null) {
+			return;
+		}
 		String oldCategory = this.categoryListBox.getSelectedValue().toString();
 		
 		int result = JOptionPane.showConfirmDialog(this, "Möchten Sie die Kategorie '"

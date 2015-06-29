@@ -230,7 +230,6 @@ public class AdministrationPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO remove user
 				listener.removeUser(userTextField.getText());
 
 			}
@@ -239,6 +238,8 @@ public class AdministrationPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				userTextField.setText("");
+				passwordTextField.setText("");
 				userListModel.addElement("new User");
 				userList.setSelectedIndex(userListModel.size()-1);
 				
@@ -249,7 +250,6 @@ public class AdministrationPanel extends JPanel {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO submit
 				if(userList.getSelectedValue().equals("new User")){
 					listener.addUser(userTextField.getText(), passwordTextField.getText());
 				} else {

@@ -498,11 +498,11 @@ public class MainWindow extends JFrame implements ClientListener,
 	}
 
 	/**
-	 * Callback method invoked when a question is added.
+	 * Callback method invoked from EditQuestionPanel when a question is added.
 	 * 
 	 * @param questionText question
-	 * @param answers answers
-	 * @param mediaURL url
+	 * @param answers answers 
+	 * @param mediaURL url to media
 	 * @param right right answers
 	 */
 	public void questionAdded(String questionText, String[] answers,
