@@ -37,7 +37,7 @@ public class DBConnector {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager
-					.getConnection("jdbc:mysql://j.z5n.de/ilearning?user=kuser&password=qwertzuiop");
+					.getConnection("jdbc:mysql://j.z5n.de/ilearning?user=kuser&password=qwertzuiop&connectTimeout=0&socketTimeout=0&autoReconnect=true");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
